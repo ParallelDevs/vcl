@@ -1,9 +1,10 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: pdevs1
- * Date: 9/1/15
- * Time: 10:51 AM
+ * @file
+ * Filter that enables to use patterns for create visual content more easy.
+ * Drupal\visual_content_layout\Plugin\Filter\FilterVisualContent.
+ *
  */
 
 namespace Drupal\visual_content_layout\Plugin\Filter;
@@ -19,7 +20,7 @@ use Drupal\filter\Plugin\FilterBase;
  * @Filter(
  *   id = "filter_visualcontent",
  *   title = @Translation("Filtrate Visual Content"),
- *   description = @Translation("Use shortodes to generate a easy content."),
+ *   description = @Translation("Use shortcodes to generate a easy content."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
  * )
  */
@@ -42,3 +43,4 @@ class FilterVisualContent extends FilterBase{
   }
 
 }
+
