@@ -21,7 +21,10 @@ use Drupal\filter\Plugin\FilterBase;
  *   id = "filter_visualcontentlayout",
  *   title = @Translation("Visual Content Layout"),
  *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
+ *   settings = {
+ *     "allowed_shortcodes" = "[box]"
+ *   }
  * )
  */
 class FilterVisualContentLayout extends FilterBase{
