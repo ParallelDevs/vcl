@@ -1,2 +1,9 @@
 <?php
 
+function _filter_visual_layout_content($text, $filter) {
+
+  $result = str_replace('foo', 'bar', $text);
+
+  return $result;
+
+}
