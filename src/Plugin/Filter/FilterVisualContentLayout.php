@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Filter that enables to use patterns for create visual content more easy.
+ * Filter that enable the use patterns to create visual content more easy.
  * Drupal\visual_content_layout\Plugin\Filter\FilterVisualContent.
  *
  */
@@ -18,13 +18,13 @@ use Drupal\filter\Plugin\FilterBase;
  *.
  *
  * @Filter(
- *   id = "filter_visualcontent",
- *   title = @Translation("Filtrate Visual Content"),
- *   description = @Translation("Use shortcodes to generate a easy content."),
+ *   id = "filter_visualcontentlayout",
+ *   title = @Translation("Visual Content Layout"),
+ *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
  * )
  */
-class FilterVisualContent extends FilterBase{
+class FilterVisualContentLayout extends FilterBase{
 
   /**
    * {@inheritdoc}
