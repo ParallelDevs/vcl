@@ -14,7 +14,7 @@ use Drupal\filter\Plugin\FilterBase;
 
 
 /**
- * Provides a filter to use shortdoces.
+ * Provides a filter to use swaps as a shortcodes for replace with code.
  *.
  *
  * @Filter(
@@ -23,7 +23,7 @@ use Drupal\filter\Plugin\FilterBase;
  *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {
- *     "allowed_shortcodes" = "[box]"
+ *     "allowed_swaps" = "[box] [quote] [button]"
  *   }
  * )
  */
@@ -33,7 +33,7 @@ class FilterVisualContentLayout extends FilterBase{
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-    return new FilterProcessResult(_filter_visual_layout_content($text, $this));
+    return new FilterProcessResult(_visual_content_layout($text, $this));
   }
 
   /**
