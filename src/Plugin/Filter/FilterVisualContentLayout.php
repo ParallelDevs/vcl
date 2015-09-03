@@ -23,7 +23,7 @@ use Drupal\filter\Plugin\FilterBase;
  *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {
- *     "allowed_swaps" = "[box] [quote] [button]"
+ *     "allowed_swaps" = "[box] [quote] [button] [random] [texto]"
  *   }
  * )
  */

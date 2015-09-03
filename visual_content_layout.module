@@ -1,11 +1,31 @@
 <?php
 
+module_load_include('inc','visual_content_layout','includes/button');
+
 /**
  * Builds a list of all swaps (for filter).
  *
  * Calls the swap_info hook with the list parameter on all module. Returns
  * the all defined and altered Shortcode definitions.
  */
+
+function visual_content_layout_swaps_info() {
+  $swaps = array();
+  visual_content_layout_button_info($swaps);
+  return $swaps;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function visual_content_layout_theme() {
+  return array(
+    'button' => array(
+      'variables' => array('path' => NULL, 'text' => NULL, 'class' => NULL),
+    ),
+  );
+}
+
 
 function visual_content_layout_is_tag($tag, $swaps) {
   if (isset($swaps[$tag])) {
@@ -17,51 +37,34 @@ function visual_content_layout_is_tag($tag, $swaps) {
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function visual_content_layout_swaps_info() {
-  $swaps = array();
-  $swaps['button'] = array(
-    'title' => t('Button'),
-    'description' => t('Insert a link formatted as a button.'),
-    'process callback' => 'visual_content_layout_swap_button',
-    // todo: implements this.
-    // 'settings callback' => '_shortcode_settings_form',
-    'attributes callback' => 'shortcode_basic_tags_button_attributes',
-    'tips callback' => 'shortcode_basic_tags_shortcode_button_tip',
-  );
-  return $swaps;
-}
 
-/*
- * Provides process callback for Shortcode button.
+/**
+ * Generates a random code.
+ *
+ * Calling
+ * [random length=X /]
+ *
+ * Where X is the length of the random text.
+ * If the length empty or invalid, between 1-99, the length will be 8.
  */
-function visual_content_layout_swap_button($attrs, $text) {
+function visual_content_layout_swap_random($attrs, $text) {
   $attrs = visual_content_layout_attrs(array(
-    'title' => 'title default',
-    'class' => 'button',
-    'url' => '',
-    'path' => '<front>',
+    'length' => 8,
   ),
     $attrs
   );
 
-  $class = visual_content_layout_add_class($attrs['class'], 'button');
-  if ($attrs['url']) {
-    $attrs['path'] = $attrs['url'];
+  $length = intval($attrs['length']);
+  if (($length < 0) || ($length > 99)) {
+    $length = 8;
   }
-  $path = $attrs['path'];
-  return call_user_func('theme_shortcode_button', array(
-      'path' => $path,
-      'text' => $text,
-      'class' => $class,
-    )
-  );
-}
 
-/**
- * Implements theme for button Shortcode.
- */
-function theme_shortcode_button($vars) {
-  return '<a href="' . $vars['path'] . '" class="' . $vars['class'] . '"><span>' . $vars['text'] . '</span></a>';
+  $text = '';
+  for ($i = 0; $i < $length; ++$i) {
+    $text .= chr(rand(32, 126));
+  }
+
+  return $text;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -148,7 +151,7 @@ function _visual_content_layout($text, $filter) {
           '',
         );
         array_unshift($heap_index, '_string_');
-        array_unshift($heap, _visual_content_layout_process_tag($m));
+        array_unshift($heap, _visual_content_layout_process_tag($m,$swaps_enabled));
       }
       elseif ($c[0] == '/') {
         // Indicate a closing tag, so we process the heap.
@@ -207,7 +210,7 @@ function _visual_content_layout($text, $filter) {
       array_unshift($heap, $c);
     }
   }//end foreach
-  
+
   return (implode('', array_reverse($heap)));
 }
 
