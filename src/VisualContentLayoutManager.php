@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains IcecreamManager.
+ * Contains VisualContentLayoutManager.
  */
 
 namespace Drupal\visual_content_layout;
@@ -27,8 +27,10 @@ class VisualContentLayoutManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
+
     parent::__construct('Plugin/Swap', $namespaces, $module_handler, 'Drupal\visual_content_layout\SwapInterface', 'Drupal\visual_content_layout\Annotation\Swap');
     $this->alterInfo('visual_content_layout_swaps_info');
     $this->setCacheBackend($cache_backend, 'visual_content_layout_swaps');
+
   }
 }

@@ -33,8 +33,7 @@ class FilterVisualContentLayout extends FilterBase{
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-    //$swaps = new Swaps($text, $this);
-    return new FilterProcessResult($text);
+      return new FilterProcessResult(_visual_content_layout($text, $this));
   }
 
   /**

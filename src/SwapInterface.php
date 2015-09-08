@@ -15,22 +15,22 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface SwapInterface extends PluginInspectionInterface  {
 
   /**
-   * Return the id of the swap.
+   * Return all the information of the swap.
    *
-   * @return string
+   * @return array
    */
-  public function getId();
+  public function info();
   /**
-   * Return the Title.
+   * Process all the atributtes in the swap.
    *
    * @return string
    */
-  public function getTitle();
+  public function processCallback($attrs, $text);
   /**
-   * Return the Description.
+   * Return the html code with the attributes corresponding.
    *
    * @return string
    */
-  public function getDescription();
+  public function theme($attrs, $text);
 
 }

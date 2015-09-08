@@ -1,6 +1,7 @@
 <?php
 
-module_load_include('inc','visual_content_layout','includes/button');
+use \Drupal\visual_content_layout\Plugin\Swap\Button;
+use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
 
 /**
  * Builds a list of all swaps (for filter).
@@ -70,148 +71,11 @@ function visual_content_layout_swap_random($attrs, $text) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function _visual_content_layout($text, $filter) {
-  
-  //get all the tags and it attributes
-  $swaps = visual_content_layout_swaps_info();
-  $swaps_enabled = array();
 
-  //get the name of all swaps
-  $swaps_names = explode(" ", $filter->settings["allowed_swaps"]);
+  $text = VisualContentLayoutSwapper::swap_process($text);
 
-  foreach ($swaps_names as $name) {
-    $name = substr($name,1,-1);
-    if ($name && !empty($swaps[$name]['process callback'])) {
-      $swaps_enabled[$name] = array(
-        'function' => $swaps[$name]['process callback'],
-      );
-    }
-  }
+  return $text;
 
-  if (empty($swaps_enabled)) {
-    return $text;
-  }
-
-  // Processing recursively, now embedding tags within other tags is supported!
-  $chunks = preg_split('!(\[{1,2}.*?\]{1,2})!', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
-
-  $heap = array();
-  $heap_index = array();
-  
-  foreach ($chunks as $c) {
-    if (!$c) {
-      continue;
-    }
-    
-    $escaped = FALSE;
-    
-    if ((substr($c, 0, 2) == '[[') && (substr($c, -2, 2) == ']]')) {
-      $escaped = TRUE;
-      // Checks media tags, eg: [[{ }]].
-      if ((substr($c, 0, 3) != '{') && (substr($c, -3, 1) != '}')) {
-        // Removes the outer [].
-        $c = substr($c, 1, -1);
-      }
-    }
-    // Decide this is a Shortcode tag or not.
-    if (!$escaped && ($c[0] == '[') && (substr($c, -1, 1) == ']')) {
-      // The $c maybe contains Shortcode macro.
-
-      // This is maybe a self-closing tag.
-      // Removes outer [].
-      $original_text = $c;
-      $c = substr($c, 1, -1);
-      $c = trim($c);
-
-      $ts = explode(' ', $c);
-      $tag = array_shift($ts);
-      $tag = trim($tag, '/');
-
-      if (!visual_content_layout_is_tag($tag,$swaps)) {
-        // The current tag is not enabled.
-        array_unshift($heap_index, '_string_');
-        array_unshift($heap, $original_text);
-      }
-      elseif (substr($c, -1, 1) == '/') {
-        // Processes a self closing tag, - it has "/" at the end-
-        /*
-         * The exploded array elements meaning:
-         * 0 - the full tag text?
-         * 1/5 - An extra [] to allow for escaping Shortcodes with double [[]].
-         * 2 - The Shortcode name.
-         * 3 - The Shortcode argument list.
-         * 4 - The content of a Shortcode when it wraps some content.
-         */
-
-        $m = array(
-          $c,
-          '',
-          $tag,
-          implode(' ', $ts),
-          NULL,
-          '',
-        );
-        array_unshift($heap_index, '_string_');
-        array_unshift($heap, _visual_content_layout_process_tag($m,$swaps_enabled));
-      }
-      elseif ($c[0] == '/') {
-        // Indicate a closing tag, so we process the heap.
-        $closing_tag = substr($c, 1);
-
-        $process_heap = array();
-        $process_heap_index = array();
-        $found = FALSE;
-
-        // Get elements from heap and process.
-        do {
-          $tag = array_shift($heap_index);
-          $heap_text = array_shift($heap);
-
-          if ($closing_tag == $tag) {
-            // Process the whole tag.
-            $m = array(
-              $tag . ' ' . $heap_text,
-              '',
-              $tag,
-              $heap_text,
-              implode('', $process_heap),
-              '',
-            );
-            $str = _visual_content_layout_process_tag($m,$swaps_enabled);
-            array_unshift($heap_index, '_string_');
-            array_unshift($heap, $str);
-            $found = TRUE;
-          }
-          else {
-            array_unshift($process_heap, $heap_text);
-            array_unshift($process_heap_index, $tag);
-          }
-        } while (!$found && $heap);
-
-        if (!$found) {
-          foreach ($process_heap as $val) {
-            array_unshift($heap, $val);
-          }
-          foreach ($process_heap_index as $val) {
-            array_unshift($heap_index, $val);
-          }
-        }
-
-      }
-      else {
-        // This is a starting tag. Put it to the heap.
-        array_unshift($heap_index, $tag);
-        array_unshift($heap, implode(' ', $ts));
-      }
-      // If escaped or not a Shortcode.
-    }
-    else {
-      // Maybe not found a pair?
-      array_unshift($heap_index, '_string_');
-      array_unshift($heap, $c);
-    }
-  }//end foreach
-
-  return (implode('', array_reverse($heap)));
 }
 
 
