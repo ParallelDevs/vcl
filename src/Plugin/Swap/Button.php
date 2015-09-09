@@ -20,9 +20,27 @@ use Drupal\visual_content_layout\SwapBase;
  */
 class Button extends SwapBase {
 
-  public function process($text, $langcode) {
+  function processCallback($attrs) {
+    $attrs = $this->set_attrs(array(
+      'title' => 'title default',
+      'class' => 'button',
+      'url' => '',
+      'path' => '<front>',
+      'content' => 'button',
+    ),
+      $attrs
+    );
 
-    return $this;
+    $attrs['class'] = $this->add_class($attrs['class'], 'button');
+    if ($attrs['url']) {
+      $attrs['path'] = $attrs['url'];
+    }
+    $attrs['path'] = '';
+    return $this->theme($attrs);
+  }
+
+  public function theme($attrs) {
+    return '<a href="' . $attrs['path'] . '" class="' . $attrs['class'] . '"><span>' . $attrs['content'] . '</span></a>';
   }
 
 }

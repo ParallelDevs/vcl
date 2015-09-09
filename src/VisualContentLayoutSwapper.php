@@ -169,7 +169,7 @@ class VisualContentLayoutSwapper {
 
     if (!empty($swaps[$tag])) {
       // Process if tag exists (enabled).
-      $attr = parse_attrs($m[3]);
+      $attr = self::parse_attrs($m[3]);
       /*
       * 0 - the full tag text?
       * 1/5 - An extra [ or ] to allow for escaping shortcodes with double [[]]
@@ -178,21 +178,16 @@ class VisualContentLayoutSwapper {
       * 4 - The content of a Shortcode when it wraps some content.
       * */
 
-      $swap = \Drupal::service('plugin.manager.icecream')->createInstance($tag);
+      $swap = \Drupal::service('plugin.manager.visual_content_layout')->createInstance($tag);
 
       if (!is_null($m[4])) {
         // This is an enclosing tag, means extra parameter is present.
-        if (is_string($swaps[$tag]['function']) && function_exists($swaps[$tag]['function'])) {
-          return $m[1] . call_user_func($swaps[$tag]['function'], $attr, $m[4], $m[2]) . $m[5];
-        }
-        return $m[1] . $m[5];
+        $attr['content'] = $m[4];
+          return $m[1] . $swap->processCallback($attr) . $m[5];
       }
       else {
         // This is a self-closing tag.
-        if (is_string($swaps[$tag]['function']) && function_exists($swaps[$tag]['function'])) {
-          return $m[1] . call_user_func($swaps[$tag]['function'], $attr, NULL, $m[2]) . $m[5];
-        }
-        return $m[1] . $m[5];
+         return $m[1] . $swap->processCallback($attr) . $m[5];
       }
     }
     elseif (is_null($m[4])) {
