@@ -22,10 +22,7 @@ use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
  *   id = "filter_visualcontentlayout",
  *   title = @Translation("Visual Content Layout"),
  *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
- *   settings = {
- *     "allowed_swaps" = "[box] [quote] [button] [random] [texto]"
- *   }
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
  * )
  */
 class FilterVisualContentLayout extends FilterBase{
@@ -42,7 +39,19 @@ class FilterVisualContentLayout extends FilterBase{
    */
   public function tips($long = FALSE) {
 
+    $manager = \Drupal::service('plugin.manager.visual_content_layout');
+    $swaps = $manager->getDefinitions();
+    $tips = "Swaps examples:";
 
+    foreach($swaps as $swap){
+      if(!$swap['tip'] == "") {
+        $tips = $tips . "<li><b><u>" . $swap['id'] . "</u> = </b> " . $swap['tip'] . "</li>";
+      }
+    }
+    $tips = $tips . "</ol>";
+    $tips = str_replace("'","\"",$tips);
+
+    return $tips;
   }
 
 }

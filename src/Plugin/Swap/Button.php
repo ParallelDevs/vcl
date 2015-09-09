@@ -16,14 +16,14 @@ use Drupal\Core\Routing\UrlGeneratorInterface;
  * @Swap(
  *   id = "button",
  *   name = @Translation("Button"),
- *   description = @Translation("Insert a link formatted as a button.")
+ *   description = @Translation("Insert a link formatted as a button."),
+ *   tip = "[button url='url' class='class'] Button [/button]"
  * )
  */
 class Button extends SwapBase {
 
   function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
-      'title' => 'title default',
       'class' => 'button',
       'url' => '',
       'path' => '<front>',

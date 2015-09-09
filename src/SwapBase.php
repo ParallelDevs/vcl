@@ -21,6 +21,7 @@ class SwapBase extends PluginBase implements SwapInterface {
       'id' => $this->pluginDefinition['id'],
       'title' => $this->pluginDefinition['title'],
       'description' => $this->pluginDefinition['description'],
+      'tip' => $this->pluginDefinition['tip'],
     );
   }
 

@@ -38,4 +38,10 @@ class Swap extends Plugin {
    * @var string
    */
   public $description;
+  /**
+   * The plugin Tip.
+   *
+   * @var string
+   */
+  public $tip;
 }

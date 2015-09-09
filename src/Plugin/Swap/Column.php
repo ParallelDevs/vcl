@@ -15,7 +15,8 @@ use Drupal\visual_content_layout\SwapBase;
  * @Swap(
  *   id = "column",
  *   name = @Translation("Column"),
- *   description = @Translation("Add div with the class column.")
+ *   description = @Translation("Add div with the class column."),
+ *   tip = "[column size='xs | sm | md | lg' number='[1-12]' class='extra class'] Content [/column]"
  * )
  */
 
@@ -30,9 +31,37 @@ class Column extends SwapBase {
       $attrs
     );
 
-    $bootstrap_class = "col-" . $attrs['size'] . "-" . $attrs['number'];
-    $attrs['class'] = $this->addClass($attrs['class'], $bootstrap_class);
+    if ($this->validateSize($attrs['size']) && $this->validateNumber($attrs['number'])) {
+      $bootstrap_class = "col-" . $attrs['size'] . "-" . $attrs['number'];
+      $attrs['class'] = $this->addClass($attrs['class'], $bootstrap_class);
+    }else{
+      $attrs['class'] = "col-md-4";
+    }
+
     return $this->theme($attrs,$text);
+  }
+
+  public function validateSize($size){
+    switch ($size) {
+      case 'xs':
+        return TRUE;
+      case 'sm':
+        return TRUE;
+      case 'md':
+        return TRUE;
+      case 'lg':
+        return TRUE;
+      default:
+        return FALSE;
+    }
+  }
+
+  public function validateNumber($number){
+    if(intval($number)>0 && intval($number)<13){
+      return TRUE;
+    }else{
+      return FALSE;
+    }
   }
 
   public function theme($attrs, $text) {
