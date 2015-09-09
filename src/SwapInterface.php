@@ -21,28 +21,28 @@ interface SwapInterface extends PluginInspectionInterface  {
    */
   public function info();
   /**
-   * Process all the atributtes in the swap.
+   * Process all the attributes in the swap.
    *
    * @return string
    */
-  public function processCallback($attrs);
+  public function processCallback($attrs, $text);
   /**
    * Return the html code with the attributes corresponding.
    *
    * @return string
    */
-  public function theme($attrs);
+  public function theme($attrs, $text);
   /**
-   * Return an array with the user attributes.
+   * Return an array with the user attributes or the default.
    *
    * @return array()
    */
-  public function set_attrs($pairs, $attrs);
+  public function setAttrs($pairs, $attrs);
   /**
    * Return an array with the default class and the user class.
    *
    * @return array()
    */
-  public function add_class($class, $default);
+  public function addClass($class, $default);
 
 }

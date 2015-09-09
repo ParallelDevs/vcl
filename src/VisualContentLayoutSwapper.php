@@ -11,7 +11,7 @@ class VisualContentLayoutSwapper {
   /**
    * Logic for replace the swap pattern with the html code corresponding.
    */
-  public static function swap_process($text){
+  public static function swapProcess($text){
 
     //get all the swaps plugins
     $manager = \Drupal::service('plugin.manager.visual_content_layout');
@@ -42,9 +42,9 @@ class VisualContentLayoutSwapper {
           $c = substr($c, 1, -1);
         }
       }
-      // Decide this is a Shortcode tag or not.
+      // Decide this is a swap tag or not.
       if (!$escaped && ($c[0] == '[') && (substr($c, -1, 1) == ']')) {
-        // The $c maybe contains Shortcode macro.
+        // The $c maybe contains swap macro.
 
         // This is maybe a self-closing tag.
         // Removes outer [].
@@ -57,7 +57,7 @@ class VisualContentLayoutSwapper {
         $tag = trim($tag, '/');
 
 
-        $x = self::swap_is_tag($tag,$swaps);
+        $x = self::swapIsTag($tag,$swaps);
         if (!$x) {
           // The current tag is not enabled.
           array_unshift($heap_index, '_string_');
@@ -69,9 +69,9 @@ class VisualContentLayoutSwapper {
            * The exploded array elements meaning:
            * 0 - the full tag text?
            * 1/5 - An extra [] to allow for escaping Shortcodes with double [[]].
-           * 2 - The Shortcode name.
-           * 3 - The Shortcode argument list.
-           * 4 - The content of a Shortcode when it wraps some content.
+           * 2 - The Swap name.
+           * 3 - The Swap argument list.
+           * 4 - The content of a Swap when it wraps some content.
            */
 
           $m = array(
@@ -83,7 +83,7 @@ class VisualContentLayoutSwapper {
             '',
           );
           array_unshift($heap_index, '_string_');
-          array_unshift($heap, self::process_tag($m,$swaps));
+          array_unshift($heap, self::processTag($m,$swaps));
         }
         elseif ($c[0] == '/') {
           // Indicate a closing tag, so we process the heap.
@@ -108,7 +108,7 @@ class VisualContentLayoutSwapper {
                 implode('', $process_heap),
                 '',
               );
-              $str = self::process_tag($m,$swaps);
+              $str = self::processTag($m,$swaps);
               array_unshift($heap_index, '_string_');
               array_unshift($heap, $str);
               $found = TRUE;
@@ -134,7 +134,7 @@ class VisualContentLayoutSwapper {
           array_unshift($heap_index, $tag);
           array_unshift($heap, implode(' ', $ts));
         }
-        // If escaped or not a Shortcode.
+        // If escaped or not a Swap.
       }
       else {
         // Maybe not found a pair?
@@ -150,7 +150,7 @@ class VisualContentLayoutSwapper {
   /**
    * Validate the tag.
    */
-  public static function swap_is_tag($tag, $swaps) {
+  public static function swapIsTag($tag, $swaps) {
     if (isset($swaps[$tag])) {
       return TRUE;
     }
@@ -163,27 +163,26 @@ class VisualContentLayoutSwapper {
   /**
    * Process attributes and call the plugin callback function
    */
-  public static function process_tag($m, $swaps) {
+  public static function processTag($m, $swaps) {
 
     $tag = $m[2];
 
     if (!empty($swaps[$tag])) {
       // Process if tag exists (enabled).
-      $attr = self::parse_attrs($m[3]);
+      $attr = self::parseAttrs($m[3]);
       /*
       * 0 - the full tag text?
       * 1/5 - An extra [ or ] to allow for escaping shortcodes with double [[]]
-      * 2 - The Shortcode name
-      * 3 - The Shortcode argument list
-      * 4 - The content of a Shortcode when it wraps some content.
+      * 2 - The Swap name
+      * 3 - The Swap argument list
+      * 4 - The content of a Swap when it wraps some content.
       * */
 
       $swap = \Drupal::service('plugin.manager.visual_content_layout')->createInstance($tag);
 
       if (!is_null($m[4])) {
         // This is an enclosing tag, means extra parameter is present.
-        $attr['content'] = $m[4];
-          return $m[1] . $swap->processCallback($attr) . $m[5];
+          return $m[1] . $swap->processCallback($attr,$m[4]) . $m[5];
       }
       else {
         // This is a self-closing tag.
@@ -198,9 +197,9 @@ class VisualContentLayoutSwapper {
 
 
   /**
-   * Extract attributes fron the tag text
+   * Extract attributes from the tag text
    */
-  public static function parse_attrs($text) {
+  public static function parseAttrs($text) {
     $attrs = array();
     $pattern = '/(\w+)\s*=\s*"([^"]*)"(?:\s|$)|(\w+)\s*=\s*\'([^\']*)\'(?:\s|$)|(\w+)\s*=\s*([^\s\'"]+)(?:\s|$)|"([^"]*)"(?:\s|$)|(\S+)(?:\s|$)/';
     $text = preg_replace("/[\x{00a0}\x{200b}]+/u", " ", $text);

@@ -11,6 +11,7 @@ namespace Drupal\visual_content_layout\Plugin\Filter;
 
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
 
 
 /**
@@ -33,7 +34,7 @@ class FilterVisualContentLayout extends FilterBase{
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-      return new FilterProcessResult(_visual_content_layout($text, $this));
+      return new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));
   }
 
   /**
@@ -45,4 +46,3 @@ class FilterVisualContentLayout extends FilterBase{
   }
 
 }
-

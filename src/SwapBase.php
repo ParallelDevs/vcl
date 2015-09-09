@@ -10,6 +10,12 @@ use Drupal\Component\Plugin\PluginBase;
 
 class SwapBase extends PluginBase implements SwapInterface {
 
+  /**
+   * Get the annotations values defined in the plugin .
+   *
+   * @return array
+   *  array of de main values in the annotations.
+   */
   public function info() {
     return array(
       'id' => $this->pluginDefinition['id'],
@@ -18,25 +24,39 @@ class SwapBase extends PluginBase implements SwapInterface {
     );
   }
 
-  /*
-  * Provides process callback for button swap.
-  */
-  public function processCallback($attrs){
+  /**
+   * Provide a processCallback method for the swap.
+   * call theme method for create the code if it needed.
+   *
+   * @param $attrs
+   *  array with all the attributes of the swap
+   *
+   * @return string
+   *  string with all the code of the swap.
+   */
+  public function processCallback($attrs, $text){
     $text = "Create your own processCallback function.";
     return $text;
   }
 
-  /*
-  * Place the attributes in the html code for swap.
-  */
-  public function theme($attrs){
+  /**
+   * Provide a theme method for the swap.
+   * Place the attributes in the code structure.
+   *
+   * @param $attrs
+   *  array with all the attributes of the swap
+   *
+   * @return string
+   *  string with all the code of the swap.
+   */
+  public function theme($attrs, $text){
     $text = "Create your own theme function.";
     return $text;
   }
 
 
   /**
-   * Combines user attributes with known attributes.
+   * Combines user attributes with default attributes.
    *
    * The pairs should be considered to be all of the attributes which are
    * supported by the caller and given as a list. The returned attributes will
@@ -54,7 +74,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return array
    *   Combined and filtered attribute list.
    */
-  function set_attrs($pairs, $attrs) {
+  function setAttrs($pairs, $attrs) {
     $attrs = (array) $attrs;
     $out = array();
     foreach ($pairs as $name => $default) {
@@ -80,7 +100,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return string
    *   The proper classes string.
    */
-  function add_class($class = '', $default = '') {
+  function addClass($class = '', $default = '') {
     if ($class) {
       if (!is_array($class)) {
         $class = explode(' ', $class);

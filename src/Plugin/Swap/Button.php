@@ -8,6 +8,7 @@
 namespace Drupal\visual_content_layout\Plugin\Swap;
 
 use Drupal\visual_content_layout\SwapBase;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 
 /**
  * Provides a 'Button' swap.
@@ -20,27 +21,27 @@ use Drupal\visual_content_layout\SwapBase;
  */
 class Button extends SwapBase {
 
-  function processCallback($attrs) {
-    $attrs = $this->set_attrs(array(
+  function processCallback($attrs, $text) {
+    $attrs = $this->setAttrs(array(
       'title' => 'title default',
       'class' => 'button',
       'url' => '',
       'path' => '<front>',
-      'content' => 'button',
+      'text' => '',
     ),
       $attrs
     );
 
-    $attrs['class'] = $this->add_class($attrs['class'], 'button');
+    $attrs['class'] = $this->addClass($attrs['class'], 'button');
+    $attrs['text'] = $text;
     if ($attrs['url']) {
       $attrs['path'] = $attrs['url'];
     }
-    $attrs['path'] = '';
     return $this->theme($attrs);
   }
 
-  public function theme($attrs) {
-    return '<a href="' . $attrs['path'] . '" class="' . $attrs['class'] . '"><span>' . $attrs['content'] . '</span></a>';
+  public function theme($attrs, $text) {
+    return '<a href="' . $attrs['path'] . '" class="' . $attrs['class'] . '"><span>' . $attrs['text'] . '</span></a>';
   }
 
 }
