@@ -31,12 +31,8 @@ class Column extends SwapBase {
       $attrs
     );
 
-    if ($this->validateSize($attrs['size']) && $this->validateNumber($attrs['number'])) {
-      $bootstrap_class = "col-" . $attrs['size'] . "-" . $attrs['number'];
-      $attrs['class'] = $this->addClass($attrs['class'], $bootstrap_class);
-    }else{
-      $attrs['class'] = "col-md-4";
-    }
+    $attrs['class'] = "col-" . $this->validateSize($attrs['size']) . "-"
+                             . $this->validateNumber($attrs['number']);
 
     return $this->theme($attrs,$text);
   }
@@ -44,23 +40,23 @@ class Column extends SwapBase {
   public function validateSize($size){
     switch ($size) {
       case 'xs':
-        return TRUE;
+        return $size;
       case 'sm':
-        return TRUE;
+        return $size;
       case 'md':
-        return TRUE;
+        return $size;
       case 'lg':
-        return TRUE;
+        return $size;
       default:
-        return FALSE;
+        return 'md';
     }
   }
 
   public function validateNumber($number){
     if(intval($number)>0 && intval($number)<13){
-      return TRUE;
+      return $number;
     }else{
-      return FALSE;
+      return 4;
     }
   }
 

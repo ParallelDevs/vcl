@@ -10,7 +10,7 @@ namespace Drupal\visual_content_layout\Plugin\Swap;
 use Drupal\visual_content_layout\SwapBase;
 
 /**
- * Provides a 'Row' swap.
+ * Provides a 'Youtube' swap.
  *
  * @Swap(
  *   id = "youtube",

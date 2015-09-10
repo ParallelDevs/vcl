@@ -10,7 +10,7 @@ namespace Drupal\visual_content_layout\Plugin\Swap;
 use Drupal\visual_content_layout\SwapBase;
 
 /**
- * Provides a 'Column' swap.
+ * Provides a 'Div' swap.
  *
  * @Swap(
  *   id = "div",
@@ -29,7 +29,20 @@ class Div extends SwapBase {
       $attrs
     );
 
+    $attrs['class'] = $this->validateClass($attrs['class']);
+
     return $this->theme($attrs,$text);
+  }
+
+  public function validateClass($class){
+    switch ($class) {
+      case 'row':
+        return $class;
+      case 'container':
+        return $class;
+      default:
+        return 'default';
+    }
   }
 
   public function theme($attrs, $text) {
