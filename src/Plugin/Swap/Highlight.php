@@ -20,7 +20,7 @@ use Drupal\visual_content_layout\SwapBase;
  * )
  */
 
-class Image extends SwapBase {
+class Highlight extends SwapBase {
 
   function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
