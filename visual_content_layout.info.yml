@@ -2,5 +2,4 @@ name: Visual Content Layout
 type: module
 description: Module that help with shortcodes.
 core: 8.x
-package: visual content layout
-
+package: visual_content_layout

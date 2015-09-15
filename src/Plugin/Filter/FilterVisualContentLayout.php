@@ -11,10 +11,11 @@ namespace Drupal\visual_content_layout\Plugin\Filter;
 
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
 
 
 /**
- * Provides a filter to use shortdoces.
+ * Provides a filter to use swaps as a shortcodes for replace with code.
  *.
  *
  * @Filter(
@@ -30,8 +31,7 @@ class FilterVisualContentLayout extends FilterBase{
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-
-    return $text;
+      return new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));
   }
 
   /**
@@ -39,8 +39,19 @@ class FilterVisualContentLayout extends FilterBase{
    */
   public function tips($long = FALSE) {
 
+    $manager = \Drupal::service('plugin.manager.visual_content_layout');
+    $swaps = $manager->getDefinitions();
+    $tips = "Swaps examples:";
 
+    foreach($swaps as $swap){
+      if(!$swap['tip'] == "") {
+        $tips = $tips . "<li><b><u>" . $swap['id'] . "</u> = </b> " . $swap['tip'] . "</li>";
+      }
+    }
+    $tips = $tips . "</ol>";
+    $tips = str_replace("'","\"",$tips);
+
+    return $tips;
   }
 
 }
-

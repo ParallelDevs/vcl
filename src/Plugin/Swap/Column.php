@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Contains \Drupal\visual_content_layout\Plugin\Swap\.
+ */
+
+namespace Drupal\visual_content_layout\Plugin\Swap;
+
+use Drupal\visual_content_layout\SwapBase;
+
+/**
+ * Provides a 'Column' swap.
+ *
+ * @Swap(
+ *   id = "column",
+ *   name = @Translation("Column"),
+ *   description = @Translation("Add div with the class column."),
+ *   tip = "[column size='xs | sm | md | lg' number='[1-12]' class='extra class'] Content [/column]"
+ * )
+ */
+
+class Column extends SwapBase {
+
+  function processCallback($attrs, $text) {
+    $attrs = $this->setAttrs(array(
+      'size' => 'md',
+      'number' => '4',
+      'class' => '',
+    ),
+      $attrs
+    );
+
+    $attrs['class'] = "col-" . $this->validateSize($attrs['size']) . "-"
+                             . $this->validateNumber($attrs['number']);
+
+    return $this->theme($attrs,$text);
+  }
+
+  public function validateSize($size){
+    switch ($size) {
+      case 'xs':
+        return $size;
+      case 'sm':
+        return $size;
+      case 'md':
+        return $size;
+      case 'lg':
+        return $size;
+      default:
+        return 'md';
+    }
+  }
+
+  public function validateNumber($number){
+    if(intval($number)>0 && intval($number)<13){
+      return $number;
+    }else{
+      return 4;
+    }
+  }
+
+  public function theme($attrs, $text) {
+    return '<div class="' . $attrs['class'] . '">' . $text . '</div>';
+  }
+
+}
