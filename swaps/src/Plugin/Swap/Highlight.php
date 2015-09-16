@@ -5,9 +5,9 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Highlight' swap.

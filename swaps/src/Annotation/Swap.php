@@ -4,16 +4,16 @@
  * Contains \Drupal\visual_content_layout\Annotation\Swap.
  */
 
-namespace Drupal\visual_content_layout\Annotation;
+namespace Drupal\swaps\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
 
 /**
  * Defines a swap item annotation object.
  *
- * Plugin Namespace: Plugin\visual_content_layout\Swap
+ * Plugin Namespace: Plugin\swaps\Swap
  *
- * @see \Drupal\visual_content_layout\VisualContentLayoutManager
+ * @see \Drupal\swaps\SwapManager
  * @see plugin_api
  *
  * @Annotation

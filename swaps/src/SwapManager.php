@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * Contains VisualContentLayoutManager.
+ * Contains SwapManager.
  */
 
-namespace Drupal\visual_content_layout;
+namespace Drupal\swaps;
 
 
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -12,11 +12,11 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
- * VisualContentLayoutManager plugin manager.
+ *  SwapManager plugin manager.
  */
-class VisualContentLayoutManager extends DefaultPluginManager {
+class SwapManager extends DefaultPluginManager {
   /**
-   * Constructs an VisualContentLayoutManager object.
+   * Constructs an SwapManager object.
    *
    * @param \Traversable $namespaces
    *   An object that implements \Traversable which contains the root paths
@@ -28,9 +28,9 @@ class VisualContentLayoutManager extends DefaultPluginManager {
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
 
-    parent::__construct('Plugin/Swap', $namespaces, $module_handler, 'Drupal\visual_content_layout\SwapInterface', 'Drupal\visual_content_layout\Annotation\Swap');
-    $this->alterInfo('visual_content_layout_swaps_info');
-    $this->setCacheBackend($cache_backend, 'visual_content_layout_swaps');
+    parent::__construct('Plugin/Swap', $namespaces, $module_handler, 'Drupal\swaps\SwapInterface', 'Drupal\swaps\Annotation\Swap');
+    $this->alterInfo('swaps_info');
+    $this->setCacheBackend($cache_backend, 'swaps');
 
   }
 }

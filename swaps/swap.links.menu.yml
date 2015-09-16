@@ -1,0 +1,10 @@
+swap.admin:
+  title: Swaps
+  description: 'Enable or disable swaps bootstrap and fontAwesome.'
+  route_name: swaps.swap_settings_form
+  parent: system.admin_config_ui
+swap.admin_config_swap:
+  title: 'Swaps'
+  route_name: system.admin_config_ui
+  parent: system.admin_config
+  description: 'sdfsdfsdfsd.'

@@ -3,3 +3,7 @@ type: module
 description: Module that help with shortcodes.
 core: 8.x
 package: visual_content_layout
+libraries:
+  - visual_content_layout/visualcontentlayout.js
+dependencies:
+  - swaps

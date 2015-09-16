@@ -1,0 +1,7 @@
+bootstrap:
+  version: 1.x
+  js:
+    js/bootstrap.min.js: {}
+  css:
+    theme:
+        css/bootstrap.min.css: {}

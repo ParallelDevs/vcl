@@ -1,0 +1,16 @@
+<?php
+
+function visual_content_layout_page_attachments_alter(array &$page) {
+
+  $enable_bootstrap = \Drupal::config('swaps.swapsettings_config')->get('enable_bootstrap');
+  $enable_fontawesome = \Drupal::config('swaps.swapsettings_config')->get('enable_fontawesome');
+
+  if (!\Drupal::currentUser()->hasPermission('access contextual links')) {
+    return;
+  }
+
+  if($enable_bootstrap == '1'){
+    $page['#attached']['library'][] = 'visual_content_layout/bootstrap';
+  }
+
+}

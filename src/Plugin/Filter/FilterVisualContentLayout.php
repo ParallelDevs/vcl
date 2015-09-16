@@ -12,6 +12,7 @@ namespace Drupal\visual_content_layout\Plugin\Filter;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
+use Drupal\Core\Form\FormStateInterface;
 
 
 /**
@@ -22,7 +23,11 @@ use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
  *   id = "filter_visualcontentlayout",
  *   title = @Translation("Visual Content Layout"),
  *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
+ *   settings = {
+ *     "bootstrap" = TRUE,
+ *     "fontAwesome" = TRUE
+ *   }
  * )
  */
 class FilterVisualContentLayout extends FilterBase{
@@ -30,8 +35,32 @@ class FilterVisualContentLayout extends FilterBase{
   /**
    * {@inheritdoc}
    */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+
+    $form['bootstrap'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable bootstrap'),
+      '#default_value' => $this->settings['bootstrap'],
+    );
+    $form['fontAwesome'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable fontAwesome'),
+      '#default_value' => $this->settings['fontAwesome'],
+    );
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function process($text, $langcode) {
-      return new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));
+
+    drupal_set_message("true","enable_bootstrap");
+
+    $result = new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));
+
+    return $result;
+
   }
 
   /**
@@ -39,7 +68,7 @@ class FilterVisualContentLayout extends FilterBase{
    */
   public function tips($long = FALSE) {
 
-    $manager = \Drupal::service('plugin.manager.visual_content_layout');
+    $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
     $tips = "Swaps examples:";
 
