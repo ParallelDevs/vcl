@@ -14,7 +14,7 @@ use Drupal\swaps\SwapBase;
  *
  * @Swap(
  *   id = "div",
- *   name = @Translation("Div"),
+ *   name = "Div",
  *   description = @Translation("Add div which you can add a bootstrap class."),
  *   tip = "[div class='row | container'] Content [/div]"
  * )

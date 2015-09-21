@@ -14,7 +14,7 @@ use Drupal\swaps\SwapBase;
  *
  * @Swap(
  *   id = "youtube",
- *   name = @Translation("Youtube"),
+ *   name = "Youtube",
  *   description = @Translation("Add div with the class Youtube."),
  *   tip = "[youtube width='width' height='height' url='url' /] -> case the blank space before the '/' "
  * )

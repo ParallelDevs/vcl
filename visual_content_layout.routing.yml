@@ -1,0 +1,8 @@
+
+visual_content_layout.swap_select_form:
+  path: '/visual_content_layout/swap_select_form'
+  defaults:
+    _controller: '\Drupal\visual_content_layout\Controller\VisualContentLayoutController::displayModalForm'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'

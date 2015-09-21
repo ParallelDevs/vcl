@@ -14,7 +14,7 @@ use Drupal\swaps\SwapBase;
  *
  * @Swap(
  *   id = "list",
- *   name = @Translation("List"),
+ *   name = "List",
  *   description = @Translation("Add an ordered or disordered list."),
  *   tip = "</br>[list type='ol | ul' class='class']
                       </br>&emsp;[li class='class'] one [/li]

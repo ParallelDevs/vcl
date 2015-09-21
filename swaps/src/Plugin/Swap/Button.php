@@ -15,8 +15,9 @@ use Drupal\Core\Routing\UrlGeneratorInterface;
  *
  * @Swap(
  *   id = "button",
- *   name = @Translation("Button"),
+ *   name = "Button",
  *   description = @Translation("Insert a link formatted as a button."),
+ *   attributes = "url:text",
  *   tip = "[button url='url' class='class'] Button [/button]"
  * )
  */

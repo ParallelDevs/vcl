@@ -14,8 +14,9 @@ use Drupal\swaps\SwapBase;
  *
  * @Swap(
  *   id = "img",
- *   name = @Translation("Image"),
+ *   name = "Image",
  *   description = @Translation("Add an image."),
+ *   attributes = "url:text, height:text, width:text",
  *   tip = "[img url='url' WIDTH='width' HEIGHT='height' /] -> width and height optional. "
  * )
  */
