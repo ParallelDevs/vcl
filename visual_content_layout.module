@@ -14,3 +14,64 @@ function visual_content_layout_page_attachments_alter(array &$page) {
   }
 
 }
+
+/**
+ * Implementation of hook_element_info_alter().
+ */
+function visual_content_layout_element_info_alter(&$types) {
+
+  $types['text_format']['#pre_render'][] = 'visual_content_layout_pre_render_text_format';
+
+  $x = $types;
+}
+
+function visual_content_layout_pre_render_text_format($element) {
+  if (!isset($element['#format'])) {
+    return $element;
+  }
+
+  if (isset($element['value'])) {
+    if (!isset($element['format'])) {
+      return $element;
+    }
+    if (isset($element['summary']) && $element['summary']['#type'] == 'textarea') {
+      $element['value'] = visual_content_layout_load_field($element['value'], $element['format']['format']);
+      $element['summary'] = visual_content_layout_load_field($element['summary'], $element['format']['format']);
+    }
+  }
+
+  return $element;
+}
+
+function visual_content_layout_load_field($field, $format) {
+
+  $textarea_id = $field['#id'];
+
+  if (is_array($format)) {
+    $format_arr = $format;
+    $format = isset($format_arr['#value']) ? $format_arr['#value'] : $format_arr['#default_value'];
+  }
+
+  $prefix = '<div class = "visual-content-layout-button-wrap"><a class="visual-content-layout-btn" href="#" data-state="Disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
+  $prefix .= t('Loading...');
+  $prefix .= '</a><i class="fa fa-spinner fa-spin"></i></div>';
+
+  $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
+  $field['#attached']['library'][] = 'visual_content_layout/visual_content_layout';
+
+  $formats = filter_formats();
+  $enableFormats = array();
+
+  foreach($formats as $format) {
+    $formatArray = $format->toArray();
+    if($formatArray['filters']['filter_visualcontentlayout']){
+      $enableFormats[$formatArray['format']] =  TRUE;
+    }
+  }
+
+  $field['#attached']['drupalSettings'] = array(
+    'enable_formats' => $enableFormats,
+  );
+
+  return $field;
+}

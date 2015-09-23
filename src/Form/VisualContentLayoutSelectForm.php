@@ -8,14 +8,13 @@ namespace Drupal\visual_content_layout\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 
 /**
  * Contribute form.
  */
-class VisualContentLayoutForm extends FormBase {
+class VisualContentLayoutSelectForm extends FormBase {
   /**
    * {@inheritdoc}
    */

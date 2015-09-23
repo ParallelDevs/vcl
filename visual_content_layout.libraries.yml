@@ -5,3 +5,8 @@ bootstrap:
   css:
     theme:
         css/bootstrap.min.css: {}
+
+visual_content_layout:
+  version: 1.x
+  js:
+    js/visual_content_layout.js: {}

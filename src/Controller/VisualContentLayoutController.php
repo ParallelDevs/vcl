@@ -25,7 +25,7 @@ class VisualContentLayoutController extends ControllerBase {
     $response = new AjaxResponse();
     $title = $this->t('Choose one swap');
 
-    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
     $response->addCommand(new OpenModalDialogCommand($title, $form));

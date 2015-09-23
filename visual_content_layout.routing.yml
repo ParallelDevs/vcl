@@ -6,3 +6,4 @@ visual_content_layout.swap_select_form:
     _title: 'mymodule Title'
   requirements:
     _permission: 'access content'
+
