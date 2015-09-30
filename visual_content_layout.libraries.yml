@@ -10,3 +10,6 @@ visual_content_layout:
   version: 1.x
   js:
     js/visual_content_layout.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

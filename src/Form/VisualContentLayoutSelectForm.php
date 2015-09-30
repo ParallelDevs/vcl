@@ -1,18 +1,17 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutForm.
+ * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm.
  */
 
 namespace Drupal\visual_content_layout\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
-use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Url;
 
 /**
- * Contribute form.
+ *  Form for select one swap for the visual help of the module.
  */
 class VisualContentLayoutSelectForm extends FormBase {
   /**
@@ -26,21 +25,27 @@ class VisualContentLayoutSelectForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
+    //get all the swaps definitions
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
-
+    //create a markup for each swap that display the form for the attributes
     foreach($swaps as $swap){
       $name = $swap['name'];
-      $form[$name] = array(
-        '#type' => 'submit',
-        '#value' => t($name),
-        '#ajax' => array(
-          'callback' => '::ajaxSubmit',
+      //attributes for the url to the swap form
+      $attributes = array(
+        'attributes' => array(
+          'class' => array('use-ajax'),
         ),
       );
+      $url = Url::fromRoute('visual_content_layout.swap_attributes_form',
+                            array('swap'=>$name), $attributes);
+      $internal_link = \Drupal::l(t($name), $url);
+      //form element of the swap
+      $form[$name] = array(
+        '#type' => 'markup',
+        '#markup' => $internal_link,
+      );
     }
-
     return $form;
   }
 
@@ -57,19 +62,4 @@ class VisualContentLayoutSelectForm extends FormBase {
 
   }
 
-  public function ajaxSubmit(array &$form, FormStateInterface $form_state){
-
-    $triggeringElement = $form_state->getTriggeringElement();
-    $name = $triggeringElement['#value'];
-
-    $response = new AjaxResponse();
-    $title = $this->t($name . 'Attributes');
-
-    $form = \Drupal::formBuilder()->getForm('Drupal\swaps\Form\SwapAttributesForm', $name);
-    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-
-    $response->addCommand(new OpenModalDialogCommand($title, $form));
-    return $response;
-
-  }
 }

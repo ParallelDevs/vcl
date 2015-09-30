@@ -9,7 +9,7 @@ namespace Drupal\swaps\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 
 /**
@@ -32,19 +32,22 @@ class SwapAttributesForm extends FormBase {
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
 
-    //search the swap that hace the name of the variable $name
+    //search the swap that have the name of the variable $name
     foreach($swaps as $swap){
       if($swap['name'] == $name){
         break;
       }
     }
 
+    //store the name of the swap
+    $form['swap'] = array('#type' => 'hidden', '#value' => $name);
+
     //get the attributes annotation and split by the ","
     $attributes = $swap['attributes'];
     $attributesList = explode(',', $attributes);
 
     //process all the attributes of the swap
-      foreach($attributesList as $attr){
+    foreach($attributesList as $attr){
 
       //get the name and type of the current attribute
       list($name, $type) = explode(':', $attr);
@@ -76,9 +79,13 @@ class SwapAttributesForm extends FormBase {
           //separate the name from the options
           $name = substr($name, 0, -1);
           list($name, $options) = explode('[', $name);
-          //validate the separate symbol
+          //validate the separate symbol for int select o string select
           if(strpos($options, "-") === FALSE){
-            $options = explode('|', $options);
+            $elements = explode('|', $options);
+            $options = array();
+            foreach($elements as $element){
+              $options[$element] = $element;
+            }
           }else{
             //get the first and the last number of the sequence
             list($first, $last) = explode('-', $options);
@@ -116,7 +123,7 @@ class SwapAttributesForm extends FormBase {
 
     $form["accept"] = array(
       '#type' => 'submit',
-      '#value' => t('accept'),
+      '#value' => t('Accept'),
       '#ajax' => array(
         'callback' => '::ajaxSubmit',
       ),
@@ -129,19 +136,72 @@ class SwapAttributesForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Display result.
-    foreach ($form_state->getValues() as $key => $value) {
-      drupal_set_message($key . ': ' . $value);
-    }
+
+
   }
 
   public function ajaxSubmit(array &$form, FormStateInterface $form_state){
+
+    //---------------------------------------------------------------
+    //            get the own attributes values of the swap
+    //---------------------------------------------------------------
+
+    //get all the swaps plugins
+    $manager = \Drupal::service('plugin.manager.swaps');
+    $swaps = $manager->getDefinitions();
+
+    $input = $form_state->getUserInput();
+    $settings = array();
+
+    //search the swap that have the name of the variable $name
+    foreach($swaps as $swap){
+      if($swap['name'] == $input['swap']){
+        break;
+      }
+    }
+
+    //get the attributes annotation and split by the ","
+    $attributes = $swap['attributes'];
+    $attributesList = explode(',', $attributes);
+
+    //process all the attributes of the swap
+    foreach($attributesList as $attr) {
+
+      //get the name of the current attribute
+      list($name, $type) = explode(':', $attr);
+      list($name, $options) = explode('[', $name);
+      $name = trim($name);
+
+      $settings[$name] = $input[$name];
+
+    }
+
+    //---------------------------------------------------------------
+    //            get the default attributes values of the swap
+    //---------------------------------------------------------------
+
+    $settings['swapName'] = $input['swap'];
+    $settings['swapId'] = $swap['id'];
+
+    //---------------------------------------------------------------
+    //            create the ajax response
+    //---------------------------------------------------------------
+
+    $visualSettings = array('visualContentLayout' => array(
+                                'attributes' => $settings));
+    $response = new AjaxResponse();
+    $response->addCommand(new CloseModalDialogCommand($form));
+    $response->addCommand(new SettingsCommand($visualSettings,FALSE));
+
+    return $response;
 
 
   }

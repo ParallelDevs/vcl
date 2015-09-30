@@ -35,8 +35,10 @@ function visual_content_layout_pre_render_text_format($element) {
       return $element;
     }
     if (isset($element['summary']) && $element['summary']['#type'] == 'textarea') {
-      $element['value'] = visual_content_layout_load_field($element['value'], $element['format']['format']);
       $element['summary'] = visual_content_layout_load_field($element['summary'], $element['format']['format']);
+    }
+    if (isset($element['value']) && $element['value']['#type'] == 'textarea') {
+      $element['value'] = visual_content_layout_load_field($element['value'], $element['format']['format']);
     }
   }
 
@@ -52,11 +54,24 @@ function visual_content_layout_load_field($field, $format) {
     $format = isset($format_arr['#value']) ? $format_arr['#value'] : $format_arr['#default_value'];
   }
 
-  $prefix = '<div class = "visual-content-layout-button-wrap"><a class="visual-content-layout-btn" href="#" data-state="Disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
+  $prefix = '<div class="visual-content-layout-button-wrap"><a class="visual-content-layout-btn" data-state="disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
   $prefix .= t('Loading...');
   $prefix .= '</a><i class="fa fa-spinner fa-spin"></i></div>';
 
+  $attributes = array(
+    'attributes' => array(
+      'class' => array('use-ajax', 'visual-content-layout-form-button'),
+      'data-textarea' => array($textarea_id),
+    ),
+  );
+  // Let's create the link.
+  $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_select_form', [], $attributes);
+  $internal_link = \Drupal::l(t('+'), $url);
+
+  $suffix = '<div class="visual-content-layout-visual-help">'.$internal_link.'</div>';
+
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
+  $field['#suffix'] = $suffix . (isset($field['#suffix']) ? $field['#suffix'] : '') ;
   $field['#attached']['library'][] = 'visual_content_layout/visual_content_layout';
 
   $formats = filter_formats();
@@ -64,12 +79,12 @@ function visual_content_layout_load_field($field, $format) {
 
   foreach($formats as $format) {
     $formatArray = $format->toArray();
-    if($formatArray['filters']['filter_visualcontentlayout']){
+    if($formatArray['filters']['filter_visualcontentlayout']['status']){
       $enableFormats[$formatArray['format']] =  TRUE;
     }
   }
 
-  $field['#attached']['drupalSettings'] = array(
+  $field['#attached']['drupalSettings']['visualContentLayout'] = array(
     'enable_formats' => $enableFormats,
   );
 
