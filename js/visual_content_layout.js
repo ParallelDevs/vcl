@@ -10,7 +10,7 @@
     $('.visual-content-layout-btn').text('Enable Visual Content Layout');
 
     /**
-     * Manage the display for the visual help.
+     * Manage the display of the visual help.
      *
      * Methods that are responsible for show and hide the visual help according on the textFormat
      *
@@ -123,7 +123,7 @@
      *
      * @type {Drupal~behavior}
      */
-    Drupal.behaviors.visualContentLayoutElements = {
+    Drupal.behaviors.visualContentLayoutForm = {
         attach: function (context, settings) {
 
             var attributes = settings.visualContentLayout.attributes;
@@ -174,6 +174,47 @@
                 var textArea = $('#visual-content-layout-actual-textarea').val();
                 $('#' + textArea).val($('#' + textArea).val() + swapText);
                 $('#visual-content-layout-actual-textarea').remove();
+            }
+        }
+    }
+
+    /**
+     * Manage the visual elements.
+     *
+     * Methods that are responsible for transform text in visual element and visual element in text
+     *
+     * @type {Drupal~behavior}
+     */
+    Drupal.behaviors.visualContentLayoutElements = {
+        attach: function (context, settings) {
+
+            //--------------------------------------------------------------------------------
+            //                  event click enable/disable visual help button
+            //--------------------------------------------------------------------------------
+            $('.visual-content-layout-btn', context).click(function() {
+                //get id of the respective textArea
+                var textArea = $(this).data('id');
+                //validate if the visual help is enable
+                if($(this).data('state')=='enable'){
+                    var swaps = settings.visualContentLayout.enable_swaps;
+                    getVisualElements(this, textArea, swaps);
+                }else{
+
+                }
+            });
+
+            //--------------------------------------------------------------------------------
+            //                  transform text in visual elements
+            //--------------------------------------------------------------------------------
+            function getVisualElements(button, textArea, swaps){
+
+                var text = $('#'+textArea).val(),
+                    algo = text.split('[');
+
+                for(part in algo){
+                     var as = algo;
+                    var a = 8;
+                }
             }
         }
     }

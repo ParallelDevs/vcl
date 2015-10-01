@@ -215,7 +215,7 @@ class VisualContentLayoutSwapper {
         elseif (!empty($m[5])) {
           $attrs[strtolower($m[5])] = stripcslashes($m[6]);
         }
-        elseif (isset($m[7]) and strlen($m[7])) {
+        elseif (isset($m[7]) && strlen($m[7])) {
           $attrs[] = stripcslashes($m[7]);
         }
         elseif (isset($m[8])) {

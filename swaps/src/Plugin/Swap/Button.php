@@ -8,7 +8,6 @@
 namespace Drupal\swaps\Plugin\Swap;
 
 use Drupal\swaps\SwapBase;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 
 /**
  * Provides a 'Button' swap.
