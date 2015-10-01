@@ -1,4 +1,4 @@
-# visual-content-layout
+# Visual Content Layout
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/caba99f3-16eb-4bee-8f2a-349a33a61afe/big.png)](https://insight.sensiolabs.com/projects/caba99f3-16eb-4bee-8f2a-349a33a61afe)
 Description
 -----------
