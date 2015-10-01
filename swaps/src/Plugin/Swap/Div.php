@@ -5,16 +5,16 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Div' swap.
  *
  * @Swap(
  *   id = "div",
- *   name = @Translation("Div"),
+ *   name = "Div",
  *   description = @Translation("Add div which you can add a bootstrap class."),
  *   tip = "[div class='row | container'] Content [/div]"
  * )

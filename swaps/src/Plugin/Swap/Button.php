@@ -5,18 +5,18 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
-use Drupal\Core\Routing\UrlGeneratorInterface;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Button' swap.
  *
  * @Swap(
  *   id = "button",
- *   name = @Translation("Button"),
+ *   name = "Button",
  *   description = @Translation("Insert a link formatted as a button."),
+ *   attributes = "url:text",
  *   tip = "[button url='url' class='class'] Button [/button]"
  * )
  */

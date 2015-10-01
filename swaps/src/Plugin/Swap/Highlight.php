@@ -5,16 +5,16 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Highlight' swap.
  *
  * @Swap(
  *   id = "hgl",
- *   name = @Translation("Highlight"),
+ *   name = "Highlight",
  *   description = @Translation("Add a span with the class Highlight for put the style"),
  *   tip = "[hgl] content [/hgl] -> is the Highlight "
  * )

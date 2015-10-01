@@ -5,16 +5,16 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'HTML List' swap.
  *
  * @Swap(
  *   id = "list",
- *   name = @Translation("List"),
+ *   name = "List",
  *   description = @Translation("Add an ordered or disordered list."),
  *   tip = "</br>[list type='ol | ul' class='class']
                       </br>&emsp;[li class='class'] one [/li]

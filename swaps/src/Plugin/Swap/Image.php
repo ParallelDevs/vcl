@@ -5,17 +5,18 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Image' swap.
  *
  * @Swap(
  *   id = "img",
- *   name = @Translation("Image"),
+ *   name = "Image",
  *   description = @Translation("Add an image."),
+ *   attributes = "url:text, height:text, width:text",
  *   tip = "[img url='url' WIDTH='width' HEIGHT='height' /] -> width and height optional. "
  * )
  */

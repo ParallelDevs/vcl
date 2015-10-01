@@ -5,17 +5,18 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Column' swap.
  *
  * @Swap(
  *   id = "column",
- *   name = @Translation("Column"),
+ *   name = "Column",
  *   description = @Translation("Add div with the class column."),
+ *   attributes = "size[ xs | sm | md | lg ]:select, number[12-1]:select",
  *   tip = "[column size='xs | sm | md | lg' number='[1-12]' class='extra class'] Content [/column]"
  * )
  */

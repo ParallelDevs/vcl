@@ -5,16 +5,16 @@
  * Contains \Drupal\visual_content_layout\Plugin\Swap\.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Swap;
+namespace Drupal\swaps\Plugin\Swap;
 
-use Drupal\visual_content_layout\SwapBase;
+use Drupal\swaps\SwapBase;
 
 /**
  * Provides a 'Youtube' swap.
  *
  * @Swap(
  *   id = "youtube",
- *   name = @Translation("Youtube"),
+ *   name = "Youtube",
  *   description = @Translation("Add div with the class Youtube."),
  *   tip = "[youtube width='width' height='height' url='url' /] -> case the blank space before the '/' "
  * )

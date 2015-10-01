@@ -1,0 +1,5 @@
+name: Swaps
+type: module
+description: Provide tags for a filter to replace with html code.
+core: 8.x
+package: swaps

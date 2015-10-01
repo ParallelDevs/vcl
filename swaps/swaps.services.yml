@@ -1,0 +1,4 @@
+services:
+  plugin.manager.swaps:
+    class: Drupal\swaps\SwapManager
+    parent: default_plugin_manager

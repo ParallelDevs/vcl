@@ -14,7 +14,7 @@ class VisualContentLayoutSwapper {
   public static function swapProcess($text){
 
     //get all the swaps plugins
-    $manager = \Drupal::service('plugin.manager.visual_content_layout');
+    $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
 
     if (empty($swaps)) {
@@ -178,7 +178,7 @@ class VisualContentLayoutSwapper {
       * 4 - The content of a Swap when it wraps some content.
       * */
 
-      $swap = \Drupal::service('plugin.manager.visual_content_layout')->createInstance($tag);
+      $swap = \Drupal::service('plugin.manager.swaps')->createInstance($tag);
 
       if (!is_null($m[4])) {
         // This is an enclosing tag, means extra parameter is present.
@@ -215,7 +215,7 @@ class VisualContentLayoutSwapper {
         elseif (!empty($m[5])) {
           $attrs[strtolower($m[5])] = stripcslashes($m[6]);
         }
-        elseif (isset($m[7]) and strlen($m[7])) {
+        elseif (isset($m[7]) && strlen($m[7])) {
           $attrs[] = stripcslashes($m[7]);
         }
         elseif (isset($m[8])) {

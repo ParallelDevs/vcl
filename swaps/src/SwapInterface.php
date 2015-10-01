@@ -4,7 +4,7 @@
  * Provides Drupal\visual_content_layout\SwapInterface
  */
 
-namespace Drupal\visual_content_layout;
+namespace Drupal\swaps;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 

@@ -1,4 +1,0 @@
-services:
-  plugin.manager.visual_content_layout:
-    class: Drupal\visual_content_layout\VisualContentLayoutManager
-    parent: default_plugin_manager
