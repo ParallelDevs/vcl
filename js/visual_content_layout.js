@@ -206,15 +206,71 @@
             //--------------------------------------------------------------------------------
             //                  transform text in visual elements
             //--------------------------------------------------------------------------------
-            function getVisualElements(button, textArea, swaps){
+            function getVisualElements(button, textArea, enableSwaps){
 
                 var text = $('#'+textArea).val(),
-                    algo = text.split('[');
+                    chunks = text.split(/(\[{1,2}.*?\]{1,2})/),
+                    elements = [],
+                    count = 0,
+                    textAreaParent = $('#' + textArea).parents()[2],
+                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help');
 
-                for(part in algo){
-                     var as = algo;
-                    var a = 8;
+                for(var c in chunks){
+
+                    c = chunks[c].trim();
+                    var originaltext = c;
+
+                    //validate the chunk is a swap head
+                    if(c[0] == '['){
+                        //eliminate the first and last character
+                        c = c.substring(1, c.length-1).trim();
+                        //validate if the swap have the close character
+                        if(c[c.length-1] == '/'){
+                            c = c.substring(0, c.length-1);
+                            var swap = c.trim().split(" ");
+                            var div = createHTMLDiv(originaltext, swap, enableSwaps);
+                            $(div).appendTo($(visualHelpArea));
+                        }
+                        //validate the chunk is a swap close
+                        if(c[0] == '/'){
+                            swap = c.trim().split(" ");
+                            elements[count] = swap;
+                        }
+                    }
+
+                    //validate if the chunk is only text and is the first
+                    if(count == 0){
+                        var div = createHTMLDiv(originaltext, [], enableSwaps);
+                        $(div).appendTo($(visualHelpArea));
+                    }
                 }
+            }
+
+            //--------------------------------------------------------------------------------
+            //                       create html object for the swap
+            //--------------------------------------------------------------------------------
+            function createHTMLDiv(originaltext, swap, enableSwaps){
+                //create the element and set the class
+                var element = document.createElement('div');
+                $(element).addClass('visual-content-layout-element');
+                //validate if the swap is a valid swap
+                if(enableSwaps[swap[0]]){
+                    $(element).html(swap[0]);
+                    //set the name in data attributes
+                    $(element).data('swapId', swap[0]);
+                    delete(swap[0]);
+                    //set all other attributes
+                    for (idx in swap) {
+                        var attr = swap[idx].trim().replace('"','').split('=')
+                        $(element).data(attr[0], attr[1]);
+                    }
+                }else{
+                    $(element).html("Text: " + originaltext);
+                    $(element).data('swapId', "string");
+                    $(element).data('text', originaltext);
+                }
+
+                return element;
             }
         }
     }

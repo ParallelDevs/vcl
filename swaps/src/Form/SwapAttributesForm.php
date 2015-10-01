@@ -176,9 +176,9 @@ class SwapAttributesForm extends FormBase {
     foreach($attributesList as $attr) {
 
       //get the name of the current attribute
-      list($name, $type) = explode(':', $attr);
-      list($name, $options) = explode('[', $name);
-      $name = trim($name);
+      $name = explode(':', $attr);
+      $name = explode('[', $name[0]);
+      $name = trim($name[0]);
 
       $settings[$name] = $input[$name];
 

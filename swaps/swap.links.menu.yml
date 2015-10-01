@@ -7,4 +7,3 @@ swap.admin_config_swap:
   title: 'Swaps'
   route_name: system.admin_config_ui
   parent: system.admin_config
-  description: 'sdfsdfsdfsd.'

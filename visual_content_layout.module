@@ -84,8 +84,19 @@ function visual_content_layout_load_field($field, $format) {
     }
   }
 
+  //get all the swaps plugins
+  $manager = \Drupal::service('plugin.manager.swaps');
+  $swaps = $manager->getDefinitions();
+  $enableSwaps = array();
+
+  //search the swap that have the name of the variable $name
+  foreach($swaps as $swap){
+    $enableSwaps[$swap['id']] = $swap['id'];
+  }
+
   $field['#attached']['drupalSettings']['visualContentLayout'] = array(
     'enable_formats' => $enableFormats,
+    'enable_swaps' => $enableSwaps,
   );
 
   return $field;
