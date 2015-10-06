@@ -17,6 +17,7 @@ use Drupal\swaps\SwapBase;
  *   name = "Column",
  *   description = @Translation("Add div with the class column."),
  *   attributes = "size[ xs | sm | md | lg ]:select, number[12-1]:select",
+ *   container = true,
  *   tip = "[column size='xs | sm | md | lg' number='[1-12]' class='extra class'] Content [/column]"
  * )
  */

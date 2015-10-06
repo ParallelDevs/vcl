@@ -68,7 +68,7 @@ function visual_content_layout_load_field($field, $format) {
   $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_select_form', [], $attributes);
   $internal_link = \Drupal::l(t('+'), $url);
 
-  $suffix = '<div class="visual-content-layout-visual-help">'.$internal_link.'</div>';
+  $suffix = '<div class="visual-content-layout-visual-help container">'.$internal_link.'</div>';
 
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
   $field['#suffix'] = $suffix . (isset($field['#suffix']) ? $field['#suffix'] : '') ;
@@ -91,7 +91,7 @@ function visual_content_layout_load_field($field, $format) {
 
   //search the swap that have the name of the variable $name
   foreach($swaps as $swap){
-    $enableSwaps[$swap['id']] = $swap['id'];
+    $enableSwaps[$swap['id']] = $swap['container'];
   }
 
   $field['#attached']['drupalSettings']['visualContentLayout'] = array(

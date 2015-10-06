@@ -1,10 +1,11 @@
 bootstrap:
   version: 1.x
   js:
-    js/bootstrap.min.js: {}
+    js/bootstrap.js: {}
+    js/jquery-ui.js: {}
   css:
     theme:
-        css/bootstrap.min.css: {}
+        css/styles.css: {}
 
 visual_content_layout:
   version: 1.x

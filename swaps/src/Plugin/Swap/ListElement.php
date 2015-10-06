@@ -15,6 +15,7 @@ use Drupal\swaps\SwapBase;
  * @Swap(
  *   id = "li",
  *   name = "List Element",
+ *   container = true,
  *   description = @Translation("Add a element for the list."),
  * )
  */

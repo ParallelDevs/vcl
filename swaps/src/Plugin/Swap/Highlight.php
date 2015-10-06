@@ -16,6 +16,7 @@ use Drupal\swaps\SwapBase;
  *   id = "hgl",
  *   name = "Highlight",
  *   description = @Translation("Add a span with the class Highlight for put the style"),
+ *   container = false,
  *   tip = "[hgl] content [/hgl] -> is the Highlight "
  * )
  */
