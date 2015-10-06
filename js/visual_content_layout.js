@@ -199,7 +199,7 @@
                     var swaps = settings.visualContentLayout.enable_swaps;
                     getVisualElements(this, textArea, swaps);
                 }else{
-
+                    $('.visual-content-layout-element').remove();
                 }
             });
 
@@ -213,35 +213,159 @@
                     elements = [],
                     count = 0,
                     textAreaParent = $('#' + textArea).parents()[2],
-                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help');
+                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help'),
+                    swap = null,
+                    swapText = false,
+                    father = [];
 
                 for(var c in chunks){
 
+                    //save the original text in case of error in the swap pattern
+                    var originaltext = chunks[c];
+
                     c = chunks[c].trim();
-                    var originaltext = c;
+
+                    if(c == ''){
+                        continue;
+                    }
 
                     //validate the chunk is a swap head
                     if(c[0] == '['){
                         //eliminate the first and last character
                         c = c.substring(1, c.length-1).trim();
-                        //validate if the swap have the close character
+                        //validate if the swap have the close character in the head
                         if(c[c.length-1] == '/'){
                             c = c.substring(0, c.length-1);
-                            var swap = c.trim().split(" ");
-                            var div = createHTMLDiv(originaltext, swap, enableSwaps);
-                            $(div).appendTo($(visualHelpArea));
+                            //validate if the new swap is a father
+                            if(count > 0 && swap != null){
+                                elements.push(swap);
+                                father.push(elements.length - 1);
+                            }
+                            swap = c.trim().split(" ");
+                            var div = createHTMLDiv(originaltext, swap);
+                            //validate if that swap have a father
+                            if(father.length > 0){
+                                elements.push(div);
+                                swap = null;
+                                swapText = false;
+                                continue;
+                            }else{
+                                $(div).appendTo($(visualHelpArea));
+                                count = 0;
+                                continue;
+                            }
                         }
                         //validate the chunk is a swap close
                         if(c[0] == '/'){
-                            swap = c.trim().split(" ");
-                            elements[count] = swap;
+                            c = c.substring(1, c.length);
+                            //validate if the close character is for a father
+                            if(swap == null){
+                                var lastFather = father.pop(), fatherSwap = elements[lastFather];
+
+                                //validate if exist a father
+                                if(!fatherSwap){
+                                    var div = createHTMLDiv(originaltext, null);
+                                    $(div).appendTo($(visualHelpArea));
+                                    count = 0;
+                                    continue;
+                                }
+
+                                //validate the swap and close character are the same
+                                if(fatherSwap[0] == c){
+                                    //create the father and add the child
+                                    var div = createHTMLDiv(originaltext, fatherSwap);
+                                    while(elements[lastFather+1]){
+                                        $(elements[lastFather+1]).appendTo($(div));
+                                        elements.splice( lastFather+1, 1 );
+                                    }
+                                    //validate if the father have a father
+                                    if(father.length == 0){
+                                        $(div).appendTo($(visualHelpArea));
+                                        elements.splice( 0, 1 );
+                                    }else{
+                                        elements[lastFather] = div;
+                                    }
+                                    count = lastFather;
+                                    swapText = false;
+                                    continue;
+                                }else{
+                                    var div = createHTMLDiv(originaltext, null);
+                                    father.push(lastFather);
+                                    elements.push(div);
+                                    swap = null;
+                                    swapText = false;
+                                    continue;
+                                }
+                            }
+                            //validate if the child swap and close character are the same
+                            if(swap[0] == c){
+                                var div = createHTMLDiv(originaltext, swap);
+                                //validate if that swap have a father
+                                if(father.length > 0){
+                                    elements.push(div);
+                                    swap = null;
+                                    swapText = false;
+                                    continue;
+                                }else{
+                                    $(div).appendTo($(visualHelpArea));
+                                    count = 0;
+                                    continue;
+                                }
+                            }
                         }
+
+                        //validate the swap is a valid swap
+                        if(!enableSwaps[c.split(" ")[0]]){
+                            //create a simple text swap
+                            var div = createHTMLDiv(originaltext, null);
+
+                            //validate is the storage swap is a father of the created div
+                            if(swap != null){
+                                elements.push(swap);
+                                father.push(elements.length - 1);
+                            }
+
+                            //validate if that swap have a father
+                            if(father.length > 0){
+                                elements.push(div);
+                                swap = null;
+                                swapText = false;
+                                continue;
+                            }else{
+                                $(div).appendTo($(visualHelpArea));
+                                count = 0;
+                                continue;
+                            }
+                        }
+
+                        //validate if the new swap is a father
+                        if(count > 0 && swap != null){
+                            elements.push(swap);
+                            father.push(elements.length - 1);
+                        }
+                        //save the attributes of the swaps
+                        swap = c.trim().split(" ");
+                        swapText = true;
+                        count++;
+                        continue;
                     }
 
                     //validate if the chunk is only text and is the first
-                    if(count == 0){
-                        var div = createHTMLDiv(originaltext, [], enableSwaps);
-                        $(div).appendTo($(visualHelpArea));
+                    if(swapText){
+                        swap.push('text="'+ originaltext + '"');
+                    }else{
+                        var div = createHTMLDiv(originaltext, null);
+                        //validate if that swap have a father
+                        if(father.length > 0){
+                            elements.push(div);
+                            swap = null;
+                            swapText = false;
+                            continue;
+                        }else{
+                            $(div).appendTo($(visualHelpArea));
+                            count = 0;
+                            continue;
+                        }
                     }
                 }
             }
@@ -249,19 +373,19 @@
             //--------------------------------------------------------------------------------
             //                       create html object for the swap
             //--------------------------------------------------------------------------------
-            function createHTMLDiv(originaltext, swap, enableSwaps){
+            function createHTMLDiv(originaltext, swap){
                 //create the element and set the class
                 var element = document.createElement('div');
-                $(element).addClass('visual-content-layout-element');
+                $(element).addClass('visual-content-layout-element input-group');
                 //validate if the swap is a valid swap
-                if(enableSwaps[swap[0]]){
+                if(swap != null){
                     $(element).html(swap[0]);
                     //set the name in data attributes
                     $(element).data('swapId', swap[0]);
                     delete(swap[0]);
                     //set all other attributes
                     for (idx in swap) {
-                        var attr = swap[idx].trim().replace('"','').split('=')
+                        var attr = swap[idx].trim().replace('"','').split('=');
                         $(element).data(attr[0], attr[1]);
                     }
                 }else{

@@ -36,9 +36,9 @@ class Div extends SwapBase {
 
   public function validateClass($class){
     switch ($class) {
-      case 'row':
+      case "row":
         return $class;
-      case 'container':
+      case "container":
         return $class;
       default:
         return 'default';
