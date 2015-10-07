@@ -190,6 +190,7 @@ class SwapAttributesForm extends FormBase {
 
     $settings['swapName'] = $input['swap'];
     $settings['swapId'] = $swap['id'];
+    $settings['container'] = $swap['container'];
 
     //---------------------------------------------------------------
     //            create the ajax response

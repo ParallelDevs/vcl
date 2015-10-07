@@ -138,13 +138,28 @@
                 //create the html element for the new swap
                 var element = document.createElement('div');
                 $(element).addClass('visual-content-layout-element panel panel-default')
-                    .html(attributes.swapName)
-                    .appendTo(visualHelpArea);
-                //set the attributes
-                for (attr in attributes) {
-                    $(element).data(attr, attributes[attr]);
+                          .html(attributes.swapId);
+
+                //validate the swap can contain others swaps
+                if(attributes.container){
+                    $('<div>').addClass('container').appendTo($(element));
                 }
+                delete(attributes.container);
+
+                var attrKeys = Object.keys(attributes);
+
+                for(var i = 0; i < attrKeys.length; i++){
+                    if(attrKeys[i] != '' && attrKeys[i] != 'swapName'){
+                        $(element).data(attrKeys[i],attributes[attrKeys[i]]);
+                    }
+                }
+
+                $(element).appendTo(visualHelpArea)
+
                 createTextSwap($(element));
+                makeDragAndDrop();
+
+
             }
 
             //--------------------------------------------------------------------------------
@@ -152,24 +167,22 @@
             //--------------------------------------------------------------------------------
             function createTextSwap(element){
                 var data = $(element).data(),
-                    text = data.text,
-                    swapName = data.swapName,
-                    swapId = data.swapId,
+                    text = (data.text) ? ""+data.text : "" ,
                     attributesText = ' ',
-                    swapText = '[' + swapId;
-                //delete the name, id and text from the attributes array
-                delete(data['swapName']);
-                delete(data['swapId']);
-                delete(data['text']);
+                    swapText = '[' + data.swapId;
 
                 for (attr in data) {
                     try
                     {
-                        attributesText += attr.trim() + '="'+ data[attr].trim() +'" ';
+                        //validate the attribute is not the name, text o id
+                        if(attr != 'swapName' && attr != 'swapId' && attr != 'text'){
+                            attributesText += attr.trim() + '="'+ data[attr].trim() +'" ';
+                        }
+
                     }
                     catch(err) { attributesText = attributesText.trim() }
                 }
-                swapText += attributesText + ']' + text + '[/' + swapId + ']';
+                swapText += attributesText + ']' + text + '[/' + data.swapId + ']';
 
                 var textArea = $('#visual-content-layout-actual-textarea').val();
                 $('#' + textArea).val($('#' + textArea).val() + swapText);
@@ -200,7 +213,6 @@
                     getVisualElements(textArea, swaps);
                     makeDragAndDrop();
                 }else{
-                    getText();
                     $('.visual-content-layout-element').remove();
                 }
             });
@@ -406,6 +418,27 @@
                         }
                     }
                 }
+
+                //validate if are fathers in the array
+                if(father.length != 0){
+                    var remainFather = fatherSwap,
+                        remainFatherPosition = lastFather,
+                        lastFather = father.pop(),
+                        fatherSwap = elements[lastFather],
+                        fatherOriginalText = "[ " + fatherSwap.toString().replace(/,/gi,' ') + " ]",
+                        errorFather = createHTMLDiv(fatherOriginalText, null);
+
+                    if(remainFather == lastFather){
+
+                    }
+
+                    elements.push(div);
+                    $(errorFather).appendTo($(visualHelpArea));
+                    while(elements[lastFather+1]){
+                        $(elements[lastFather+1]).appendTo($(visualHelpArea));
+                        elements.splice( lastFather+1, 1 );
+                    }
+                }
             }
 
             //--------------------------------------------------------------------------------
@@ -423,7 +456,7 @@
                     delete(swap[0]);
                     //set all other attributes
                     for (idx in swap) {
-                        var attr = swap[idx].trim().replace('"','').split('=');
+                        var attr = swap[idx].trim().replace(/\"/gi,'').split('=');
                         element.data(attr[0], attr[1]);
                     }
                 }else{
@@ -435,33 +468,88 @@
                 return element;
             }
 
-            //--------------------------------------------------------------------------------
-            //                 make the visual element able to drag and drop
-            //--------------------------------------------------------------------------------
-            function makeDragAndDrop() {
-
-                $(".container").sortable({
-                    placeholder: "ui-state-highlight",
-                    connectWith: ".container",
-                    axis: "y",
-                    opacity: 0.5,
-                    cursor: "move"
-                });
-
-            }
-
-            //--------------------------------------------------------------------------------
-            //                  transform visual elements in text
-            //--------------------------------------------------------------------------------
-            function getText(textArea){
-
-                var textAreaParent = $('#' + textArea).parents()[2],
-                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help'),
-                    children =  $(visualHelpArea).children();
-
-            }
-
         }
+    }
+
+    //--------------------------------------------------------------------------------
+    //                  transform visual elements in text
+    //--------------------------------------------------------------------------------
+    function getTextFromVisual(visualHelpArea){
+
+        var children =  $(visualHelpArea).children('.visual-content-layout-element'),
+            text = '';
+
+        //process all children
+        for (var i = 0; i<children.length; i++) {
+            text += createText($(children[i]));
+        }
+
+        return text;
+    }
+
+    //--------------------------------------------------------------------------------
+    //                  create the text based on one swap
+    //--------------------------------------------------------------------------------
+    function createText(element){
+        //get all attributes from the data
+        var data = $(element).data(),
+            swapId = data['swapId'],
+            swapText = data['text'],
+            text = "[" + swapId,
+            container = element.children('.container');
+
+        delete(data['swapId']);
+        delete(data['text']);
+
+        if(swapId == "string"){
+            return swapText;
+        }
+
+        //process all the data
+        for (var attr in data) {
+            //validate the attr have a single value
+            if(typeof data[attr] === "string" ){
+                text += ' ' + attr + '="' + data[attr] + '"';
+            }
+        }
+
+        text += " ]" + (swapText ? swapText : '');
+
+        //validate if the swap can contain others swaps
+        if(container.length > 0){
+            //get the children of the swap
+            var containerChildren = $(container[0]).children('.visual-content-layout-element');
+            //validate the swap have children
+            if(containerChildren.length > 0){
+                //process all children of the swap
+                for (var i = 0; i<containerChildren.length; i++) {
+                    text += createText($(containerChildren[i]));
+                }
+            }
+        }
+        return text += "[/" + swapId + "]";
+    }
+
+    //--------------------------------------------------------------------------------
+    //                 make the visual element able to drag and drop
+    //--------------------------------------------------------------------------------
+    function makeDragAndDrop() {
+
+        $(".container").sortable({
+            placeholder: "ui-state-highlight",
+            connectWith: ".container",
+            axis: "y",
+            opacity: 0.5,
+            cursor: "move",
+            stop: function( event, ui ) {
+                var visualHelpArea = $(ui.item[0]).parents('.visual-content-layout-visual-help'),
+                    addButton = $(visualHelpArea[0]).find('a'),
+                    textArea = $(addButton[0]).data('textarea'),
+                    text = getTextFromVisual($(visualHelpArea[0]));
+                $("#" + textArea).val(text);
+            }
+        });
+
     }
 
 }(jQuery, Drupal));
