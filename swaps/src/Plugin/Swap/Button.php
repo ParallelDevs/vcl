@@ -16,7 +16,7 @@ use Drupal\swaps\SwapBase;
  *   id = "button",
  *   name = "Button",
  *   description = @Translation("Insert a link formatted as a button."),
- *   attributes = "url:text",
+ *   attributes = "url:text, text:text",
  *   container = false,
  *   tip = "[button url='url' class='class'] Button [/button]"
  * )
@@ -25,15 +25,14 @@ class Button extends SwapBase {
 
   function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
-      'class' => 'button',
+      'class' => '',
       'url' => '',
       'path' => '<front>',
-      'text' => '',
     ),
       $attrs
     );
 
-    $attrs['class'] = $this->addClass($attrs['class'], 'button');
+    $attrs['class'] = $this->addClass($attrs['class']);
     $attrs['text'] = $text;
     if ($attrs['url']) {
       $attrs['path'] = $attrs['url'];
@@ -42,7 +41,7 @@ class Button extends SwapBase {
   }
 
   public function theme($attrs, $text) {
-    return '<a href="' . $attrs['path'] . '" class="' . $attrs['class'] . '"><span>' . $attrs['text'] . '</span></a>';
+    return '<a href="' . $attrs['path'] . '" class="' . $attrs['class'] . ' button"><span>' . $attrs['text'] . '</span></a>';
   }
 
 }

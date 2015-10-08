@@ -42,6 +42,24 @@ class SwapAttributesForm extends FormBase {
     //store the name of the swap
     $form['swap'] = array('#type' => 'hidden', '#value' => $name);
 
+    //create the tab for the swap attributes items
+    $form['formTabs'] = array(
+      '#type' => 'vertical_tabs',
+      '#default_tab' => 'swapAttributes',
+    );
+
+    $form['swapAttributes'] = array(
+      '#type' => 'details',
+      '#title' => 'Swap',
+      '#group' => 'formTabs',
+    );
+
+    $form['class'] = array(
+      '#type' => 'details',
+      '#title' => 'Class',
+      '#group' => 'formTabs',
+    );
+
     //get the attributes annotation and split by the ","
     $attributes = $swap['attributes'];
     $attributesList = explode(',', $attributes);
@@ -59,7 +77,7 @@ class SwapAttributesForm extends FormBase {
         //                   processing text attributes
         //---------------------------------------------------------------
         case 'text':
-          $form[$name] = array(
+          $form['swapAttributes'][$name] = array(
             '#type' => 'textfield',
             '#title' => t($name),
             '#size' => 60,
@@ -70,6 +88,18 @@ class SwapAttributesForm extends FormBase {
         //                   processing boolean attributes
         //---------------------------------------------------------------
         case 'boolean':
+          break;
+
+        //---------------------------------------------------------------
+        //                   processing color attributes
+        //---------------------------------------------------------------
+        case 'color':
+          $form['swapAttributes'][$name] = array(
+            '#type' => 'textfield',
+            '#title' => t($name),
+            '#size' => 60,
+            '#attributes' => array('class' => array('colorpicker')),
+          );
           break;
 
         //---------------------------------------------------------------
@@ -105,7 +135,7 @@ class SwapAttributesForm extends FormBase {
             }
           }
           //create the form with the options
-          $form[$name] = array(
+          $form['swapAttributes'][$name] = array(
             '#type' => 'select',
             '#title' => t($name),
             '#options' => $options,
@@ -121,9 +151,17 @@ class SwapAttributesForm extends FormBase {
 
     }
 
-    $form["accept"] = array(
+    //create the form with the options
+    $form['class']['swapClass'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Class',
+      '#size' => 60,
+    );
+
+    $form['accept'] = array(
       '#type' => 'submit',
       '#value' => t('Accept'),
+      '#group' => 'swapAttributes',
       '#ajax' => array(
         'callback' => '::ajaxSubmit',
       ),
@@ -184,12 +222,16 @@ class SwapAttributesForm extends FormBase {
 
     }
 
+    //get all de default attributes input
+    $settings['class'] = $input['swapClass'];
+
+
     //---------------------------------------------------------------
     //            get the default attributes values of the swap
     //---------------------------------------------------------------
 
-    $settings['swapName'] = $input['swap'];
     $settings['swapId'] = $swap['id'];
+    $settings['swapName'] = $swap['name'];
     $settings['container'] = $swap['container'];
 
     //---------------------------------------------------------------
@@ -199,7 +241,7 @@ class SwapAttributesForm extends FormBase {
     $visualSettings = array('visualContentLayout' => array(
                                 'attributes' => $settings));
     $response = new AjaxResponse();
-    $response->addCommand(new CloseModalDialogCommand($form));
+    $response->addCommand(new CloseModalDialogCommand());
     $response->addCommand(new SettingsCommand($visualSettings,FALSE));
 
     return $response;

@@ -6,11 +6,19 @@ bootstrap:
   css:
     theme:
         css/styles.css: {}
+        css/font-awesome.css: {}
+        css/component.css: {}
+        css/bootstrap-colorpicker.min.css: {}
 
 visual_content_layout:
   version: 1.x
   js:
     js/visual_content_layout.js: {}
+    js/modernizr.custom.js: {}
+    js/classie.js: {}
+    js/bootstrap-colorpickerjs: {}
+    js/form_elements.js: {}
+
   dependencies:
     - core/jquery
     - core/drupalSettings

@@ -54,9 +54,8 @@ function visual_content_layout_load_field($field, $format) {
     $format = isset($format_arr['#value']) ? $format_arr['#value'] : $format_arr['#default_value'];
   }
 
-  $prefix = '<div class="visual-content-layout-button-wrap"><a class="visual-content-layout-btn" data-state="disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
-  $prefix .= t('Loading...');
-  $prefix .= '</a><i class="fa fa-spinner fa-spin"></i></div>';
+  $prefix = '<div class="visual-content-layout-button-wrap"><a class="visual-content-layout-btn  " data-state="disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
+  $prefix .=  t('Loading...') . '</a></div>';
 
   $attributes = array(
     'attributes' => array(
@@ -66,7 +65,7 @@ function visual_content_layout_load_field($field, $format) {
   );
   // Let's create the link.
   $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_select_form', [], $attributes);
-  $internal_link = \Drupal::l(t('+'), $url);
+  $internal_link = '<div class="visual-content-layout-visual-select-form">' . \Drupal::l(t('<i class="fa fa-plus-square"></i>'), $url) . '</div>';
 
   $suffix = '<div class="visual-content-layout-visual-help container">'.$internal_link.'</div>';
 
@@ -88,15 +87,18 @@ function visual_content_layout_load_field($field, $format) {
   $manager = \Drupal::service('plugin.manager.swaps');
   $swaps = $manager->getDefinitions();
   $enableSwaps = array();
+  $swapsNames = array();
 
   //search the swap that have the name of the variable $name
   foreach($swaps as $swap){
     $enableSwaps[$swap['id']] = $swap['container'];
+    $swapsNames[$swap['id']] = $swap['name'];
   }
 
   $field['#attached']['drupalSettings']['visualContentLayout'] = array(
     'enable_formats' => $enableFormats,
     'enable_swaps' => $enableSwaps,
+    'swap_names' => $swapsNames,
   );
 
   return $field;

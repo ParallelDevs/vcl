@@ -33,8 +33,10 @@ class Column extends SwapBase {
       $attrs
     );
 
-    $attrs['class'] = "col-" . $this->validateSize($attrs['size']) . "-"
+    $defaultClass = "col-" . $this->validateSize($attrs['size']) . "-"
                              . $this->validateNumber($attrs['number']);
+
+    $attrs['class'] = $this->addClass($attrs['class'],$defaultClass);
 
     return $this->theme($attrs,$text);
   }

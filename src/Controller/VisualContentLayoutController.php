@@ -28,7 +28,8 @@ class VisualContentLayoutController extends ControllerBase {
     $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
-    $response->addCommand(new OpenModalDialogCommand($title, $form));
+    $modalOptions = array('width' => '1200', 'height' => 'auto');
+    $response->addCommand(new OpenModalDialogCommand($title, $form, $modalOptions));
     return $response;
   }
 
@@ -37,12 +38,13 @@ class VisualContentLayoutController extends ControllerBase {
    */
   public function displayModalAttributesForm() {
     $response = new AjaxResponse();
-    $title = $this->t('Choose one swap');
+    $swap = $_GET[swap];
 
-    $form = \Drupal::formBuilder()->getForm('Drupal\swaps\Form\SwapAttributesForm', $_GET[swap]);
+    $form = \Drupal::formBuilder()->getForm('Drupal\swaps\Form\SwapAttributesForm', $swap);
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
-    $response->addCommand(new OpenModalDialogCommand($title, $form));
+    $modalOptions = array('width' => '1428', 'height' => 'auto');
+    $response->addCommand(new OpenModalDialogCommand("Swap Settings", $form, $modalOptions));
     return $response;
   }
 

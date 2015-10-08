@@ -133,12 +133,15 @@
                 var textArea = $('#visual-content-layout-actual-textarea').val(),
                     textAreaElement = $('#' + textArea),
                     textAreaParent = textAreaElement.parents()[2],
-                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help');
+                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help'),
+                    elementTitle = attributes.swapName + ": " ;
+
+                elementTitle +=  (attributes.text && attributes.text!= "")?attributes.text:"";
 
                 //create the html element for the new swap
                 var element = document.createElement('div');
                 $(element).addClass('visual-content-layout-element panel panel-default')
-                          .html(attributes.swapId);
+                          .html(elementTitle);
 
                 //validate the swap can contain others swaps
                 if(attributes.container){
@@ -175,7 +178,7 @@
                     try
                     {
                         //validate the attribute is not the name, text o id
-                        if(attr != 'swapName' && attr != 'swapId' && attr != 'text'){
+                        if(attr != 'swapId' && attr != 'text'){
                             attributesText += attr.trim() + '="'+ data[attr].trim() +'" ';
                         }
 
@@ -209,8 +212,9 @@
                 var textArea = $(this).data('id');
                 //validate if the visual help is enable
                 if($(this).data('state')=='enable'){
-                    var swaps = settings.visualContentLayout.enable_swaps;
-                    getVisualElements(textArea, swaps);
+                    var swaps = settings.visualContentLayout.enable_swaps,
+                        swapnames = settings.visualContentLayout.swap_names;
+                    getVisualElements(textArea, swaps, swapnames);
                     makeDragAndDrop();
                 }else{
                     $('.visual-content-layout-element').remove();
@@ -220,7 +224,7 @@
             //--------------------------------------------------------------------------------
             //                  transform text in visual elements
             //--------------------------------------------------------------------------------
-            function getVisualElements(textArea, enableSwaps){
+            function getVisualElements(textArea, enableSwaps, swapnames){
 
                 var text = $('#'+textArea).val(),
                     textAreaParent = $('#' + textArea).parents()[2],
@@ -253,7 +257,7 @@
                             //validate the swap is a valid swap
                             if(typeof enableSwaps[c.split(" ")[0]] === "undefined"){
                                 //create a simple text swap
-                                var div = createHTMLDiv(originaltext, null);
+                                var div = createHTMLDiv(originaltext, null, swapnames);
 
                                 //validate is the storage swap is a father of the created div
                                 if(swap != null){
@@ -281,7 +285,7 @@
                                 father.push(elements.length - 1);
                             }
                             swap = c.trim().split(" ");
-                            var div = createHTMLDiv(originaltext, swap);
+                            var div = createHTMLDiv(originaltext, swap, swapnames);
 
                             //validate if the swap can contain others swaps
                             if(enableSwaps[c.split(" ")[0]]){
@@ -309,7 +313,7 @@
 
                                 //validate if exist a father
                                 if(!fatherSwap){
-                                    var div = createHTMLDiv(originaltext, null);
+                                    var div = createHTMLDiv(originaltext, null, swapnames);
                                     $(div).appendTo($(visualHelpArea));
                                     count = 0;
                                     continue;
@@ -318,7 +322,7 @@
                                 //validate the swap and close character are the same
                                 if(fatherSwap[0] == c){
                                     //create the father and add the child
-                                    var div = createHTMLDiv(originaltext, fatherSwap);
+                                    var div = createHTMLDiv(originaltext, fatherSwap, swapnames);
                                     var ele = $('<div>').addClass('container').appendTo($(div));
                                     while(elements[lastFather+1]){
                                         $(elements[lastFather+1]).appendTo(ele);
@@ -345,7 +349,7 @@
                             }
                             //validate if the child swap and close character are the same
                             if(swap[0] == c){
-                                var div = createHTMLDiv(originaltext, swap);
+                                var div = createHTMLDiv(originaltext, swap, swapnames);
                                 //validate if the swap can contain others swaps
                                 if(enableSwaps[c.split(" ")[0]]){
                                     $('<div>').addClass('container').appendTo($(div));
@@ -367,7 +371,7 @@
                         //validate the swap is a valid swap
                         if(typeof enableSwaps[c.split(" ")[0]] === "undefined"){
                             //create a simple text swap
-                            var div = createHTMLDiv(originaltext, null);
+                            var div = createHTMLDiv(originaltext, null, swapnames);
 
                             //validate is the storage swap is a father of the created div
                             if(swap != null){
@@ -404,7 +408,7 @@
                     if(swapText){
                         swap.push('text="'+ originaltext + '"');
                     }else{
-                        var div = createHTMLDiv(originaltext, null);
+                        var div = createHTMLDiv(originaltext, null, swapnames);
                         //validate if that swap have a father
                         if(father.length > 0){
                             elements.push(div);
@@ -426,7 +430,7 @@
                         lastFather = father.pop(),
                         fatherSwap = elements[lastFather],
                         fatherOriginalText = "[ " + fatherSwap.toString().replace(/,/gi,' ') + " ]",
-                        errorFather = createHTMLDiv(fatherOriginalText, null);
+                        errorFather = createHTMLDiv(fatherOriginalText, null, swapnames);
 
                     if(remainFather == lastFather){
 
@@ -444,13 +448,14 @@
             //--------------------------------------------------------------------------------
             //                       create html object for the swap
             //--------------------------------------------------------------------------------
-            function createHTMLDiv(originaltext, swap){
+            function createHTMLDiv(originaltext, swap, swapnames){
                 //create the element and set the class
-                var element = $('<div>').addClass('visual-content-layout-element panel panel-default');
+                var element = $('<div>').addClass('visual-content-layout-element panel panel-default'),
+                    swapName = (swapnames[swap[0]])? swapnames[swap[0]] : "",
+                    text = "";
 
                 //validate if the swap is a valid swap
                 if(swap != null){
-                    element.html(swap[0]);
                     //set the name in data attributes
                     element.data('swapId', swap[0]);
                     delete(swap[0]);
@@ -458,7 +463,11 @@
                     for (idx in swap) {
                         var attr = swap[idx].trim().replace(/\"/gi,'').split('=');
                         element.data(attr[0], attr[1]);
+                        if(attr[0] == "text"){
+                            text = attr[1];
+                        }
                     }
+                    element.html( swapName + ": " + text );
                 }else{
                     element.html("Text: " + originaltext);
                     element.data('swapId', "string");
@@ -498,9 +507,6 @@
             text = "[" + swapId,
             container = element.children('.container');
 
-        delete(data['swapId']);
-        delete(data['text']);
-
         if(swapId == "string"){
             return swapText;
         }
@@ -508,7 +514,7 @@
         //process all the data
         for (var attr in data) {
             //validate the attr have a single value
-            if(typeof data[attr] === "string" ){
+            if(typeof data[attr] === "string" && attr!= "swapId" && attr!= "text"){
                 text += ' ' + attr + '="' + data[attr] + '"';
             }
         }
@@ -538,6 +544,7 @@
         $(".container").sortable({
             placeholder: "ui-state-highlight",
             connectWith: ".container",
+            items: "div.visual-content-layout-element",
             axis: "y",
             opacity: 0.5,
             cursor: "move",
