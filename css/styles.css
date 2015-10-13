@@ -387,3 +387,7 @@
 .use-ajax:hover{
     text-decoration: none;
 }
+
+.colorpicker-color{
+    width: 150px;
+}

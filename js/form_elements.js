@@ -16,9 +16,22 @@
     Drupal.behaviors.visualContentLayoutElementsInit = {
         attach: function (context, settings) {
 
-            $( ".colorpicker" ).click(function() {
-                $('.colorpicker').colorpicker();
-            });
+            //get all colorpicker input elements
+            var colorElements = $('.colorpicker_input');
+
+            //validate if there is a colorpicker input element
+            if(colorElements.length > 0){
+
+                for(var i = 0; i < colorElements.length; i++){
+                    //initialize all colorpicker input elements
+                    var element = $(colorElements[i]),
+                        id = "#" + element.attr('id'),
+                        colorpickerclass = element.attr('id') + "_widget";
+                    $(id).colorpicker({input: '#'+id, customClass: colorpickerclass});
+                    $(id).after($('.'+colorpickerclass));
+                }
+            }
+
 
         }
     }

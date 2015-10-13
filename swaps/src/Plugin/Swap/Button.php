@@ -16,7 +16,7 @@ use Drupal\swaps\SwapBase;
  *   id = "button",
  *   name = "Button",
  *   description = @Translation("Insert a link formatted as a button."),
- *   attributes = "url:text, text:text",
+ *   attributes = "[ URL | url | text ] , [ Title | text | text ]",
  *   container = false,
  *   tip = "[button url='url' class='class'] Button [/button]"
  * )

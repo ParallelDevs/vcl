@@ -8,7 +8,7 @@ bootstrap:
         css/styles.css: {}
         css/font-awesome.css: {}
         css/component.css: {}
-        css/bootstrap-colorpicker.min.css: {}
+        css/bootstrap-colorpicker.css: {}
 
 visual_content_layout:
   version: 1.x
@@ -16,8 +16,8 @@ visual_content_layout:
     js/visual_content_layout.js: {}
     js/modernizr.custom.js: {}
     js/classie.js: {}
-    js/bootstrap-colorpickerjs: {}
     js/form_elements.js: {}
+    js/bootstrap-colorpicker.js: {}
 
   dependencies:
     - core/jquery

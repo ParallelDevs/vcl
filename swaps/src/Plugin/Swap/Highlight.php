@@ -27,17 +27,20 @@ class Highlight extends SwapBase {
   function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'class' => '',
-      'color' => '#ffffff'
+      'color' => ''
     ),
       $attrs
     );
 
-    $attrs['class'] = 'highlight';
+    $attrs['class'] = $this->addClass($attrs['class'],'highlight');
     return $this->theme($attrs,$text);
   }
 
   public function theme($attrs, $text) {
-    return '<span class="' . $attrs['class'] . '">' . $text . ' </span>';
+
+    $style = 'style="color:'.$attrs['color'].';"';
+
+    return '<span class="' . $attrs['class'] . '" ' . $style . '">' . $text . ' </span>';
   }
 
 }

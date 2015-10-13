@@ -68,7 +68,10 @@ class SwapAttributesForm extends FormBase {
     foreach($attributesList as $attr){
 
       //get the name and type of the current attribute
-      list($name, $type) = explode(':', $attr);
+      $attr = substr(trim($attr), 1, -1);
+      $attr = explode('|', $attr);
+      $name = trim($attr[1]);
+      $type = trim($attr[2]);
 
       //process depending on the name
       switch ($type) {
@@ -77,10 +80,14 @@ class SwapAttributesForm extends FormBase {
         //                   processing text attributes
         //---------------------------------------------------------------
         case 'text':
+
+          $id = $name.'_textfield';
+
           $form['swapAttributes'][$name] = array(
             '#type' => 'textfield',
-            '#title' => t($name),
+            '#title' => trim($attr[0]),
             '#size' => 60,
+            '#attributes' => array('id' => array($id)),
           );
           break;
 
@@ -94,11 +101,16 @@ class SwapAttributesForm extends FormBase {
         //                   processing color attributes
         //---------------------------------------------------------------
         case 'color':
+
+          $id =  $name . '_colorpicker';
+
           $form['swapAttributes'][$name] = array(
             '#type' => 'textfield',
-            '#title' => t($name),
+            '#title' => trim($attr[0]),
             '#size' => 60,
-            '#attributes' => array('class' => array('colorpicker')),
+            '#default_value' => '#123456',
+            '#attributes' => array('id' => array($id),
+                                   'class' => array('colorpicker_input')),
           );
           break;
 
@@ -106,12 +118,14 @@ class SwapAttributesForm extends FormBase {
         //                   processing select attributes
         //---------------------------------------------------------------
         case 'select':
-          //separate the name from the options
-          $name = substr($name, 0, -1);
-          list($name, $options) = explode('[', $name);
+
+          $id = $name . '_select';
+
+          //get the options
+          $options = trim($attr[3]);
           //validate the separate symbol for int select o string select
           if(strpos($options, "-") === FALSE){
-            $elements = explode('|', $options);
+            $elements = explode("," , $options);
             $options = array();
             foreach($elements as $element){
               $options[$element] = $element;
@@ -137,8 +151,9 @@ class SwapAttributesForm extends FormBase {
           //create the form with the options
           $form['swapAttributes'][$name] = array(
             '#type' => 'select',
-            '#title' => t($name),
+            '#title' => trim($attr[0]),
             '#options' => $options,
+            '#attributes' => array('id' => array($id)),
           );
           break;
 
@@ -157,6 +172,7 @@ class SwapAttributesForm extends FormBase {
       '#title' => 'Class',
       '#size' => 60,
     );
+
 
     $form['accept'] = array(
       '#type' => 'submit',

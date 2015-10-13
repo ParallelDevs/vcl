@@ -40,13 +40,14 @@ class Swap extends Plugin {
   public $description;
   /**
    * The plugin Own Attributes.
-   * This need to be in the format "attribute : type" separated by a ","
+   * This need to be in the format "[ title | attribute | type | options]"
    * Use only the specific attributes for this swaps
-   * The available types are : "text", "boolean", "select"
-   *    For "selects" enclose their options in "[]" separated by "|"
+   * If swap don't have options, leave it blank
+   * The available types are : "text", "boolean", "select", "color"
+   *    For "selects" separate the option with ","
    *    If you need a number sequence can use "-"
-   *       Examples = colors[ red | blue | yellow ] : select
-   *                  numbers[1-12] : select
+   *       Examples = [ Item State | state | select | regular,good,excellent ]
+   *                  [ Age | age | select | 1-12 ]
    * @var string
    */
   public $attributes;
