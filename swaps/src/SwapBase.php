@@ -78,22 +78,19 @@ class SwapBase extends PluginBase implements SwapInterface {
   function setAttrs($pairs, $attrs) {
     $attrs = (array) $attrs;
     $out = array();
-    foreach ($pairs as $name => $default) {
-      if (array_key_exists($name, $attrs)) {
-        $out[$name] = $attrs[$name];
-      }
-      else {
-        $out[$name] = $default;
+    foreach ($attrs as $name => $value) {
+      if ($value == '' && array_key_exists($name, $pairs)) {
+        $attrs[$name] = $pairs[$name];
       }
     }
-    return $out;
+    return $attrs;
   }
 
   /**
    * Provides a class parameter helper function.
    *
    * @param mixed $class
-   *   The class string or array
+   *   The class string or array.
    *
    * @param string $default
    *   The default class value.
@@ -114,4 +111,86 @@ class SwapBase extends PluginBase implements SwapInterface {
     }
     return implode(' ', $class);
   }
+
+  /**
+   * Process all default attributes that are used for styling.
+   *
+   * @param mixed $attributes
+   *   The array with all attributes.
+   *
+   * @return string
+   *   The style definition with all parameters.
+   */
+  function getStyle($attributes = array(), $extra = array()) {
+    $style = ' style="';
+    //process all attributes of the swap
+    foreach ($attributes as $name => $attr) {
+      //process only style attributes
+      switch ($name) {
+        //---------------------------------------------------------------
+        //                   process Paddings attributes
+        //---------------------------------------------------------------
+        case 'paddingleft':
+          $style.= 'padding-left:'.$attr.';';
+          break;
+
+        case 'paddingright':
+          $style.= 'padding-right:'.$attr.';';
+          break;
+
+        case 'paddingtop':
+          $style.= 'padding-top:'.$attr.';';
+          break;
+
+        case 'paddingbottom':
+          $style.= 'padding-bottom:'.$attr.';';
+          break;
+
+        //---------------------------------------------------------------
+        //                   process Margins attributes
+        //---------------------------------------------------------------
+        case 'marginleft':
+          $style.= 'margin-left:'.$attr.';';
+          break;
+
+        case 'marginright':
+          $style.= 'margin-right:'.$attr.';';
+          break;
+
+        case 'margintop':
+          $style.= 'margin-top:'.$attr.';';
+          break;
+
+        case 'marginbottom':
+          $style.= 'margin-bottom:'.$attr.';';
+          break;
+
+        //---------------------------------------------------------------
+        //                   process Classes, & ID attributes
+        //---------------------------------------------------------------
+          case 'textalign':
+            ($attr != 'default') ? $style.= 'text-align:'.$attr.';' : '';
+
+          break;
+
+        case 'cssstyles':
+          $style.= $attr;
+          break;
+
+        //---------------------------------------------------------------
+        //                   process Background  attributes
+        //---------------------------------------------------------------
+        case 'backgroundcolor':
+          $style.= 'background-color:'.$attr.';';
+          break;
+      }
+    }
+
+    foreach ($extra as $name => $attr) {
+      $style.= $name.':'.$attr.';';
+    }
+
+    return $style.='"';
+  }
+
 }

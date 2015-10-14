@@ -44,9 +44,9 @@ class Swap extends Plugin {
    * Use only the specific attributes for this swaps
    * If swap don't have options, leave it blank
    * The available types are : "text", "boolean", "select", "color"
-   *    For "selects" separate the option with ","
+   *    For "selects" separate the option with ":"
    *    If you need a number sequence can use "-"
-   *       Examples = [ Item State | state | select | regular,good,excellent ]
+   *       Examples = [ Item State | state | select | regular:good:excellent ]
    *                  [ Age | age | select | 1-12 ]
    * @var string
    */

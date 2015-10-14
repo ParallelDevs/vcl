@@ -16,7 +16,8 @@ use Drupal\swaps\SwapBase;
  *   id = "column",
  *   name = "Column",
  *   description = @Translation("Add div with the class column."),
- *   attributes = "size[ xs | sm | md | lg ]:select, number[12-1]:select",
+ *   attributes = "[ Column Size | size | select | xs : sm : md : lg ] ,
+ *                  [ Column Number | number | select | 12-1 ]",
  *   container = true,
  *   tip = "[column size='xs | sm | md | lg' number='[1-12]' class='extra class'] Content [/column]"
  * )
@@ -28,15 +29,15 @@ class Column extends SwapBase {
     $attrs = $this->setAttrs(array(
       'size' => 'md',
       'number' => '4',
-      'class' => '',
+      'extraclass' => '',
     ),
       $attrs
     );
 
     $defaultClass = "col-" . $this->validateSize($attrs['size']) . "-"
                              . $this->validateNumber($attrs['number']);
-
     $attrs['class'] = $this->addClass($attrs['class'],$defaultClass);
+    $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs,$text);
   }
@@ -65,7 +66,7 @@ class Column extends SwapBase {
   }
 
   public function theme($attrs, $text) {
-    return '<div class="' . $attrs['class'] . '">' . $text . '</div>';
+    return '<div class="' . $attrs['extraclass'] . '" '.$attrs['style'].' >' . $text . '</div>';
   }
 
 }

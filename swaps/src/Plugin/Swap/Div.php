@@ -16,7 +16,7 @@ use Drupal\swaps\SwapBase;
  *   id = "div",
  *   name = "Div",
  *   description = @Translation("Add div which you can add a bootstrap class."),
- *   attributes = "class[ row | container ]:select",
+ *   attributes = "[Div Type | type | select | row : container]",
  *   container = true,
  *   tip = "[div class='row | container'] Content [/div]"
  * )
@@ -26,12 +26,14 @@ class Div extends SwapBase {
 
   function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
-      'class' => 'default',
+      'extraclass' => '',
+      'type' => 'container'
     ),
       $attrs
     );
 
-    $attrs['class'] = $this->validateClass($attrs['class']);
+    $attrs['type'] = $this->validateClass($attrs['type']);
+    $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs,$text);
   }
@@ -43,12 +45,12 @@ class Div extends SwapBase {
       case "container":
         return $class;
       default:
-        return 'default';
+        return 'container';
     }
   }
 
   public function theme($attrs, $text) {
-    return '<div class="' . $attrs['class'] . '">' . $text . '</div>';
+    return '<div class="' . $attrs['type'] . ' ' .  $attrs['extraclass'] . '" '.$attrs['style'].'>' . $text . '</div>';
   }
 
 }

@@ -42,36 +42,35 @@ class SwapAttributesForm extends FormBase {
     //store the name of the swap
     $form['swap'] = array('#type' => 'hidden', '#value' => $name);
 
-    //create the tab for the swap attributes items
+    //create the tab container
     $form['formTabs'] = array(
       '#type' => 'vertical_tabs',
       '#default_tab' => 'swapAttributes',
     );
 
+    //create the swapAttributes tab ------------------------------------
     $form['swapAttributes'] = array(
       '#type' => 'details',
       '#title' => 'Swap',
       '#group' => 'formTabs',
     );
 
-    $form['class'] = array(
-      '#type' => 'details',
-      '#title' => 'Class',
-      '#group' => 'formTabs',
-    );
-
     //get the attributes annotation and split by the ","
     $attributes = $swap['attributes'];
-    $attributesList = explode(',', $attributes);
+    $attributesList = explode(',', trim($attributes));
 
     //process all the attributes of the swap
     foreach($attributesList as $attr){
+
+      $attr = trim($attr);
 
       //get the name and type of the current attribute
       $attr = substr(trim($attr), 1, -1);
       $attr = explode('|', $attr);
       $name = trim($attr[1]);
       $type = trim($attr[2]);
+
+      $title = str_replace( "[" , "" , trim($attr[0]));
 
       //process depending on the name
       switch ($type) {
@@ -85,7 +84,7 @@ class SwapAttributesForm extends FormBase {
 
           $form['swapAttributes'][$name] = array(
             '#type' => 'textfield',
-            '#title' => trim($attr[0]),
+            '#title' => $title,
             '#size' => 60,
             '#attributes' => array('id' => array($id)),
           );
@@ -106,7 +105,7 @@ class SwapAttributesForm extends FormBase {
 
           $form['swapAttributes'][$name] = array(
             '#type' => 'textfield',
-            '#title' => trim($attr[0]),
+            '#title' => $title,
             '#size' => 60,
             '#default_value' => '#123456',
             '#attributes' => array('id' => array($id),
@@ -125,7 +124,7 @@ class SwapAttributesForm extends FormBase {
           $options = trim($attr[3]);
           //validate the separate symbol for int select o string select
           if(strpos($options, "-") === FALSE){
-            $elements = explode("," , $options);
+            $elements = explode(":" , $options);
             $options = array();
             foreach($elements as $element){
               $options[$element] = $element;
@@ -151,7 +150,7 @@ class SwapAttributesForm extends FormBase {
           //create the form with the options
           $form['swapAttributes'][$name] = array(
             '#type' => 'select',
-            '#title' => trim($attr[0]),
+            '#title' => $title,
             '#options' => $options,
             '#attributes' => array('id' => array($id)),
           );
@@ -166,14 +165,119 @@ class SwapAttributesForm extends FormBase {
 
     }
 
-    //create the form with the options
-    $form['class']['swapClass'] = array(
-      '#type' => 'textfield',
-      '#title' => 'Class',
-      '#size' => 60,
+    //create the paddings tab ------------------------------------
+    $form['paddings'] = array(
+      '#type' => 'details',
+      '#title' => 'Paddings',
+      '#group' => 'formTabs',
     );
 
+    $form['paddings']['padding-left'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Padding Left',
+      '#size' => 30,
+    );
 
+    $form['paddings']['padding-right'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Padding Right',
+      '#size' => 30,
+    );
+
+    $form['paddings']['padding-top'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Padding Top',
+      '#size' => 30,
+    );
+
+    $form['paddings']['padding-bottom'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Padding Bottom',
+      '#size' => 30,
+    );
+
+    //create the margins tab ------------------------------------
+    $form['margins'] = array(
+      '#type' => 'details',
+      '#title' => 'Margins',
+      '#group' => 'formTabs',
+    );
+
+    $form['margins']['margin-left'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Margin Left',
+      '#size' => 30,
+    );
+
+    $form['margins']['margin-right'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Margin Right',
+      '#size' => 30,
+    );
+
+    $form['margins']['margin-top'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Margin Top',
+      '#size' => 30,
+    );
+
+    $form['margins']['margin-bottom'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Margin Bottom',
+      '#size' => 30,
+    );
+
+    //create the Classes, & ID tab ------------------------------------
+    $form['classID'] = array(
+      '#type' => 'details',
+      '#title' => 'Classes, ID & Style',
+      '#group' => 'formTabs',
+    );
+
+    $form['classID']['extraClass'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Extra Class',
+      '#size' => 30,
+    );
+
+    $form['classID']['id'] = array(
+      '#type' => 'textfield',
+      '#title' => 'ID',
+      '#size' => 30,
+    );
+
+    $options = array( 'default' => 'Default', 'left' => 'Left',
+                      'center' => 'Center', 'right' => 'Right', );
+
+    $form['classID']['text-align'] = array(
+      '#type' => 'select',
+      '#title' => 'Text Align',
+      '#options' => $options,
+      '#default_value' => 'default',
+    );
+
+    $form['classID']['css-styles'] = array(
+      '#type' => 'textarea',
+      '#title' => 'Extra Class',
+      '#description' => t('Wrong code here might cause problems in the style'),
+    );
+
+    //create the Background tab ------------------------------------
+    $form['background'] = array(
+      '#type' => 'details',
+      '#title' => 'Background',
+      '#group' => 'formTabs',
+    );
+
+    $form['background']['background-color'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Background Color',
+      '#size' => 30,
+      '#attributes' => array('id' => array('background-color_colorpicker'),
+        'class' => array('colorpicker_input')),
+    );
+
+    //Accept button ------------------------------------
     $form['accept'] = array(
       '#type' => 'submit',
       '#value' => t('Accept'),
@@ -230,17 +334,12 @@ class SwapAttributesForm extends FormBase {
     foreach($attributesList as $attr) {
 
       //get the name of the current attribute
-      $name = explode(':', $attr);
-      $name = explode('[', $name[0]);
-      $name = trim($name[0]);
+      $name = explode('|', $attr);
+      $name = trim($name[1]);
 
       $settings[$name] = $input[$name];
 
     }
-
-    //get all de default attributes input
-    $settings['class'] = $input['swapClass'];
-
 
     //---------------------------------------------------------------
     //            get the default attributes values of the swap
@@ -249,6 +348,50 @@ class SwapAttributesForm extends FormBase {
     $settings['swapId'] = $swap['id'];
     $settings['swapName'] = $swap['name'];
     $settings['container'] = $swap['container'];
+
+
+    //---------------------------------------------------------------
+    //            get all de default attributes input
+    //---------------------------------------------------------------
+
+    ($input['padding-left'] != "") ?
+      $settings['padding-left'] = $input['padding-left'] : "";
+
+    ($input['padding-right'] != "") ?
+      $settings['padding-right'] = $input['padding-right'] : "";
+
+    ($input['padding-top'] != "") ?
+      $settings['padding-top'] = $input['padding-top'] : "";
+
+    ($input['padding-bottom'] != "") ?
+      $settings['padding-bottom'] = $input['padding-bottom'] : "";
+
+    ($input['margin-left'] != "") ?
+      $settings['margin-left'] = $input['margin-left'] : "";
+
+    ($input['margin-right'] != "") ?
+      $settings['margin-right'] = $input['margin-right'] : "";
+
+    ($input['margin-top'] != "") ?
+      $settings['margin-top'] = $input['margin-top'] : "";
+
+    ($input['margin-bottom'] != "") ?
+      $settings['margin-bottom'] = $input['margin-bottom'] : "";
+
+    ($input['text-align'] != "") ?
+      $settings['text-align'] = $input['text-align'] : "";
+
+    ($input['css-styles'] != "") ?
+      $settings['css-styles'] = $input['css-styles'] : "";
+
+    ($input['extraClass'] != "") ?
+      $settings['extraClass'] = $input['extraClass'] : "";
+
+    ($input['id'] != "") ?
+      $settings['id'] = $input['id'] : "";
+
+    ($input['background-color'] != "") ?
+      $settings['background-color'] = $input['background-color'] : "";
 
     //---------------------------------------------------------------
     //            create the ajax response
