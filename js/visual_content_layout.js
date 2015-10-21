@@ -143,6 +143,11 @@
                 $(element).addClass('visual-content-layout-element panel panel-default')
                           .html(elementTitle);
 
+                //create the delete button for this element
+                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
+                    .on('click', deleteVisualElement)
+                    .appendTo($(element));
+
                 //validate the swap can contain others swaps
                 if(attributes.container){
                     $('<div>').addClass('container').appendTo($(element));
@@ -221,6 +226,7 @@
                 }
             });
 
+
             //--------------------------------------------------------------------------------
             //                  transform text in visual elements
             //--------------------------------------------------------------------------------
@@ -258,6 +264,10 @@
                             if(typeof enableSwaps[c.split(" ")[0]] === "undefined"){
                                 //create a simple text swap
                                 var div = createHTMLDiv(originaltext, null, swapnames);
+                                //create the delete button for this element
+                                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
+                                    .on('click', deleteVisualElement)
+                                    .appendTo($(div));
 
                                 //validate is the storage swap is a father of the created div
                                 if(swap != null){
@@ -286,6 +296,10 @@
                             }
                             swap = c.trim().split(" ");
                             var div = createHTMLDiv(originaltext, swap, swapnames);
+                            //create the delete button for this element
+                            var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
+                                .on('click', deleteVisualElement)
+                                .appendTo($(div));
 
                             //validate if the swap can contain others swaps
                             if(enableSwaps[c.split(" ")[0]]){
@@ -314,6 +328,10 @@
                                 //validate if exist a father
                                 if(!fatherSwap){
                                     var div = createHTMLDiv(originaltext, null, swapnames);
+                                    //create the delete button for this element
+                                    var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
+                                        .on('click', deleteVisualElement)
+                                        .appendTo($(div));
                                     $(div).appendTo($(visualHelpArea));
                                     count = 0;
                                     continue;
@@ -323,6 +341,10 @@
                                 if(fatherSwap[0] == c){
                                     //create the father and add the child
                                     var div = createHTMLDiv(originaltext, fatherSwap, swapnames);
+                                    //create the delete button for this element
+                                    var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
+                                        .on('click', deleteVisualElement)
+                                        .appendTo($(div));
                                     var ele = $('<div>').addClass('container').appendTo($(div));
                                     while(elements[lastFather+1]){
                                         $(elements[lastFather+1]).appendTo(ele);
@@ -350,6 +372,10 @@
                             //validate if the child swap and close character are the same
                             if(swap[0] == c){
                                 var div = createHTMLDiv(originaltext, swap, swapnames);
+                                //create the delete button for this element
+                                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
+                                    .on('click', deleteVisualElement)
+                                    .appendTo($(div));
                                 //validate if the swap can contain others swaps
                                 if(enableSwaps[c.split(" ")[0]]){
                                     $('<div>').addClass('container').appendTo($(div));
@@ -536,6 +562,7 @@
         return text += "[/" + swapId + "]";
     }
 
+
     //--------------------------------------------------------------------------------
     //                 make the visual element able to drag and drop
     //--------------------------------------------------------------------------------
@@ -558,5 +585,40 @@
         });
 
     }
+
+    //--------------------------------------------------------------------------------
+    //                 event click delete visual element
+    //--------------------------------------------------------------------------------
+    function deleteVisualElement(){
+
+        var url = '/VisualContentD8/visual_content_layout/swap_attributes_update_form/Button'
+
+        $.ajax({
+            type: 'POST',
+            url: url, // Which url should be handle the ajax request. This is the url defined in the <a> html tag
+            dataType: 'json', //define the type of data that is going to get back from the server
+            data: 'js=1', //Pass a key/value pair
+            success: function(data) {
+                $( "#miarea").html(data)
+                    .dialog({ modal: true });
+            }
+        });
+
+    };
+
+    //--------------------------------------------------------------------------------
+    //                 event click delete visual element
+    //--------------------------------------------------------------------------------
+    function help(){
+        var parent = $(this).parent('.visual-content-layout-element'),
+            visualHelpArea = $(parent).parents('.visual-content-layout-visual-help'),
+            addButton = $(visualHelpArea[0]).find('a'),
+            textArea = $(addButton[0]).data('textarea');
+        //delete the element
+        $(parent).remove();
+        //recreate the text in textarea
+        var text = getTextFromVisual($(visualHelpArea[0]));
+        $("#" + textArea).val(text);
+    };
 
 }(jQuery, Drupal));

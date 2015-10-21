@@ -68,6 +68,7 @@ function visual_content_layout_load_field($field, $format) {
   $internal_link = '<div class="visual-content-layout-visual-select-form">' . \Drupal::l(t('<i class="fa fa-plus-square"></i>'), $url) . '</div>';
 
   $suffix = '<div class="visual-content-layout-visual-help container">'.$internal_link.'</div>';
+  $suffix .= '<div id="miarea">asdasdasdas</div>';
 
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
   $field['#suffix'] = $suffix . (isset($field['#suffix']) ? $field['#suffix'] : '') ;

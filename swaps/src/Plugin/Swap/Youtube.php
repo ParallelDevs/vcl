@@ -16,6 +16,8 @@ use Drupal\swaps\SwapBase;
  *   id = "youtube",
  *   name = "Youtube",
  *   description = @Translation("Add div with the class Youtube."),
+ *   attributes = "[ URL | url | text ] , [ Width | width | text ],
+ *                 [ Height | height | text ]",
  *   container = false,
  *   tip = "[youtube width='width' height='height' url='url' /] -> case the blank space before the '/' "
  * )
@@ -32,11 +34,23 @@ class Youtube extends SwapBase {
       $attrs
     );
 
+    $attrs['style'] = $this->getStyle($attrs);
+    $attrs['width'] = $this->validateNumber($attrs['width']);
+    $attrs['height'] = $this->validateNumber($attrs['height']);
+
     return $this->theme($attrs);
   }
 
+  public function validateNumber($number){
+    if(is_int($number)){
+      return $number;
+    }else{
+      return 500;
+    }
+  }
+
   public function theme($attrs, $text) {
-    return '<iframe src="'. $attrs['url'] .'" width="'. $attrs['width'] .'" height="'. $attrs['height'] .'" frameborder="0" allowfullscreen></iframe>';
+    return '<iframe src="'. $attrs['url'] .'" width="'. $attrs['width'] .'" height="'. $attrs['height'] .'" frameborder="0" allowfullscreen '.$attrs['style'].'></iframe>';
   }
 
 }

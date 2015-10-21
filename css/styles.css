@@ -384,10 +384,30 @@
     text-decoration: none;
 }
 
-.use-ajax:hover{
+.use-ajax:hover, .use-ajax:focus{
     text-decoration: none;
 }
 
 .colorpicker-color{
     width: 150px;
+}
+
+.deleteButton{
+    cursor: pointer;
+    border: 1px solid #A6A6A6;
+    border-radius: 0.5em;
+    background-color: #F2F1EB;
+    background-image: linear-gradient(to bottom, #F6F6F3, #E7E7DF);
+    color: #333;
+    text-decoration: none;
+    font-size: 20px !important;
+    padding: 7px;
+}
+
+.deleteButton:hover {
+    border: 1px solid #A6A6A6;
+    background-color: #DFDFD9;
+    background-image: linear-gradient(to bottom, #F6F6F3, #E7E7DF);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2) inset;
+    transition: none 0s ease 0s;
 }
