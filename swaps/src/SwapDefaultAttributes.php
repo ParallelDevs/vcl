@@ -22,25 +22,25 @@ class SwapDefaultAttributes {
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_paddings']['swaps_padding-left'] = array(
+    $form['swaps_paddings']['swaps_paddingLeft'] = array(
       '#type' => 'textfield',
       '#title' => 'Padding Left',
       '#size' => 30,
     );
 
-    $form['swaps_paddings']['swaps_padding-right'] = array(
+    $form['swaps_paddings']['swaps_paddingRight'] = array(
       '#type' => 'textfield',
       '#title' => 'Padding Right',
       '#size' => 30,
     );
 
-    $form['swaps_paddings']['swaps_padding-top'] = array(
+    $form['swaps_paddings']['swaps_paddingTop'] = array(
       '#type' => 'textfield',
       '#title' => 'Padding Top',
       '#size' => 30,
     );
 
-    $form['swaps_paddings']['swaps_padding-bottom'] = array(
+    $form['swaps_paddings']['swaps_paddingBottom'] = array(
       '#type' => 'textfield',
       '#title' => 'Padding Bottom',
       '#size' => 30,
@@ -53,25 +53,25 @@ class SwapDefaultAttributes {
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_margins']['swaps_margin-left'] = array(
+    $form['swaps_margins']['swaps_marginLeft'] = array(
       '#type' => 'textfield',
       '#title' => 'Margin Left',
       '#size' => 30,
     );
 
-    $form['swaps_margins']['swaps_margin-right'] = array(
+    $form['swaps_margins']['swaps_marginRight'] = array(
       '#type' => 'textfield',
       '#title' => 'Margin Right',
       '#size' => 30,
     );
 
-    $form['swaps_margins']['swaps_margin-top'] = array(
+    $form['swaps_margins']['swaps_marginTop'] = array(
       '#type' => 'textfield',
       '#title' => 'Margin Top',
       '#size' => 30,
     );
 
-    $form['swaps_margins']['swaps_margin-bottom'] = array(
+    $form['swaps_margins']['swaps_marginBottom'] = array(
       '#type' => 'textfield',
       '#title' => 'Margin Bottom',
       '#size' => 30,
@@ -99,14 +99,14 @@ class SwapDefaultAttributes {
     $options = array( 'default' => 'Default', 'left' => 'Left',
       'center' => 'Center', 'right' => 'Right', );
 
-    $form['swaps_classID']['swaps_text-align'] = array(
+    $form['swaps_classID']['swaps_textAlign'] = array(
       '#type' => 'select',
       '#title' => 'Text Align',
       '#options' => $options,
       '#default_value' => 'default',
     );
 
-    $form['swaps_classID']['swaps_css-styles'] = array(
+    $form['swaps_classID']['swaps_cssStyles'] = array(
       '#type' => 'textarea',
       '#title' => 'Extra Class',
       '#description' => t('Wrong code here might cause problems in the style'),
@@ -119,12 +119,11 @@ class SwapDefaultAttributes {
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_background']['swaps_background-color'] = array(
+    $form['swaps_background']['swaps_backgroundColor'] = array(
       '#type' => 'textfield',
       '#title' => 'Background Color',
       '#size' => 30,
-      '#attributes' => array('id' => array('background-color_colorpicker'),
-        'class' => array('colorpicker_input')),
+      '#attributes' => array('class' => array('colorpicker_input')),
     );
   }
 
@@ -133,35 +132,35 @@ class SwapDefaultAttributes {
    */
   public function getDefaultFormElementsValues(&$settings, &$input){
 
-    ($input['swaps_padding-left'] != "") ?
-      $settings['padding-left'] = $input['swaps_padding-left'] : "";
+    ($input['swaps_paddingLeft'] != "") ?
+      $settings['paddingLeft'] = $input['swaps_paddingLeft'] : "";
 
-    ($input['swaps_padding-right'] != "") ?
-      $settings['padding-right'] = $input['swaps_padding-right'] : "";
+    ($input['swaps_paddingRight'] != "") ?
+      $settings['paddingRight'] = $input['swaps_paddingRight'] : "";
 
-    ($input['swaps_padding-top'] != "") ?
-      $settings['padding-top'] = $input['swaps_padding-top'] : "";
+    ($input['swaps_paddingTop'] != "") ?
+      $settings['paddingTop'] = $input['swaps_paddingTop'] : "";
 
-    ($input['swaps_padding-bottom'] != "") ?
-      $settings['padding-bottom'] = $input['swaps_padding-bottom'] : "";
+    ($input['swaps_paddingBottom'] != "") ?
+      $settings['paddingBottom'] = $input['swaps_paddingBottom'] : "";
 
-    ($input['swaps_margin-left'] != "") ?
-      $settings['margin-left'] = $input['swaps_margin-left'] : "";
+    ($input['swaps_marginLeft'] != "") ?
+      $settings['marginLeft'] = $input['swaps_marginLeft'] : "";
 
-    ($input['swaps_margin-right'] != "") ?
-      $settings['margin-right'] = $input['swaps_margin-right'] : "";
+    ($input['swaps_marginRight'] != "") ?
+      $settings['marginRight'] = $input['swaps_marginRight'] : "";
 
-    ($input['swaps_margin-top'] != "") ?
-      $settings['margin-top'] = $input['swaps_margin-top'] : "";
+    ($input['swaps_marginTop'] != "") ?
+      $settings['marginTop'] = $input['swaps_marginTop'] : "";
 
-    ($input['swaps_margin-bottom'] != "") ?
-      $settings['margin-bottom'] = $input['swaps_margin-bottom'] : "";
+    ($input['swaps_marginBottom'] != "") ?
+      $settings['marginBottom'] = $input['swaps_marginBottom'] : "";
 
-    ($input['swaps_text-align'] != "default") ?
-      $settings['text-align'] = $input['swaps_text-align'] : "";
+    ($input['swaps_textAlign'] != "default") ?
+      $settings['textAlign'] = $input['swaps_textAlign'] : "";
 
-    ($input['swaps_css-styles'] != "") ?
-      $settings['css-styles'] = $input['swaps_css-styles'] : "";
+    ($input['swaps_cssStyles'] != "") ?
+      $settings['css-styles'] = $input['swaps_cssStyles'] : "";
 
     ($input['swaps_extraClass'] != "") ?
       $settings['extraClass'] = $input['swaps_extraClass'] : "";
@@ -169,8 +168,8 @@ class SwapDefaultAttributes {
     ($input['swaps_id'] != "") ?
       $settings['id'] = $input['swaps_id'] : "";
 
-    ($input['swaps_background-color'] != "") ?
-      $settings['background-color'] = $input['swaps_background-color'] : "";
+    ($input['swaps_backgroundColor'] != "") ?
+      $settings['backgroundColor'] = $input['swaps_backgroundColor'] : "";
 
   }
 }

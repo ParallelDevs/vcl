@@ -111,6 +111,7 @@ class ButtonAttributesForm extends FormBase{
 
     SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input);
 
+
     //---------------------------------------------------------------
     //            create the ajax response
     //---------------------------------------------------------------

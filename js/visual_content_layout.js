@@ -117,7 +117,7 @@
     }
 
     /**
-     * Manage the information send by swap attributes form.
+     * Manage the information send by each swap attributes form.
      *
      * Methods that are responsible for take the information save the attributes and create the visual element
      *
@@ -140,13 +140,21 @@
 
                 //create the html element for the new swap
                 var element = document.createElement('div');
+
                 $(element).addClass('visual-content-layout-element panel panel-default')
-                          .html(elementTitle);
+                          .html(elementTitle + attributes.link);
 
                 //create the delete button for this element
-                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
-                    .on('click', deleteVisualElement)
-                    .appendTo($(element));
+                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 iconButton',})
+                    .on('click', deleteVisualElement);
+
+                //create the edit button for this element
+                var editButton = $('<i/>').attr({class:'fa fa-pencil-square-o fa-3 iconButton',})
+                    .on('click', editVisualElement)
+                    .data('swapName', attributes.swapName);
+
+                deleteButton.appendTo(element);
+                editButton.appendTo(element);
 
                 //validate the swap can contain others swaps
                 if(attributes.container){
@@ -264,11 +272,6 @@
                             if(typeof enableSwaps[c.split(" ")[0]] === "undefined"){
                                 //create a simple text swap
                                 var div = createHTMLDiv(originaltext, null, swapnames);
-                                //create the delete button for this element
-                                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
-                                    .on('click', deleteVisualElement)
-                                    .appendTo($(div));
-
                                 //validate is the storage swap is a father of the created div
                                 if(swap != null){
                                     elements.push(swap);
@@ -296,11 +299,6 @@
                             }
                             swap = c.trim().split(" ");
                             var div = createHTMLDiv(originaltext, swap, swapnames);
-                            //create the delete button for this element
-                            var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
-                                .on('click', deleteVisualElement)
-                                .appendTo($(div));
-
                             //validate if the swap can contain others swaps
                             if(enableSwaps[c.split(" ")[0]]){
                                 $('<div>').addClass('container').appendTo($(div));
@@ -328,10 +326,6 @@
                                 //validate if exist a father
                                 if(!fatherSwap){
                                     var div = createHTMLDiv(originaltext, null, swapnames);
-                                    //create the delete button for this element
-                                    var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
-                                        .on('click', deleteVisualElement)
-                                        .appendTo($(div));
                                     $(div).appendTo($(visualHelpArea));
                                     count = 0;
                                     continue;
@@ -341,10 +335,6 @@
                                 if(fatherSwap[0] == c){
                                     //create the father and add the child
                                     var div = createHTMLDiv(originaltext, fatherSwap, swapnames);
-                                    //create the delete button for this element
-                                    var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
-                                        .on('click', deleteVisualElement)
-                                        .appendTo($(div));
                                     var ele = $('<div>').addClass('container').appendTo($(div));
                                     while(elements[lastFather+1]){
                                         $(elements[lastFather+1]).appendTo(ele);
@@ -372,10 +362,6 @@
                             //validate if the child swap and close character are the same
                             if(swap[0] == c){
                                 var div = createHTMLDiv(originaltext, swap, swapnames);
-                                //create the delete button for this element
-                                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 deleteButton',})
-                                    .on('click', deleteVisualElement)
-                                    .appendTo($(div));
                                 //validate if the swap can contain others swaps
                                 if(enableSwaps[c.split(" ")[0]]){
                                     $('<div>').addClass('container').appendTo($(div));
@@ -480,6 +466,15 @@
                     swapName = (swapnames[swap[0]])? swapnames[swap[0]] : "",
                     text = "";
 
+                //create the delete button for this element
+                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 iconButton',})
+                    .on('click', deleteVisualElement);
+
+                //create the edit button for this element
+                var editButton = $('<i/>').attr({class:'fa fa-pencil-square-o fa-3 iconButton',})
+                    .on('click', editVisualElement)
+                    .data('swapName', swapName);
+
                 //validate if the swap is a valid swap
                 if(swap != null){
                     //set the name in data attributes
@@ -499,6 +494,9 @@
                     element.data('swapId', "string");
                     element.data('text', originaltext);
                 }
+
+                deleteButton.appendTo(element);
+                editButton.appendTo(element);
 
                 return element;
             }
@@ -587,29 +585,69 @@
     }
 
     //--------------------------------------------------------------------------------
-    //                 event click delete visual element
+    //                 event click edit visual element
     //--------------------------------------------------------------------------------
-    function deleteVisualElement(){
+    function editVisualElement(){
 
-        var url = '/VisualContentD8/visual_content_layout/swap_attributes_update_form/Button'
+        var swapName = $(this).data()['swapName'],
+            url = '/VisualContentD8/visual_content_layout/swap_attributes_update_form/'+swapName,
+            swapAttributes = $(this).parent().data();
+
+        $('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>')
+            .insertAfter($(this));
 
         $.ajax({
             type: 'POST',
-            url: url, // Which url should be handle the ajax request. This is the url defined in the <a> html tag
-            dataType: 'json', //define the type of data that is going to get back from the server
-            data: 'js=1', //Pass a key/value pair
-            success: function(data) {
-                $( "#miarea").html(data)
-                    .dialog({ modal: true });
-            }
+            url: url,
+            dataType: 'json',
+            success: function(data){
+                $("#visual-content-layout-update-modal").html(data);
+
+                setAttributesInForm(swapAttributes)
+
+                Drupal.behaviors.verticalTabs.attach($('#visual-content-layout-update-modal'));
+                $("#visual-content-layout-update-modal").dialog({
+                    modal: true,
+                    draggable: false,
+                    resizable: false,
+                    minWidth: 1200
+                });
+            },
+            complete: function(){
+                $('.ajax-progress').remove();
+            },
         });
 
     };
 
+    function setAttributesInForm(attributes){
+
+        var element = $("#visual-content-layout-update-modal :input");
+
+        for(attr in attributes){
+
+            var inputId = '#edit-swaps-' + attr,
+                input = $(inputId.toLowerCase());
+
+            if(input[0]){
+                input.val(attributes[attr]);
+            }
+
+
+        }
+
+        var asd = 4;
+
+    }
+
+    function updateVisualElement(){
+
+    }
+
     //--------------------------------------------------------------------------------
     //                 event click delete visual element
     //--------------------------------------------------------------------------------
-    function help(){
+    function deleteVisualElement(){
         var parent = $(this).parent('.visual-content-layout-element'),
             visualHelpArea = $(parent).parents('.visual-content-layout-visual-help'),
             addButton = $(visualHelpArea[0]).find('a'),
