@@ -41,7 +41,6 @@ class Button extends SwapBase {
   }
 
   public function theme($attrs, $text) {
-
     //process attributes that don't have default value
     $id = ($attrs['id'] != '') ? ' id="'.$attrs['id'].'"' : "";
     $class = ($attrs['extraclass'] != '') ? ' class="'.$attrs['extraclass'].'"' : "";

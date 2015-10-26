@@ -133,16 +133,13 @@
                 var textArea = $('#visual-content-layout-actual-textarea').val(),
                     textAreaElement = $('#' + textArea),
                     textAreaParent = textAreaElement.parents()[2],
-                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help'),
-                    elementTitle = attributes.swapName + ": " ;
-
-                elementTitle +=  (attributes.text && attributes.text!= "")?attributes.text:"";
+                    visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help');
 
                 //create the html element for the new swap
                 var element = document.createElement('div');
 
                 $(element).addClass('visual-content-layout-element panel panel-default')
-                          .html(elementTitle + attributes.link);
+                          .html(attributes.swapName);
 
                 //create the delete button for this element
                 var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 iconButton',})
@@ -483,15 +480,17 @@
                 var element = $('<div>').addClass('visual-content-layout-element panel panel-default');
 
                 //create the delete button for this element
-                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 iconButton',})
+                var deleteButton = $('<i/>').attr({class:'fa fa-trash-o iconButton',})
                     .on('click', deleteVisualElement);
+
+                //create the icon for handle the drag
+                var dragIcon = $('<span/>').attr({class:'fa fa-arrows dragIcon',});
 
 
                 //validate if the swap is a valid swap
                 if(swap != null){
 
-                    var swapName = swapnames[swap[0]],
-                        text = "";
+                    var swapName = swapnames[swap[0]];
 
                     //create the edit button for this element
                     var editButton = $('<i/>').attr({class:'fa fa-pencil-square-o fa-3 iconButton',})
@@ -505,17 +504,15 @@
                     for (idx in swap) {
                         var attr = swap[idx].trim().replace(/\"/gi,'').split('=');
                         element.data(attr[0], attr[1]);
-                        if(attr[0] == "text"){
-                            text = attr[1];
-                        }
                     }
-                    element.html( swapName );
+                    dragIcon.html( swapName );
                 }else{
-                    element.html("Text: " + originaltext);
+                    dragIcon.html("Text: " + originaltext);
                     element.data('swapId', "string");
                     element.data('text', originaltext);
                 }
 
+                dragIcon.appendTo(element);
                 deleteButton.appendTo(element);
                 editButton? editButton.appendTo(element) : "";
 
@@ -594,6 +591,7 @@
             axis: "y",
             opacity: 0.5,
             cursor: "move",
+            handle: "span",
             stop: function( event, ui ) {
                 var visualHelpArea = $(ui.item[0]).parents('.visual-content-layout-visual-help'),
                     addButton = $(visualHelpArea[0]).find('a'),
@@ -632,11 +630,13 @@
                 Drupal.behaviors.verticalTabs.attach($('#visual-content-layout-update-modal'));
                 //display modal dialog
                 $("#visual-content-layout-update-modal").dialog({
+                    title: "Swap Atributes",
                     modal: true,
                     draggable: false,
                     resizable: false,
                     minWidth: 1200
                 });
+                Drupal.behaviors.visualContentLayoutElementsInit.attach($('#visual-content-layout-update-modal'));
             },
             complete: function(){
                 $('.ajax-progress').remove();
