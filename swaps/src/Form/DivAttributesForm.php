@@ -127,9 +127,8 @@ class DivAttributesForm extends FormBase{
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['size'] = $input['swaps_column_size'];
-    $settings['number'] = $input['swaps_column_number'];
-
+    $settings['class'] = $input['swaps_div_class'];
+    $settings['type'] = $input['swaps_div_type'];
 
     //---------------------------------------------------------------
     // get the default attributes values of the swap (required for visual help)

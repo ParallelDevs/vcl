@@ -10,7 +10,6 @@ namespace Drupal\visual_content_layout\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
-use Drupal\Component\Serialization\Json;
 
 /**
  * Class VisualContentLayoutController.
@@ -73,7 +72,6 @@ class VisualContentLayoutController extends ControllerBase {
         break;
       }
     }
-
     $response = new AjaxResponse(render($form));
     return $response;
   }

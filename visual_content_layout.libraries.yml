@@ -2,7 +2,6 @@ bootstrap:
   version: 1.x
   js:
     js/bootstrap.js: {}
-    js/jquery-ui.js: {}
   css:
     theme:
         css/styles.css: {}
@@ -14,11 +13,13 @@ visual_content_layout:
   version: 1.x
   js:
     js/visual_content_layout.js: {}
-    js/modernizr.custom.js: {}
-    js/classie.js: {}
     js/form_elements.js: {}
     js/bootstrap-colorpicker.js: {}
 
   dependencies:
     - core/jquery
+    - core/jquery.ui
+    - core/jquery.ui.draggable
+    - core/jquery.ui.droppable
+    - core/jquery.ui.sortable
     - core/drupalSettings
