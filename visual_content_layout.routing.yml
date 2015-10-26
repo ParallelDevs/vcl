@@ -8,10 +8,19 @@ visual_content_layout.swap_select_form:
     _permission: 'access content'
 
 visual_content_layout.swap_attributes_form:
-  path: '/visual_content_layout/swap_select_other_form'
+  path: '/visual_content_layout/swap_attributes_form/{swap}'
   defaults:
     _controller: '\Drupal\visual_content_layout\Controller\VisualContentLayoutController::displayModalAttributesForm'
     _title: 'mymodule Title'
   requirements:
     _permission: 'access content'
 
+
+
+visual_content_layout.swap_attributes_update_form:
+  path: '/visual_content_layout/swap_attributes_update_form/{swap}'
+  defaults:
+    _controller: '\Drupal\visual_content_layout\Controller\VisualContentLayoutController::getUpdateFormSwap'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'

@@ -4,7 +4,6 @@
  * @file
  * Filter that enable the use patterns to create visual content more easy.
  * Drupal\visual_content_layout\Plugin\Filter\FilterVisualContent.
- *
  */
 
 namespace Drupal\visual_content_layout\Plugin\Filter;
@@ -22,7 +21,8 @@ use Drupal\Core\Form\FormStateInterface;
  * @Filter(
  *   id = "filter_visualcontentlayout",
  *   title = @Translation("Visual Content Layout"),
- *   description = @Translation("Provides a ShortCode filter format to easily generate content layout."),
+ *   description = @Translation("Provides a ShortCode filter
+ *                                format to easily generate content layout."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {
  *     "bootstrap" = TRUE,

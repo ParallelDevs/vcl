@@ -16,7 +16,7 @@ use Drupal\swaps\SwapBase;
  *   id = "button",
  *   name = "Button",
  *   description = @Translation("Insert a link formatted as a button."),
- *   attributes = "url:text",
+ *   container = false,
  *   tip = "[button url='url' class='class'] Button [/button]"
  * )
  */
@@ -24,24 +24,29 @@ class Button extends SwapBase {
 
   function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
-      'class' => 'button',
-      'url' => '',
+      'extraclass' => '',
+      'id' =>'',
+      'url' => '#',
       'path' => '<front>',
-      'text' => '',
     ),
       $attrs
     );
 
-    $attrs['class'] = $this->addClass($attrs['class'], 'button');
-    $attrs['text'] = $text;
+    $attrs['extraclass'] = $this->addClass($attrs['extraclass'], 'button');
+    $attrs['style'] = $this->getStyle($attrs);
     if ($attrs['url']) {
       $attrs['path'] = $attrs['url'];
     }
-    return $this->theme($attrs);
+    return $this->theme($attrs, $text);
   }
 
   public function theme($attrs, $text) {
-    return '<a href="' . $attrs['path'] . '" class="' . $attrs['class'] . '"><span>' . $attrs['text'] . '</span></a>';
+    //process attributes that don't have default value
+    $id = ($attrs['id'] != '') ? ' id="'.$attrs['id'].'"' : "";
+    $class = ($attrs['extraclass'] != '') ? ' class="'.$attrs['extraclass'].'"' : "";
+    ($text != '') ? '' : $text = 'title';
+
+    return '<a href="' . $attrs['url'] . '" '. $id . $class . $attrs['style'] . '><span>' . $text . '</span></a>';
   }
 
 }

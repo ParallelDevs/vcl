@@ -34,7 +34,7 @@ class VisualContentLayoutSelectForm extends FormBase {
       //attributes for the url to the swap form
       $attributes = array(
         'attributes' => array(
-          'class' => array('use-ajax'),
+          'class' => array('use-ajax btn btn-6 btn-6b'),
         ),
       );
       $url = Url::fromRoute('visual_content_layout.swap_attributes_form',

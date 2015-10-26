@@ -44,5 +44,11 @@ interface SwapInterface extends PluginInspectionInterface  {
    * @return array()
    */
   public function addClass($class, $default);
+  /**
+   * Return a string with the all style attributes.
+   *
+   * @return string
+   */
+  public function getStyle($attributes);
 
 }

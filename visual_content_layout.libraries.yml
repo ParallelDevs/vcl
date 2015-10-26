@@ -1,15 +1,24 @@
 bootstrap:
   version: 1.x
   js:
-    js/bootstrap.min.js: {}
+    js/bootstrap.js: {}
+    js/jquery-ui.js: {}
   css:
     theme:
-        css/bootstrap.min.css: {}
+        css/styles.css: {}
+        css/font-awesome.css: {}
+        css/component.css: {}
+        css/bootstrap-colorpicker.css: {}
 
 visual_content_layout:
   version: 1.x
   js:
     js/visual_content_layout.js: {}
+    js/modernizr.custom.js: {}
+    js/classie.js: {}
+    js/form_elements.js: {}
+    js/bootstrap-colorpicker.js: {}
+
   dependencies:
     - core/jquery
     - core/drupalSettings
