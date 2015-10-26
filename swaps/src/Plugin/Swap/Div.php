@@ -24,10 +24,13 @@ use Drupal\swaps\SwapBase;
 
 class Div extends SwapBase {
 
-  function processCallback($attrs, $text) {
+  /**
+   * Get all attributes of the swap and validate it.
+   */
+  public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'extraclass' => '',
-      'type' => 'container'
+      'type' => 'container',
     ),
       $attrs
     );
@@ -35,22 +38,31 @@ class Div extends SwapBase {
     $attrs['type'] = $this->validateClass($attrs['type']);
     $attrs['style'] = $this->getStyle($attrs);
 
-    return $this->theme($attrs,$text);
+    return $this->theme($attrs, $text);
   }
 
-  public function validateClass($class){
+  /**
+   * Validate the class.
+   */
+  public function validateClass($class) {
     switch ($class) {
       case "row":
         return $class;
+
       case "container":
         return $class;
+
       default:
         return 'container';
     }
   }
 
+  /**
+   * Create the string of the swap.
+   */
   public function theme($attrs, $text) {
-    return '<div class="' . $attrs['type'] . ' ' .  $attrs['extraclass'] . '" '.$attrs['style'].'>' . $text . '</div>';
+    return '<div class="' . $attrs['type'] . ' '
+    . $attrs['extraclass'] . '" ' . $attrs['style'] . '>' . $text . '</div>';
   }
 
 }

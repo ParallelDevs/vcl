@@ -11,9 +11,9 @@ class VisualContentLayoutSwapper {
   /**
    * Logic for replace the swap pattern with the html code corresponding.
    */
-  public static function swapProcess($text){
+  public static function swapProcess($text) {
 
-    //get all the swaps plugins
+    // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
 
@@ -21,7 +21,8 @@ class VisualContentLayoutSwapper {
       return $text;
     }
 
-    // Processing recursively, now embedding tags within other tags is supported!
+    // Processing recursively,
+    // now embedding tags within other tags is supported!
     $chunks = preg_split('!(\[{1,2}.*?\]{1,2})!', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
 
     $heap = array();
@@ -56,8 +57,7 @@ class VisualContentLayoutSwapper {
         $tag = array_shift($ts);
         $tag = trim($tag, '/');
 
-
-        $x = self::swapIsTag($tag,$swaps);
+        $x = self::swapIsTag($tag, $swaps);
         if (!$x) {
           // The current tag is not enabled.
           array_unshift($heap_index, '_string_');
@@ -68,7 +68,7 @@ class VisualContentLayoutSwapper {
           /*
            * The exploded array elements meaning:
            * 0 - the full tag text?
-           * 1/5 - An extra [] to allow for escaping Shortcodes with double [[]].
+           * 1/5 - An extra [] to allow for escaping Shortcode with double [[]].
            * 2 - The Swap name.
            * 3 - The Swap argument list.
            * 4 - The content of a Swap when it wraps some content.
@@ -83,7 +83,7 @@ class VisualContentLayoutSwapper {
             '',
           );
           array_unshift($heap_index, '_string_');
-          array_unshift($heap, self::processTag($m,$swaps));
+          array_unshift($heap, self::processTag($m, $swaps));
         }
         elseif ($c[0] == '/') {
           // Indicate a closing tag, so we process the heap.
@@ -108,7 +108,7 @@ class VisualContentLayoutSwapper {
                 implode('', $process_heap),
                 '',
               );
-              $str = self::processTag($m,$swaps);
+              $str = self::processTag($m, $swaps);
               array_unshift($heap_index, '_string_');
               array_unshift($heap, $str);
               $found = TRUE;
@@ -141,11 +141,10 @@ class VisualContentLayoutSwapper {
         array_unshift($heap_index, '_string_');
         array_unshift($heap, $c);
       }
-    }//end foreach
+    }// End foreach.
 
     return (implode('', array_reverse($heap)));
-  }//end swap_process
-
+  }// End swap_process.
 
   /**
    * Validate the tag.
@@ -156,12 +155,10 @@ class VisualContentLayoutSwapper {
     }
 
     return FALSE;
-  }//end swap_is_tag
-
-
+  }// End swap_is_tag.
 
   /**
-   * Process attributes and call the plugin callback function
+   * Process attributes and call the plugin callback function.
    */
   public static function processTag($m, $swaps) {
 
@@ -182,22 +179,22 @@ class VisualContentLayoutSwapper {
 
       if (!is_null($m[4])) {
         // This is an enclosing tag, means extra parameter is present.
-          return $m[1] . $swap->processCallback($attr,$m[4]) . $m[5];
+        return $m[1] . $swap->processCallback($attr, $m[4]) . $m[5];
       }
       else {
         // This is a self-closing tag.
-         return $m[1] . $swap->processCallback($attr) . $m[5];
+        return $m[1] . $swap->processCallback($attr) . $m[5];
       }
     }
     elseif (is_null($m[4])) {
       return $m[4];
     }
     return '';
-  }//end process_tag
+  }// End process_tag.
 
 
   /**
-   * Extract attributes from the tag text
+   * Extract attributes from the tag text.
    */
   public static function parseAttrs($text) {
     $attrs = array();

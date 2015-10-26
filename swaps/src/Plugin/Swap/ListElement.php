@@ -22,7 +22,10 @@ use Drupal\swaps\SwapBase;
 
 class ListElement extends SwapBase {
 
-  function processCallback($attrs, $text) {
+  /**
+   * Get all attributes of the swap and validate it.
+   */
+  public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'extraclass' => '',
     ),
@@ -34,13 +37,17 @@ class ListElement extends SwapBase {
     return $this->theme($attrs, $text);
   }
 
+  /**
+   * Create the string of the swap.
+   */
   public function theme($attrs, $text) {
 
     if ($attrs['extraclass'] = '') {
-      return '<li'.$attrs['style'].'>' . $text . '</li>';
+      return '<li' . $attrs['style'] . '>' . $text . '</li>';
     }
     else {
-      return '<li class="' . $attrs['extraclass'] . '"'.$attrs['style'].'>' . $text . '</li>';
+      return '<li class="' . $attrs['extraclass'] . '"' . $attrs['style']
+      . '>' . $text . '</li>';
     }
   }
 }

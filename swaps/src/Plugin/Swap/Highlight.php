@@ -15,7 +15,7 @@ use Drupal\swaps\SwapBase;
  * @Swap(
  *   id = "hgl",
  *   name = "Highlight",
- *   description = @Translation("Add a span with the class Highlight for put the style"),
+ *   description = @Translation("Add a span with the class Highlight"),
  *   attributes = "[Font Color | font_color | color ] ,
  *                 [Text | text | text ]",
  *   container = false,
@@ -25,23 +25,30 @@ use Drupal\swaps\SwapBase;
 
 class Highlight extends SwapBase {
 
-  function processCallback($attrs, $text) {
+  /**
+   * Get all attributes of the swap and validate it.
+   */
+  public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'extraclass' => '',
-      'font_color' => ''
+      'font_color' => '',
     ),
       $attrs
     );
 
     $extra = array('font_color' => $attrs['font_color']);
-    $attrs['style'] = $this->getStyle($attrs,$extra);
+    $attrs['style'] = $this->getStyle($attrs, $extra);
 
-    return $this->theme($attrs,$text);
+    return $this->theme($attrs, $text);
   }
 
+  /**
+   * Create the string of the swap.
+   */
   public function theme($attrs, $text) {
 
-    return '<span class="' . $attrs['extraclass'] . '"' . $attrs['style'] . '">' . $text . ' </span>';
+    return '<span class="' . $attrs['extraclass'] . '"'
+    . $attrs['style'] . '">' . $text . ' </span>';
   }
 
 }

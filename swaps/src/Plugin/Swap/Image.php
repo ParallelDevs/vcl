@@ -18,13 +18,17 @@ use Drupal\swaps\SwapBase;
  *   description = @Translation("Add an image."),
  *   attributes = "url:text, height:text, width:text",
  *   container = false,
- *   tip = "[img url='url' WIDTH='width' HEIGHT='height' /] -> width and height optional. "
+ *   tip = "[img url='url' WIDTH='width' HEIGHT='height' /]
+ *         -> width and height optional. "
  * )
  */
 
 class Image extends SwapBase {
 
-  function processCallback($attrs, $text) {
+  /**
+   * Get all attributes of the swap and validate it.
+   */
+  public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'url' => '',
       'width' => '',
@@ -33,14 +37,19 @@ class Image extends SwapBase {
       $attrs
     );
 
-    return $this->theme($attrs,$text);
+    return $this->theme($attrs, $text);
   }
 
+  /**
+   * Create the string of the swap.
+   */
   public function theme($attrs, $text) {
-    if($attrs['width'] == '' || $attrs['height'] == '') {
+    if ($attrs['width'] == '' || $attrs['height'] == '') {
       return '<img src="' . $attrs['url'] . '" />';
-    }else{
-      return '<img src="' . $attrs['url'] . '" height="' . $attrs['width'] . '" width="' . $attrs['height'] . '"/>';
+    }
+    else {
+      return '<img src="' . $attrs['url'] . '" height="' . $attrs['width']
+      . '" width="' . $attrs['height'] . '"/>';
     }
   }
 
