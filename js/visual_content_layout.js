@@ -297,7 +297,16 @@
                                 elements.push(swap);
                                 father.push(elements.length - 1);
                             }
+                            //get cssStyle
+                            var startIndex = c.indexOf("cssStyles"),
+                                lastIndex = c.indexOf('"', startIndex),
+                                lastIndex = c.indexOf('"', lastIndex+1),
+                                cssStyle = c.substring(startIndex, lastIndex);
+
+                            //save the attributes of the swaps
+                            c = c.replace(" "+cssStyle, "");
                             swap = c.trim().split(" ");
+                            swap.push(cssStyle);
                             var div = createHTMLDiv(originaltext, swap, swapnames);
                             //validate if the swap can contain others swaps
                             if(enableSwaps[c.split(" ")[0]]){
@@ -366,11 +375,11 @@
                                 if(enableSwaps[c.split(" ")[0]]){
                                     $('<div>').addClass('container').appendTo($(div));
                                 }
+                                swap = null;
+                                swapText = false;
                                 //validate if that swap have a father
                                 if(father.length > 0){
                                     elements.push(div);
-                                    swap = null;
-                                    swapText = false;
                                     continue;
                                 }else{
                                     $(div).appendTo($(visualHelpArea));
@@ -409,8 +418,17 @@
                             elements.push(swap);
                             father.push(elements.length - 1);
                         }
+
+                        //get cssStyle
+                        var startIndex = c.indexOf("cssStyles"),
+                            lastIndex = c.indexOf('"', startIndex),
+                            lastIndex = c.indexOf('"', lastIndex+1),
+                            cssStyle = c.substring(startIndex, lastIndex);
+
                         //save the attributes of the swaps
+                        c = c.replace(" "+cssStyle, "");
                         swap = c.trim().split(" ");
+                        swap.push(cssStyle);
                         swapText = true;
                         count++;
                         continue;
@@ -462,21 +480,24 @@
             //--------------------------------------------------------------------------------
             function createHTMLDiv(originaltext, swap, swapnames){
                 //create the element and set the class
-                var element = $('<div>').addClass('visual-content-layout-element panel panel-default'),
-                    swapName = (swapnames[swap[0]])? swapnames[swap[0]] : "",
-                    text = "";
+                var element = $('<div>').addClass('visual-content-layout-element panel panel-default');
 
                 //create the delete button for this element
                 var deleteButton = $('<i/>').attr({class:'fa fa-trash-o fa-3 iconButton',})
                     .on('click', deleteVisualElement);
 
-                //create the edit button for this element
-                var editButton = $('<i/>').attr({class:'fa fa-pencil-square-o fa-3 iconButton',})
-                    .on('click', editVisualElement)
-                    .data('swapName', swapName);
 
                 //validate if the swap is a valid swap
                 if(swap != null){
+
+                    var swapName = swapnames[swap[0]],
+                        text = "";
+
+                    //create the edit button for this element
+                    var editButton = $('<i/>').attr({class:'fa fa-pencil-square-o fa-3 iconButton',})
+                        .on('click', editVisualElement)
+                        .data('swapName', swapName);
+
                     //set the name in data attributes
                     element.data('swapId', swap[0]);
                     delete(swap[0]);
@@ -488,7 +509,7 @@
                             text = attr[1];
                         }
                     }
-                    element.html( swapName + ": " + text );
+                    element.html( swapName );
                 }else{
                     element.html("Text: " + originaltext);
                     element.data('swapId', "string");
@@ -496,7 +517,7 @@
                 }
 
                 deleteButton.appendTo(element);
-                editButton.appendTo(element);
+                editButton? editButton.appendTo(element) : "";
 
                 return element;
             }
@@ -588,24 +609,28 @@
     //                 event click edit visual element
     //--------------------------------------------------------------------------------
     function editVisualElement(){
-
+        //get the swap name of the swap to fin the respective form
         var swapName = $(this).data()['swapName'],
             url = '/VisualContentD8/visual_content_layout/swap_attributes_update_form/'+swapName,
             swapAttributes = $(this).parent().data();
-
+        //set a class in the div to identify which div actualize
+        $(this).parent().addClass("swap-actualize-div");
+        //place the progress icon
         $('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>')
             .insertAfter($(this));
-
+        //execute ajax call
         $.ajax({
             type: 'POST',
             url: url,
             dataType: 'json',
             success: function(data){
+                //place the for in the special div for update dialogs
                 $("#visual-content-layout-update-modal").html(data);
-
-                setAttributesInForm(swapAttributes)
-
+                //call set attributes
+                setAttributesInForm(swapAttributes);
+                //execute verticalTab behaviors to theme the vertical tabs
                 Drupal.behaviors.verticalTabs.attach($('#visual-content-layout-update-modal'));
+                //display modal dialog
                 $("#visual-content-layout-update-modal").dialog({
                     modal: true,
                     draggable: false,
@@ -617,31 +642,62 @@
                 $('.ajax-progress').remove();
             },
         });
-
     };
 
+    //--------------------------------------------------------------------------------
+    //                 place the actual attributes in update form modal
+    //--------------------------------------------------------------------------------
     function setAttributesInForm(attributes){
-
-        var element = $("#visual-content-layout-update-modal :input");
-
+        //iterate all attributes fd the div
         for(attr in attributes){
-
-            var inputId = '#edit-swaps-' + attr,
-                input = $(inputId.toLowerCase());
-
-            if(input[0]){
-                input.val(attributes[attr]);
-            }
-
-
+            //set default attributes
+            var input = '#edit-swaps-' + attr,
+                input = $(input.toLowerCase());
+            input.val(attributes[attr]);
+            //set own attributes
+            input = '#edit-swaps-' + attributes.swapId + '-' + attr;
+            input = $(input.toLowerCase());
+            input.val(attributes[attr]);
         }
-
-        var asd = 4;
-
+        //define the function of accept button, negate submit form
+        $("#edit-swaps-accept").on("click", updateVisualElement);
+        $("#visual-content-layout-update-modal form").submit(function(){ return false; });
     }
 
+    //--------------------------------------------------------------------------------
+    //      take the attributes in the update form modal and set in respective
+    //--------------------------------------------------------------------------------
     function updateVisualElement(){
-
+        //get the div to actualize and all inputs of the form
+        var div = $('.swap-actualize-div'),
+            elements = $(".ui-dialog-content :input"),
+            swap = div.data("swapId");
+        //iterate all inputs
+        for(var i = 0; i<elements.length ; i++){
+            //get the value of the input and the id
+            var value = $(elements[i]).val(),
+                data = $(elements[i]).attr('id');
+            //validate the input have id and is not the submit button
+            if(!data || data == "edit-swaps-accept"){
+                continue;
+            }
+            //create the data name based in the id
+            data = data.replace("edit-swaps-","");
+            data = data.replace(swap+'-',"");
+            //set the data
+            div.data(data, value);
+        }
+        //get the parents to find the textarea
+        var visualHelpArea = div.parents('.visual-content-layout-visual-help'),
+            addButton = $(visualHelpArea[0]).find('a'),
+            textArea = $(addButton[0]).data('textarea');
+        //recreate the text in textarea
+        var text = getTextFromVisual($(visualHelpArea[0]));
+        $("#" + textArea).val(text);
+        //remove the class that identify which div actualize
+        div.removeClass("swap-actualize-div");
+        //close modal dialog
+        $(".ui-dialog-content").dialog("close");
     }
 
     //--------------------------------------------------------------------------------
