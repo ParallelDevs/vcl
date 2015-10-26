@@ -160,4 +160,3 @@ class DivAttributesForm extends FormBase {
 
   }
 }
-
