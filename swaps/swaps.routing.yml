@@ -5,4 +5,3 @@ swaps.swap_settings_form:
     _title: 'SwapSettingsForm'
   requirements:
     _permission: 'access administration pages'
-

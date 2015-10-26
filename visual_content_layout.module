@@ -57,7 +57,7 @@ function visual_content_layout_load_field($field, $format) {
     $format = isset($format_arr['#value']) ? $format_arr['#value'] : $format_arr['#default_value'];
   }
   //display the link that enable the visual element
-  $prefix = '<div class="visual-content-layout-button-wrap"><a class="visual-content-layout-btn  " data-state="disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
+  $prefix = '<div class="visual-content-layout-button-wrap"><a class="visual-content-layout-btn" data-state="disable" data-id="' . $textarea_id . '" data-format = "' . $format . '">';
   $prefix .=  t('Loading...') . '</a></div>';
   //attributes for the link that display the select swap form
   $attributes = array(

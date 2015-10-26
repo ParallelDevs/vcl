@@ -77,7 +77,6 @@ class SwapBase extends PluginBase implements SwapInterface {
    */
   function setAttrs($pairs, $attrs) {
     $attrs = (array) $attrs;
-    $out = array();
     foreach ($attrs as $name => $value) {
       if ($value == '' && array_key_exists($name, $pairs)) {
         $attrs[$name] = $pairs[$name];
