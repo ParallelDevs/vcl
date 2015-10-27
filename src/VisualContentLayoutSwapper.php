@@ -141,7 +141,7 @@ class VisualContentLayoutSwapper {
         array_unshift($heap_index, '_string_');
         array_unshift($heap, $c);
       }
-    }// End foreach.
+    }
 
     return (implode('', array_reverse($heap)));
   }// End swap_process.
