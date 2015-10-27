@@ -5,7 +5,7 @@
 
 (function ($, Drupal) {
 
-  //hide the visual help for document ready
+  // Hide the visual help for document ready
   $('.visual-content-layout-visual-help').hide();
   $('.visual-content-layout-btn').text('Enable Visual Content Layout');
 
@@ -24,14 +24,14 @@
       for (var i = 0; i < filter.length; i++) {
 
         // Get the parent of the actual select, if is undefined it send and error and stop de cycle.
-        var filter_parent = $(filter[i]).parents()[2];
+        var filterParent = $(filter[i]).parents()[2];
 
         // Show the enable/disable button for the visual help according the textFormat.
         if (settings.visualContentLayout.enable_formats[$(filter[i]).val()]) {
-          $(filter_parent).children('.visual-content-layout-button-wrap').show();
+          $(filterParent).children('.visual-content-layout-button-wrap').show();
         }
         else {
-          $(filter_parent).children('.visual-content-layout-button-wrap').hide();
+          $(filterParent).children('.visual-content-layout-button-wrap').hide();
         }
       }
 
@@ -40,21 +40,21 @@
       //--------------------------------------------------------------------------------
       $('.filter-list', context).change(function () {
         // Get the parent of the filter select.
-        var select_parent = $(this).parents()[2];
+        var selectParent = $(this).parents()[2];
 
         // Validate if the textFormat use the visual help.
         if (settings.visualContentLayout.enable_formats[$(this).val()]) {
-          $(select_parent).children('.visual-content-layout-button-wrap').show();
+          $(selectParent).children('.visual-content-layout-button-wrap').show();
         }
         else {
-          $(select_parent).children('.visual-content-layout-button-wrap').hide();
-          $(select_parent).children('.visual-content-layout-visual-help').hide();
-          $(select_parent).children('.visual-content-layout-button-wrap')
+          $(selectParent).children('.visual-content-layout-button-wrap').hide();
+          $(selectParent).children('.visual-content-layout-visual-help').hide();
+          $(selectParent).children('.visual-content-layout-button-wrap')
             .find('.visual-content-layout-btn').data('state', 'disable');
-          $(select_parent).children('.visual-content-layout-button-wrap')
+          $(selectParent).children('.visual-content-layout-button-wrap')
             .find('.visual-content-layout-btn').text('Enable Visual Content Layout');
           $(this).parents('.text-format-wrapper').find('.form-textarea').show();
-          $(select_parent).children('#edit-body-0-format-guidelines').show();
+          $(selectParent).children('#edit-body-0-format-guidelines').show();
         }
       });
 
@@ -80,19 +80,19 @@
       //--------------------------------------------------------------------------------
       function handleVisualHelp(button, textArea, enable) {
         // Show the visual help section of the respective textArea.
-        var button_parent = $(button).parents()[1];
+        var buttonParent = $(button).parents()[1];
 
         if (enable) {
-          $(button_parent).children('.visual-content-layout-visual-help').show();
+          $(buttonParent).children('.visual-content-layout-visual-help').show();
           $('#' + textArea).hide();
-          $(button_parent).find('.filter-guidelines').hide();
+          $(buttonParent).find('.filter-guidelines').hide();
           $(button).data('state', 'enable');
           $(button).text('Disable Visual Content Layout');
         }
         else {
-          $(button_parent).children('.visual-content-layout-visual-help').hide();
+          $(buttonParent).children('.visual-content-layout-visual-help').hide();
           $('#' + textArea).show();
-          $(button_parent).find('.filter-guidelines').show();
+          $(buttonParent).find('.filter-guidelines').show();
           $(button).data('state', 'disable');
           $(button).text('Enable Visual Content Layout');
         }
@@ -127,10 +127,10 @@
 
       if (attributes) {
 
-        var text_area = $('#visual-content-layout-actual-textarea').val(),
-          text_area_element = $('#' + text_area),
-          text_area_parent = text_area_element.parents()[2],
-          visual_help_area = $(text_area_parent).children('.visual-content-layout-visual-help');
+        var textArea = $('#visual-content-layout-actual-textarea').val(),
+          textAreaElement = $('#' + textArea),
+          textAreaParent = textAreaElement.parents()[2],
+          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help');
 
         // Create the html element for the new swap.
         var element = document.createElement('div');
@@ -139,16 +139,16 @@
           .html(attributes.swapName);
 
         // Create the delete button for this element.
-        var delete_button = $('<i/>').attr({class: 'fa fa-trash-o fa-3 iconButton'})
+        var deleteButton = $('<i/>').attr({class: 'fa fa-trash-o fa-3 iconButton'})
           .on('click', deleteVisualElement);
 
         // Create the edit button for this element.
-        var edit_button = $('<i/>').attr({class: 'fa fa-pencil-square-o fa-3 iconButton'})
+        var editButton = $('<i/>').attr({class: 'fa fa-pencil-square-o fa-3 iconButton'})
           .on('click', editVisualElement)
           .data('swapName', attributes.swapName);
 
-        delete_button.appendTo(element);
-        edit_button.appendTo(element);
+        deleteButton.appendTo(element);
+        editButton.appendTo(element);
 
         // Validate the swap can contain others swaps.
         if (attributes.container) {
@@ -156,17 +156,17 @@
         }
         delete (attributes.container);
 
-        var attr_keys = Object.keys(attributes);
+        var attrKeys = Object.keys(attributes);
 
-        for (var i = 0; i < attr_keys.length; i++) {
-          if (attr_keys[i] !== '' && attr_keys[i] !== 'swapName') {
-            $(element).data(attr_keys[i], attributes[attr_keys[i]]);
+        for (var i = 0; i < attrKeys.length; i++) {
+          if (attrKeys[i] !== '' && attrKeys[i] !== 'swapName') {
+            $(element).data(attrKeys[i], attributes[attrKeys[i]]);
           }
         }
 
-        $(element).appendTo(visual_help_area);
+        $(element).appendTo(visualHelpArea);
 
-        createTextSwap($(element), text_area);
+        createTextSwap($(element), textArea);
         makeDragAndDrop();
 
       }
@@ -174,21 +174,21 @@
       //--------------------------------------------------------------------------------
       //          Convert the visual help element into text for the textArea
       //--------------------------------------------------------------------------------
-      function createTextSwap(visual_element, actual_text_area) {
-        var data = $(visual_element).data(),
+      function createTextSwap(visualElement, actualTextArea) {
+        var data = $(visualElement).data(),
           text = (data.text) ? "" + data.text : "",
-          attributes_text = ' ',
-          swap_text = '[' + data.swapId;
+          attributesText = ' ',
+          swapText = '[' + data.swapId;
 
         for (var attr in data) {
           // Validate the attribute is not the name, text o id.
           if (attr !== 'swapId' && attr !== 'text') {
-            attributes_text += attr.trim() + '="' + data[attr].trim() + '" ';
+            attributesText += attr.trim() + '="' + data[attr].trim() + '" ';
           }
         }
-        swap_text += attributes_text + ']' + text + '[/' + data.swapId + ']';
+        swapText += attributesText + ']' + text + '[/' + data.swapId + ']';
 
-        $('#' + actual_text_area).val($('#' + actual_text_area).val() + swap_text);
+        $('#' + actualTextArea).val($('#' + actualTextArea).val() + swapText);
         $('#visual-content-layout-actual-textarea').remove();
       }
     }
@@ -208,15 +208,15 @@
       //                  Event click enable/disable visual help button
       //--------------------------------------------------------------------------------
       $('.visual-content-layout-btn', context).click(function () {
-        // Get id of the respective text_area.
-        var text_area = $(this).data('id');
+        // Get id of the respective textArea.
+        var textArea = $(this).data('id');
 
         // Validate if the visual help is enable.
         if ($(this).data('state') === 'enable') {
           var swaps = settings.visualContentLayout.enable_swaps,
-            swap_names = settings.visualContentLayout.swap_names;
+            swapNames = settings.visualContentLayout.swap_names;
           // Make the visual element with the text.
-          getVisualElements(text_area, swaps, swap_names);
+          getVisualElements(textArea, swaps, swapNames);
           makeDragAndDrop();
         }
         else {
@@ -227,22 +227,22 @@
       //--------------------------------------------------------------------------------
       //                  Transform text in visual elements
       //--------------------------------------------------------------------------------
-      function getVisualElements(text_area, enable_swaps, swap_names) {
+      function getVisualElements(textArea, enableSwaps, swapNames) {
 
-        var text = $('#' + text_area).val(),
-          text_area_parent = $('#' + text_area).parents()[2],
-          visual_help_area = $(text_area_parent).children('.visual-content-layout-visual-help'),
+        var text = $('#' + textArea).val(),
+          textAreaParent = $('#' + textArea).parents()[2],
+          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help'),
           chunks = text.split(/(\[{1,2}.*?\]{1,2})/),
           elements = [],
           father = [],
           count = 0,
           swap = null,
-          swap_text = false;
+          swapText = false;
 
         for (var i = 0; i < chunks.length; i++) {
 
           // Save the original text in case of error in the swap pattern.
-          var original_text = chunks[i],
+          var originalText = chunks[i],
             c = chunks[i].trim();
 
           if (c === '') {
@@ -259,10 +259,10 @@
             if (c[c.length - 1] === '/') {
 
               // Validate the swap is a valid swap.
-              if (typeof enable_swaps[c.split(" ")[0]] === "undefined") {
+              if (typeof enableSwaps[c.split(" ")[0]] === "undefined") {
 
                 // Create a simple text swap.
-                div = createHTMLDiv(original_text, null, swap_names);
+                div = createHTMLDiv(originalText, null, swapNames);
 
                 // Validate if the storage swap is a father of the created div.
                 if (swap !== null) {
@@ -274,11 +274,11 @@
                 if (father.length > 0) {
                   elements.push(div);
                   swap = null;
-                  swap_text = false;
+                  swapText = false;
                   continue;
                 }
                 else {
-                  $(div).appendTo($(visual_help_area));
+                  $(div).appendTo($(visualHelpArea));
                   count = 0;
                   continue;
                 }
@@ -291,19 +291,19 @@
                 father.push(elements.length - 1);
               }
               // Get cssStyle.
-              var start_index = c.indexOf("cssStyles"),
-                middle_index = c.indexOf('"', start_index),
-                last_index = c.indexOf('"', middle_index + 1),
-                css_style = c.substring(start_index, last_index);
+              var startIndex = c.indexOf("cssStyles"),
+                middle_index = c.indexOf('"', startIndex),
+                lastIndex = c.indexOf('"', middle_index + 1),
+                cssStyle = c.substring(startIndex, lastIndex);
 
               // Save the attributes of the swaps.
-              c = c.replace(" " + css_style, "");
+              c = c.replace(" " + cssStyle, "");
               swap = c.trim().split(" ");
-              swap.push(css_style);
-              div = createHTMLDiv(original_text, swap, swap_names);
+              swap.push(cssStyle);
+              div = createHTMLDiv(originalText, swap, swapNames);
 
               // Validate if the swap can contain others swaps.
-              if (enable_swaps[c.split(" ")[0]]) {
+              if (enableSwaps[c.split(" ")[0]]) {
                 $('<div>').addClass('container').appendTo($(div));
               }
 
@@ -311,11 +311,11 @@
               if (father.length > 0) {
                 elements.push(div);
                 swap = null;
-                swap_text = false;
+                swapText = false;
                 continue;
               }
               else {
-                $(div).appendTo($(visual_help_area));
+                $(div).appendTo($(visualHelpArea));
                 count = 0;
                 continue;
               }
@@ -327,58 +327,58 @@
 
               // Validate if the close character is for a father.
               if (swap === null) {
-                var last_father = father.pop(), father_swap = elements[last_father];
+                var lastFather = father.pop(), fatherSwap = elements[lastFather];
 
                 // Validate if exist a father.
-                if (!father_swap) {
-                  var div = createHTMLDiv(original_text, null, swap_names);
-                  $(div).appendTo($(visual_help_area));
+                if (!fatherSwap) {
+                  var div = createHTMLDiv(originalText, null, swapNames);
+                  $(div).appendTo($(visualHelpArea));
                   count = 0;
                   continue;
                 }
 
                 // Validate the swap and close character are the same.
-                if (father_swap[0] === c) {
+                if (fatherSwap[0] === c) {
 
                   // Create the father and add the child.
-                  div = createHTMLDiv(original_text, father_swap, swap_names);
+                  div = createHTMLDiv(originalText, fatherSwap, swapNames);
                   var ele = $('<div>').addClass('container').appendTo($(div));
-                  while (elements[last_father + 1]) {
-                    $(elements[last_father + 1]).appendTo(ele);
-                    elements.splice(last_father + 1, 1);
+                  while (elements[lastFather + 1]) {
+                    $(elements[lastFather + 1]).appendTo(ele);
+                    elements.splice(lastFather + 1, 1);
                   }
 
                   // Validate if the father have a father.
                   if (father.length === 0) {
-                    $(div).appendTo($(visual_help_area));
+                    $(div).appendTo($(visualHelpArea));
                     elements.splice(0, 1);
                   } else {
-                    elements[last_father] = div;
+                    elements[lastFather] = div;
                   }
-                  count = last_father;
-                  swap_text = false;
+                  count = lastFather;
+                  swapText = false;
                   continue;
                 }
                 else {
-                  div = createHTMLDiv(original_text, null);
-                  father.push(last_father);
+                  div = createHTMLDiv(originalText, null);
+                  father.push(lastFather);
                   elements.push(div);
                   swap = null;
-                  swap_text = false;
+                  swapText = false;
                   continue;
                 }
               }
 
               // Validate if the child swap and close character are the same.
               if (swap[0] === c) {
-                div = createHTMLDiv(original_text, swap, swap_names);
+                div = createHTMLDiv(originalText, swap, swapNames);
 
                 // Validate if the swap can contain others swaps.
-                if (enable_swaps[c.split(" ")[0]]) {
+                if (enableSwaps[c.split(" ")[0]]) {
                   $('<div>').addClass('container').appendTo($(div));
                 }
                 swap = null;
-                swap_text = false;
+                swapText = false;
 
                 //validate if that swap have a father
                 if (father.length > 0) {
@@ -386,7 +386,7 @@
                   continue;
                 }
                 else {
-                  $(div).appendTo($(visual_help_area));
+                  $(div).appendTo($(visualHelpArea));
                   count = 0;
                   continue;
                 }
@@ -394,10 +394,10 @@
             }
 
             // Validate the swap is a valid swap.
-            if (typeof enable_swaps[c.split(" ")[0]] === "undefined") {
+            if (typeof enableSwaps[c.split(" ")[0]] === "undefined") {
 
               // Create a simple text swap.
-              div = createHTMLDiv(original_text, null, swap_names);
+              div = createHTMLDiv(originalText, null, swapNames);
 
               // Validate is the storage swap is a father of the created div.
               if (swap !== null) {
@@ -409,11 +409,11 @@
               if (father.length > 0) {
                 elements.push(div);
                 swap = null;
-                swap_text = false;
+                swapText = false;
                 continue;
               }
               else {
-                $(div).appendTo($(visual_help_area));
+                $(div).appendTo($(visualHelpArea));
                 count = 0;
                 continue;
               }
@@ -426,36 +426,36 @@
             }
 
             // Get cssStyle.
-            start_index = c.indexOf("cssStyles");
-            last_index = c.indexOf('"', start_index);
-            last_index = c.indexOf('"', last_index + 1);
-            css_style = c.substring(start_index, last_index);
+            startIndex = c.indexOf("cssStyles");
+            lastIndex = c.indexOf('"', startIndex);
+            lastIndex = c.indexOf('"', lastIndex + 1);
+            cssStyle = c.substring(startIndex, lastIndex);
 
             // Save the attributes of the swaps.
-            c = c.replace(" " + css_style, "");
+            c = c.replace(" " + cssStyle, "");
             swap = c.trim().split(" ");
-            swap.push(css_style);
-            swap_text = true;
+            swap.push(cssStyle);
+            swapText = true;
             count++;
             continue;
           }
 
           // Validate if the chunk is only text and is the first.
-          if (swap_text) {
-            swap.push('text="' + original_text + '"');
+          if (swapText) {
+            swap.push('text="' + originalText + '"');
           }
           else {
-            div = createHTMLDiv(original_text, null, swap_names);
+            div = createHTMLDiv(originalText, null, swapNames);
 
             // Validate if that swap have a father.
             if (father.length > 0) {
               elements.push(div);
               swap = null;
-              swap_text = false;
+              swapText = false;
               continue;
             }
             else {
-              $(div).appendTo($(visual_help_area));
+              $(div).appendTo($(visualHelpArea));
               count = 0;
               continue;
             }
@@ -464,17 +464,17 @@
 
         // Validate if are fathers in the array.
         if (father.length !== 0) {
-          var remain_father = father_swap;
-          last_father = father.pop();
-          father_swap = elements[last_father];
-          var father_original_text = "[ " + father_swap.toString().replace(/,/gi, ' ') + " ]",
-            errorFather = createHTMLDiv(father_original_text, null, swap_names);
+          var remain_father = fatherSwap;
+          lastFather = father.pop();
+          fatherSwap = elements[lastFather];
+          var fatherOriginalText = "[ " + fatherSwap.toString().replace(/,/gi, ' ') + " ]",
+            errorFather = createHTMLDiv(fatherOriginalText, null, swapNames);
 
           elements.push(div);
-          $(errorFather).appendTo($(visual_help_area));
-          while (elements[last_father + 1]) {
-            $(elements[last_father + 1]).appendTo($(visual_help_area));
-            elements.splice(last_father + 1, 1);
+          $(errorFather).appendTo($(visualHelpArea));
+          while (elements[lastFather + 1]) {
+            $(elements[lastFather + 1]).appendTo($(visualHelpArea));
+            elements.splice(lastFather + 1, 1);
           }
         }
       }
@@ -482,26 +482,26 @@
       //--------------------------------------------------------------------------------
       //                       Create html object for the swap
       //--------------------------------------------------------------------------------
-      function createHTMLDiv(original_text, swap, swap_names) {
+      function createHTMLDiv(originalText, swap, swapNames) {
         // Create the element and set the class.
         var element = $('<div>').addClass('visual-content-layout-element panel panel-default');
 
         // Create the delete button for this element.
-        var delete_button = $('<i/>').attr({class: 'fa fa-trash-o iconButton'})
+        var deleteButton = $('<i/>').attr({class: 'fa fa-trash-o iconButton'})
           .on('click', deleteVisualElement);
 
         // Create the icon for handle the drag.
-        var drag_icon = $('<span/>').attr({class: 'fa fa-arrows dragIcon'});
+        var dragIcon = $('<span/>').attr({class: 'fa fa-arrows dragIcon'});
 
         // Validate if the swap is a valid swap.
         if (swap !== null) {
 
-          var swap_name = swap_names[swap[0]];
+          var swapName = swapNames[swap[0]];
 
           // Create the edit button for this element.
-          var edit_button = $('<i/>').attr({class: 'fa fa-pencil-square-o fa-3 iconButton'})
+          var editButton = $('<i/>').attr({class: 'fa fa-pencil-square-o fa-3 iconButton'})
             .on('click', editVisualElement)
-            .data('swapName', swap_name);
+            .data('swapName', swapName);
 
           // Set the name in data attributes.
           element.data('swapId', swap[0]);
@@ -512,18 +512,18 @@
             var attr = swap[idx].trim().replace(/\"/gi, '').split('=');
             element.data(attr[0], attr[1]);
           }
-          drag_icon.html(swap_name);
+          dragIcon.html(swapName);
         } else {
-          drag_icon.html("Text: " + original_text);
+          dragIcon.html("Text: " + originalText);
           element.data('swapId', "string");
-          element.data('text', original_text);
+          element.data('text', originalText);
         }
 
-        drag_icon.appendTo(element);
-        delete_button.appendTo(element);
+        dragIcon.appendTo(element);
+        deleteButton.appendTo(element);
 
-        if (edit_button){
-          edit_button.appendTo(element);
+        if (editButton){
+          editButton.appendTo(element);
         }
 
         return element;
