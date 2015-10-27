@@ -19,13 +19,17 @@ use Drupal\swaps\SwapBase;
  *   attributes = "[ URL | url | text ] , [ Width | width | text ],
  *                 [ Height | height | text ]",
  *   container = false,
- *   tip = "[youtube width='width' height='height' url='url' /] -> case the blank space before the '/' "
+ *   tip = "[youtube width='width' height='height' url='url' /]
+ *   -> case the blank space before the '/' "
  * )
  */
 
 class Youtube extends SwapBase {
 
-  function processCallback($attrs, $text) {
+  /**
+   * Get all attributes of the swap and validate it.
+   */
+  public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'width' => '560',
       'height' => '315',
@@ -41,16 +45,25 @@ class Youtube extends SwapBase {
     return $this->theme($attrs);
   }
 
-  public function validateNumber($number){
-    if(is_int($number)){
+  /**
+   * Validate the width and height is number.
+   */
+  public function validateNumber($number) {
+    if (is_int($number)) {
       return $number;
-    }else{
+    }
+    else {
       return 500;
     }
   }
 
+  /**
+   * Create the string of the swap.
+   */
   public function theme($attrs, $text) {
-    return '<iframe src="'. $attrs['url'] .'" width="'. $attrs['width'] .'" height="'. $attrs['height'] .'" frameborder="0" allowfullscreen '.$attrs['style'].'></iframe>';
+    return '<iframe src="' . $attrs['url'] . '" width="' . $attrs['width']
+    . '" height="' . $attrs['height'] . '" frameborder="0" allowfullscreen '
+    . $attrs['style'] . '></iframe>';
   }
 
 }

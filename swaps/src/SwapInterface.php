@@ -15,39 +15,50 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface SwapInterface extends PluginInspectionInterface  {
 
   /**
-   * Return all the information of the swap.
+   * Get swap plugin info.
    *
    * @return array
+   *   All the information of the swap plugin.
    */
   public function info();
+
   /**
    * Process all the attributes in the swap.
    *
    * @return string
+   *   HTML structure of the swap
    */
   public function processCallback($attrs, $text);
+
   /**
-   * Return the html code with the attributes corresponding.
+   * Process all attributes with the html code.
    *
    * @return string
+   *   HTML code with the attributes corresponding
    */
   public function theme($attrs, $text);
+
   /**
-   * Return an array with the user attributes or the default.
+   * Validate if there is all the attributes.
    *
    * @return array()
+   *   The user attributes or the default
    */
   public function setAttrs($pairs, $attrs);
+
   /**
-   * Return an array with the default class and the user class.
+   * Validate if there is an extra class.
    *
    * @return array()
+   *   Default class and the user class
    */
   public function addClass($class, $default);
+
   /**
-   * Return a string with the all style attributes.
+   * Concatenate all style attributes.
    *
    * @return string
+   *   All style attributes
    */
   public function getStyle($attributes);
 

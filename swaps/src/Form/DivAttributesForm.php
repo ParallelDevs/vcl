@@ -4,7 +4,6 @@
  * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutForm.
  */
 
-
 namespace Drupal\swaps\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -14,10 +13,11 @@ use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+
 /**
  * Contribute form.
  */
-class DivAttributesForm extends FormBase{
+class DivAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
@@ -29,22 +29,23 @@ class DivAttributesForm extends FormBase{
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    //create the tab container
+    // Create the tab container.
     $form['swaps_formTabs'] = array(
       '#type' => 'vertical_tabs',
       '#default_tab' => 'swapAttributes',
     );
 
-    //create the swapAttributes tab ------------------------------------
+    // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
       '#title' => 'Swap',
       '#group' => 'swaps_formTabs',
     );
 
-    $options = array( 'row' => 'Row',
-                      'container' => 'Container',
-                      'normal' => 'Normal');
+    $options = array(
+      'row' => 'Row',
+      'container' => 'Container',
+      'normal' => 'Normal');
 
     $form['swaps_attributes']['swaps_div_type'] = array(
       '#type' => 'select',
@@ -67,7 +68,7 @@ class DivAttributesForm extends FormBase{
 
     SwapDefaultAttributes::getDefaultFormElements($form);
 
-    //Accept button ------------------------------------
+    // Accept button ------------------------------------.
     $form['swaps_accept'] = array(
       '#type' => 'submit',
       '#value' => t('Accept'),
@@ -85,26 +86,28 @@ class DivAttributesForm extends FormBase{
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
-
   }
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-
   }
 
-  public function selectChange(array &$form, FormStateInterface $form_state){
+  /**
+   * Ajax method to show div_class element.
+   */
+  public function selectChange(array &$form, FormStateInterface $form_state) {
 
     $input = $form_state->getUserInput();
     $div_type = $input['swaps_div_type'];
     $response = new AjaxResponse();
 
-    if($div_type == 'normal'){
+    if ($div_type == 'normal') {
       $response->addCommand(new CssCommand('#swaps_div_class',
         array('display' => 'block')));
-    }else{
+    }
+    else {
       $response->addCommand(new CssCommand('#swaps_div_class',
         array('display' => 'none')));
     }
@@ -113,13 +116,16 @@ class DivAttributesForm extends FormBase{
 
   }
 
-  public function ajaxSubmit(array &$form, FormStateInterface $form_state){
+  /**
+   * Custom submit for ajax call.
+   */
+  public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
 
-    //---------------------------------------------------------------
-    //            get the own attributes values of the swap
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------.
+    // Get the own attributes values of the swap.
+    // ---------------------------------------------------------------.
 
-    //get all the swaps plugins
+    // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
     $swap = $swaps['column'];
@@ -130,9 +136,9 @@ class DivAttributesForm extends FormBase{
     $settings['class'] = $input['swaps_div_class'];
     $settings['type'] = $input['swaps_div_type'];
 
-    //---------------------------------------------------------------
-    // get the default attributes values of the swap (required for visual help)
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------.
+    // Get the default attributes values of the swap (required for visual help).
+    // ---------------------------------------------------------------.
 
     $settings['swapId'] = $swap['id'];
     $settings['swapName'] = $swap['name'];
@@ -140,18 +146,17 @@ class DivAttributesForm extends FormBase{
 
     SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input);
 
-    //---------------------------------------------------------------
-    //            create the ajax response
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------.
+    // Create the ajax response.
+    // ---------------------------------------------------------------.
 
-    $visualSettings = array('visualContentLayout' => array(
-      'attributes' => $settings));
+    $visual_settings = array(
+      'visualContentLayout' => array('attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
-    $response->addCommand(new SettingsCommand($visualSettings,FALSE));
+    $response->addCommand(new SettingsCommand($visual_settings, FALSE));
 
     return $response;
-
 
   }
 }

@@ -30,13 +30,12 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class FilterVisualContentLayout extends FilterBase{
+class FilterVisualContentLayout extends FilterBase {
 
   /**
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-
     $form['bootstrap'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Enable bootstrap'),
@@ -54,32 +53,26 @@ class FilterVisualContentLayout extends FilterBase{
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-
-    drupal_set_message("true","enable_bootstrap");
-
+    drupal_set_message("true", "enable_bootstrap");
     $result = new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));
-
     return $result;
-
   }
 
   /**
    * {@inheritdoc}
    */
   public function tips($long = FALSE) {
-
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
     $tips = "Swaps examples:";
-
-    foreach($swaps as $swap){
-      if(!$swap['tip'] == "") {
+    // Iterate all swaps to make the tips.
+    foreach ($swaps as $swap) {
+      if (!$swap['tip'] == "") {
         $tips = $tips . "<li><b><u>" . $swap['id'] . "</u> = </b> " . $swap['tip'] . "</li>";
       }
     }
     $tips = $tips . "</ol>";
-    $tips = str_replace("'","\"",$tips);
-
+    $tips = str_replace("'", "\"", $tips);
     return $tips;
   }
 

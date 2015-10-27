@@ -3,7 +3,7 @@
 
 /**
  * @file
- * Process all default Attributes of all swaps
+ * Process all default Attributes of all swaps.
  */
 
 namespace Drupal\swaps;
@@ -15,7 +15,7 @@ class SwapDefaultAttributes {
    */
   public function getDefaultFormElements(&$form) {
 
-    //create the paddings tab ------------------------------------
+    // Create the paddings tab ------------------------------------.
     $form['swaps_paddings'] = array(
       '#type' => 'details',
       '#title' => 'Paddings',
@@ -46,7 +46,7 @@ class SwapDefaultAttributes {
       '#size' => 30,
     );
 
-    //create the margins tab ------------------------------------
+    // Create the margins tab ------------------------------------.
     $form['swaps_margins'] = array(
       '#type' => 'details',
       '#title' => 'Margins',
@@ -77,7 +77,7 @@ class SwapDefaultAttributes {
       '#size' => 30,
     );
 
-    //create the Classes, & ID tab ------------------------------------
+    // Create the Classes, & ID tab ------------------------------------.
     $form['swaps_classID'] = array(
       '#type' => 'details',
       '#title' => 'Classes, ID & Style',
@@ -96,8 +96,12 @@ class SwapDefaultAttributes {
       '#size' => 30,
     );
 
-    $options = array( 'default' => 'Default', 'left' => 'Left',
-      'center' => 'Center', 'right' => 'Right', );
+    $options = array(
+      'default' => 'Default',
+      'left' => 'Left',
+      'center' => 'Center',
+      'right' => 'Right',
+    );
 
     $form['swaps_classID']['swaps_textAlign'] = array(
       '#type' => 'select',
@@ -112,7 +116,7 @@ class SwapDefaultAttributes {
       '#description' => t('Wrong code here might cause problems in the style'),
     );
 
-    //create the Background tab ------------------------------------
+    // Create the Background tab ------------------------------------.
     $form['swaps_background'] = array(
       '#type' => 'details',
       '#title' => 'Background',
@@ -130,7 +134,7 @@ class SwapDefaultAttributes {
   /**
    * Get all values set by the user in the default elements.
    */
-  public function getDefaultFormElementsValues(&$settings, &$input){
+  public function getDefaultFormElementsValues(&$settings, &$input) {
 
     ($input['swaps_paddingLeft'] != "") ?
       $settings['paddingLeft'] = $input['swaps_paddingLeft'] : "";

@@ -14,7 +14,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * Get the annotations values defined in the plugin .
    *
    * @return array
-   *  array of de main values in the annotations.
+   *   array of de main values in the annotations.
    */
   public function info() {
     return array(
@@ -27,30 +27,38 @@ class SwapBase extends PluginBase implements SwapInterface {
 
   /**
    * Provide a processCallback method for the swap.
-   * call theme method for create the code if it needed.
    *
-   * @param $attrs
-   *  array with all the attributes of the swap
+   * Call theme method for create the code if it needed.
+   *
+   * @param array $attrs
+   *   array with all the attributes of the swap
+   *
+   * @param string $text
+   *   string with the text of the swap
    *
    * @return string
-   *  string with all the code of the swap.
+   *   string with all the code of the swap.
    */
-  public function processCallback($attrs, $text){
+  public function processCallback($attrs, $text) {
     $text = "Create your own processCallback function.";
     return $text;
   }
 
   /**
    * Provide a theme method for the swap.
+   *
    * Place the attributes in the code structure.
    *
-   * @param $attrs
-   *  array with all the attributes of the swap
+   * @param array $attrs
+   *   array with all the attributes of the swap
+   *
+   * @param string $text
+   *   string with the text of the swap
    *
    * @return string
-   *  string with all the code of the swap.
+   *   string with all the code of the swap.
    */
-  public function theme($attrs, $text){
+  public function theme($attrs, $text) {
     $text = "Create your own theme function.";
     return $text;
   }
@@ -63,8 +71,8 @@ class SwapBase extends PluginBase implements SwapInterface {
    * supported by the caller and given as a list. The returned attributes will
    * only contain the attributes in the $pairs list.
    *
-   * If the $attrs list has unsupported attributes, then they will be ignored and
-   * removed from the final return list.
+   * If the $attrs list has unsupported attributes, then they will be ignored
+   * and removed from the final return list.
    *
    * @param array $pairs
    *   Entire list of supported attributes and their defaults.
@@ -75,7 +83,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return array
    *   Combined and filtered attribute list.
    */
-  function setAttrs($pairs, $attrs) {
+  public function setAttrs($pairs, $attrs) {
     $attrs = (array) $attrs;
     foreach ($attrs as $name => $value) {
       if ($value == '' && array_key_exists($name, $pairs)) {
@@ -97,7 +105,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return string
    *   The proper classes string.
    */
-  function addClass($class = '', $default = '') {
+  public function addClass($class = '', $default = '') {
     if ($class) {
       if (!is_array($class)) {
         $class = explode(' ', $class);
@@ -120,76 +128,75 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return string
    *   The style definition with all parameters.
    */
-  function getStyle($attributes = array(), $extra = array()) {
+  public function getStyle($attributes = array(), $extra = array()) {
     $style = ' style="';
-    //process all attributes of the swap
+    // Process all attributes of the swap.
     foreach ($attributes as $name => $attr) {
-      //process only style attributes
+      // Process only style attributes.
       switch ($name) {
-        //---------------------------------------------------------------
-        //                   process Paddings attributes
-        //---------------------------------------------------------------
+        // ---------------------------------------------------------------.
+        // Process Paddings attributes.
+        // ---------------------------------------------------------------.
         case 'paddingleft':
-          $style.= 'padding-left:'.$attr.';';
+          $style .= 'padding-left:' . $attr . ';';
           break;
 
         case 'paddingright':
-          $style.= 'padding-right:'.$attr.';';
+          $style .= 'padding-right:' . $attr . ';';
           break;
 
         case 'paddingtop':
-          $style.= 'padding-top:'.$attr.';';
+          $style .= 'padding-top:' . $attr . ';';
           break;
 
         case 'paddingbottom':
-          $style.= 'padding-bottom:'.$attr.';';
+          $style .= 'padding-bottom:' . $attr . ';';
           break;
 
-        //---------------------------------------------------------------
-        //                   process Margins attributes
-        //---------------------------------------------------------------
+        // ---------------------------------------------------------------.
+        // Process Margins attributes.
+        // ---------------------------------------------------------------.
         case 'marginleft':
-          $style.= 'margin-left:'.$attr.';';
+          $style .= 'margin-left:' . $attr . ';';
           break;
 
         case 'marginright':
-          $style.= 'margin-right:'.$attr.';';
+          $style .= 'margin-right:' . $attr . ';';
           break;
 
         case 'margintop':
-          $style.= 'margin-top:'.$attr.';';
+          $style .= 'margin-top:' . $attr . ';';
           break;
 
         case 'marginbottom':
-          $style.= 'margin-bottom:'.$attr.';';
+          $style .= 'margin-bottom:' . $attr . ';';
           break;
 
-        //---------------------------------------------------------------
-        //                   process Classes, & ID attributes
-        //---------------------------------------------------------------
-          case 'textalign':
-            ($attr != 'default') ? $style.= 'text-align:'.$attr.';' : '';
-
+        // ---------------------------------------------------------------.
+        // Process Classes, & ID attributes.
+        // ---------------------------------------------------------------.
+        case 'textalign':
+          ($attr != 'default') ? $style .= 'text-align:' . $attr . ';' : '';
           break;
 
         case 'cssstyles':
-          $style.= $attr;
+          $style .= $attr;
           break;
 
-        //---------------------------------------------------------------
-        //                   process Background  attributes
-        //---------------------------------------------------------------
+        // ---------------------------------------------------------------.
+        // Process Background  attributes.
+        // ---------------------------------------------------------------.
         case 'backgroundcolor':
-          $style.= 'background-color:'.$attr.';';
+          $style .= 'background-color:' . $attr . ';';
           break;
       }
     }
 
     foreach ($extra as $name => $attr) {
-      $style.= $name.':'.$attr.';';
+      $style .= $name . ':' . $attr . ';';
     }
 
-    return $style.='"';
+    return $style .= '"';
   }
 
 }

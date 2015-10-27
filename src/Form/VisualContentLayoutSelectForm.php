@@ -25,22 +25,22 @@ class VisualContentLayoutSelectForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    //get all the swaps definitions
+    // Get all the swaps definitions.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
-    //create a markup for each swap that display the form for the attributes
-    foreach($swaps as $swap){
+    // Create a markup for each swap that display the form for the attributes.
+    foreach ($swaps as $swap) {
       $name = $swap['name'];
-      //attributes for the url to the swap form
+      // Attributes for the url to the swap form.
       $attributes = array(
         'attributes' => array(
           'class' => array('use-ajax btn btn-6 btn-6b'),
         ),
       );
       $url = Url::fromRoute('visual_content_layout.swap_attributes_form',
-                            array('swap'=>$name), $attributes);
-      $internal_link = \Drupal::l(t($name), $url);
-      //form element of the swap
+        array('swap' => $name), $attributes);
+      $internal_link = \Drupal::l($name, $url);
+      // Form element of the swap.
       $form[$name] = array(
         '#type' => 'markup',
         '#markup' => $internal_link,

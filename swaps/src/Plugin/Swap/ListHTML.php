@@ -19,18 +19,21 @@ use Drupal\swaps\SwapBase;
  *   attributes = "[ List Type | type | select | ol:ul ]",
  *   container = true,
  *   tip = "</br>[list type='ol | ul' class='class']
-                      </br>&emsp;[li class='class'] one [/li]
-                      </br>&emsp;[li] two [/li]
-            </br>[/list]"
+ *    </br>&emsp;[li class='class'] one [/li]
+ *    </br>&emsp;[li] two [/li]
+ *    </br>[/list]"
  * )
  */
 
 class ListHTML extends SwapBase {
 
-  function processCallback($attrs, $text) {
+  /**
+   * Get all attributes of the swap and validate it.
+   */
+  public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
       'extraclass' => '',
-      'type' => ''
+      'type' => '',
     ),
       $attrs
     );
@@ -38,26 +41,37 @@ class ListHTML extends SwapBase {
     $attrs['style'] = $this->getStyle($attrs);
     $attrs['type'] = $this->validateType($attrs['type']);
 
-    return $this->theme($attrs,$text);
+    return $this->theme($attrs, $text);
   }
 
-  public function validateType($type){
+  /**
+   * Validate list type attribute.
+   */
+  public function validateType($type) {
     switch ($type) {
       case 'ul':
         return $type;
+
       case 'ol':
         return $type;
+
       default:
         return 'ul';
     }
   }
 
+  /**
+   * Create the string of the swap.
+   */
   public function theme($attrs, $text) {
 
     if ($attrs['extraclass'] == '') {
-      return '<' . $attrs['type'] . $attrs['style']. '>' . $text . '</' . $attrs['type'] . '>';
-    }else{
-      return '<' . $attrs['type'] . $attrs['style']. ' class="' . $attrs['class'] . '">' . $text . '</' . $attrs['type'] . '>';
+      return '<' . $attrs['type'] . $attrs['style'] . '>' . $text . '</'
+      . $attrs['type'] . '>';
+    }
+    else {
+      return '<' . $attrs['type'] . $attrs['style'] . ' class="'
+      . $attrs['class'] . '">' . $text . '</' . $attrs['type'] . '>';
     }
   }
 
