@@ -8,19 +8,19 @@ namespace Drupal\swaps\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\swaps\SwapDefaultAttributes;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Block\BlockManager;
 /**
  * Contribute form.
  */
-class ButtonAttributesForm extends FormBase {
+class BlockAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_button_attributes_form';
+    return 'swap_block_attributes_form';
   }
   /**
    * {@inheritdoc}
@@ -36,23 +36,24 @@ class ButtonAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Block',
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_attributes']['swaps_button_text'] = array(
-      '#type' => 'textfield',
-      '#title' => 'Title',
-      '#size' => 30,
-    );
+    // Create the options with all blocks
+    $options = array();
+    $manager = \Drupal::service('plugin.manager.block');
+    $blocks = $manager->getDefinitionsForContexts();
 
-    $form['swaps_attributes']['swaps_button_url'] = array(
-      '#type' => 'textfield',
-      '#title' => 'URL',
-      '#size' => 30,
-    );
+    foreach ($blocks as $plugin_id => $plugin_definition) {
+      $options[$plugin_id] = $plugin_definition['admin_label'];
+    }
 
-    SwapDefaultAttributes::getDefaultFormElements($form);
+    $form['swaps_attributes']['swaps_block_blockid'] = array(
+      '#type' => 'select',
+      '#title' => 'Block ID',
+      '#options' => $options,
+    );
 
     // Accept button ------------------------------------.
     $form['swaps_accept'] = array(
@@ -92,13 +93,12 @@ class ButtonAttributesForm extends FormBase {
     // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
-    $swap = $swaps['swap_button'];
+    $swap = $swaps['swap_block'];
 
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['text'] = $input['swaps_button_text'];
-    $settings['url'] = $input['swaps_button_url'];
+    $settings['blockid'] = $input['swaps_block_blockid'];
 
     // ---------------------------------------------------------------
     // Get the default attributes values of the swap (required for visual help).
@@ -108,7 +108,6 @@ class ButtonAttributesForm extends FormBase {
     $settings['swapName'] = $swap['name'];
     $settings['container'] = $swap['container'];
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input);
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

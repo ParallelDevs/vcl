@@ -13,7 +13,7 @@ use Drupal\swaps\SwapBase;
  * Provides a 'Div' swap.
  *
  * @Swap(
- *   id = "div",
+ *   id = "swap_div",
  *   name = "Div",
  *   description = @Translation("Add div which you can add a bootstrap class."),
  *   attributes = "[Div Type | type | select | row : container]",

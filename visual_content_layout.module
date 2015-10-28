@@ -87,9 +87,6 @@ function visual_content_layout_load_field($field, $format) {
   $suffix = '<div class="visual-content-layout-visual-help container">'
     . $internal_link . '</div>';
 
-  // Create the div for display update modal form.
-  $suffix .= '<div id="visual-content-layout-update-modal"></div>';
-
   // Set all div and libraries.
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
   $field['#suffix'] = $suffix . (isset($field['#suffix']) ? $field['#suffix'] : '');
@@ -116,8 +113,9 @@ function visual_content_layout_load_field($field, $format) {
 
   // Search the swap that have the name of the variable $name.
   foreach ($swaps as $swap) {
-    $enable_swaps[$swap['id']] = $swap['container'];
-    $swaps_names[$swap['id']] = $swap['name'];
+    $id = str_replace("swap_","",$swap['id']);
+    $enable_swaps[$id] = $swap['container'];
+    $swaps_names[$id] = $swap['name'];
   }
 
   // Set the settings for send to javascript.

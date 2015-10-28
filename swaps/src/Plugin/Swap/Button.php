@@ -13,7 +13,7 @@ use Drupal\swaps\SwapBase;
  * Provides a 'Button' swap.
  *
  * @Swap(
- *   id = "button",
+ *   id = "swap_button",
  *   name = "Button",
  *   description = @Translation("Insert a link formatted as a button."),
  *   container = false,

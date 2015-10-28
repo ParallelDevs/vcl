@@ -13,7 +13,7 @@ use Drupal\swaps\SwapBase;
  * Provides a 'Column' swap.
  *
  * @Swap(
- *   id = "column",
+ *   id = "swap_column",
  *   name = "Column",
  *   description = @Translation("Add div with the class column."),
  *   container = true,

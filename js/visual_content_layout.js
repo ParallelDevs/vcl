@@ -135,8 +135,11 @@
         // Create the html element for the new swap.
         var element = document.createElement('div');
 
-        $(element).addClass('visual-content-layout-element panel panel-default')
-          .html(attributes.swapName);
+        $(element).addClass('visual-content-layout-element panel panel-default');
+
+        // Create the icon for handle the drag.
+        var dragIcon = $('<span/>').attr({class: 'fa fa-arrows dragIcon'});
+        dragIcon.html(attributes.swapName);
 
         // Create the delete button for this element.
         var deleteButton = $('<i/>').attr({class: 'fa fa-trash-o fa-3 iconButton'})
@@ -147,6 +150,7 @@
           .on('click', editVisualElement)
           .data('swapName', attributes.swapName);
 
+        dragIcon.appendTo(element);
         deleteButton.appendTo(element);
         editButton.appendTo(element);
 
@@ -159,6 +163,10 @@
         var attrKeys = Object.keys(attributes);
 
         for (var i = 0; i < attrKeys.length; i++) {
+          if (attrKeys[i] === 'swapId') {
+            $(element).data(attrKeys[i], attributes[attrKeys[i]].replace('swap_', ''));
+            continue;
+          }
           if (attrKeys[i] !== '' && attrKeys[i] !== 'swapName') {
             $(element).data(attrKeys[i], attributes[attrKeys[i]]);
           }
@@ -633,6 +641,9 @@
     // Place the progress icon.
     $('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>').insertAfter($(this));
 
+    // Create a div for display the modal.
+    $('<div id="visual-content-layout-update-modal"></div>').appendTo("body");
+
     // Execute ajax call.
     $.ajax({
       type: 'POST',
@@ -702,6 +713,10 @@
       elements = $(".ui-dialog-content :input"),
       swap = div.data("swapId");
 
+    // Clean all data from the swap
+    div.removeData()
+    div.data("swapId", swap);
+
     // Iterate all inputs.
     for (var i = 0; i < elements.length; i++) {
 
@@ -736,6 +751,7 @@
 
     // Close modal dialog
     $(".ui-dialog-content").dialog("close");
+    $("#visual-content-layout-update-modal").remove();
   }
 
   //--------------------------------------------------------------------------------
