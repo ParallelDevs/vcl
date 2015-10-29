@@ -45,7 +45,7 @@ class Block extends SwapBase {
 
     $block_attr = explode(":", $attrs['blockid']);
 
-    if (sizeof($block_attr) > 1) {
+    if (count($block_attr) > 1) {
       $attrs['blocktype'] = $block_attr[0];
       $attrs['blockid'] = $block_attr[1];
     }
@@ -78,8 +78,8 @@ class Block extends SwapBase {
         $view_attr = explode("-", $attrs['blockid']);
         $view = \Drupal\views\Views::getView($view_attr[0]);
 
-        // Validate if user can access to the view
-        if ($view->access($view_attr[1], \Drupal::currentUser())){
+        // Validate if user can access to the view.
+        if ($view->access($view_attr[1], \Drupal::currentUser())) {
           $block_content = $view->render($view_attr[1]);
           break;
         }

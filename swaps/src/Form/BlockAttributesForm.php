@@ -40,8 +40,7 @@ class BlockAttributesForm extends FormBase {
       '#group' => 'swaps_formTabs',
     );
 
-
-    // Create the options with all blocks
+    // Create the options with all blocks.
     $options = array();
     $manager = \Drupal::service('plugin.manager.block');
     $blocks = $manager->getDefinitionsForContexts();
@@ -50,7 +49,7 @@ class BlockAttributesForm extends FormBase {
     foreach ($blocks as $plugin_id => $plugin_definition) {
       // Get plugin type.
       $plugin_type = explode(":", $plugin_id)[0];
-      if ($plugin_type == "block_content" || $plugin_type == "views_block"){
+      if ($plugin_type == "block_content" || $plugin_type == "views_block") {
         $options[$plugin_id] = $plugin_definition['admin_label'];
       }
     }
@@ -121,7 +120,6 @@ class BlockAttributesForm extends FormBase {
     $settings['swapId'] = $swap['id'];
     $settings['swapName'] = $swap['name'];
     $settings['container'] = $swap['container'];
-
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

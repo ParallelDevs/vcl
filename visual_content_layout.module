@@ -113,7 +113,7 @@ function visual_content_layout_load_field($field, $format) {
 
   // Search the swap that have the name of the variable $name.
   foreach ($swaps as $swap) {
-    $id = str_replace("swap_","",$swap['id']);
+    $id = str_replace("swap_", "", $swap['id']);
     $enable_swaps[$id] = $swap['container'];
     $swaps_names[$id] = $swap['name'];
   }
