@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Block\BlockManager;
+use Drupal\block\Entity\Block as EntityBlock;
 /**
  * Contribute form.
  */
@@ -40,19 +40,33 @@ class BlockAttributesForm extends FormBase {
       '#group' => 'swaps_formTabs',
     );
 
+
     // Create the options with all blocks
     $options = array();
     $manager = \Drupal::service('plugin.manager.block');
     $blocks = $manager->getDefinitionsForContexts();
 
+    // Iterate all block searching for custom and view block.
     foreach ($blocks as $plugin_id => $plugin_definition) {
-      $options[$plugin_id] = $plugin_definition['admin_label'];
+      // Get plugin type.
+      $plugin_type = explode(":", $plugin_id)[0];
+      if ($plugin_type == "block_content" || $plugin_type == "views_block"){
+        $options[$plugin_id] = $plugin_definition['admin_label'];
+      }
+    }
+
+    $blocks = \Drupal::entityManager()->getListBuilder("block")->load();
+
+    // Iterate all system blocks.
+    foreach ($blocks as $plugin_id => $plugin_definition) {
+      $options[$plugin_id] = $plugin_definition->label();
     }
 
     $form['swaps_attributes']['swaps_block_blockid'] = array(
       '#type' => 'select',
       '#title' => 'Block ID',
       '#options' => $options,
+      '#default_value' => $plugin_id,
     );
 
     // Accept button ------------------------------------.

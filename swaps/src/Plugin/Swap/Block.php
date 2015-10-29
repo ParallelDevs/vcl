@@ -8,6 +8,7 @@
 namespace Drupal\swaps\Plugin\Swap;
 
 use Drupal\swaps\SwapBase;
+use Drupal\block\Entity\Block as EntityBlock;
 
 /**
  * Provides a 'Block' swap.
@@ -61,7 +62,7 @@ class Block extends SwapBase {
 
     switch ($attrs['blocktype']) {
       case 'block':
-        $block = \Drupal\block\Entity\Block::load($attrs['blockid']);
+        $block = EntityBlock::load($attrs['blockid']);
         $block_content = \Drupal::entityManager()
           ->getViewBuilder($attrs['blocktype'])->view($block);
         break;
@@ -77,10 +78,14 @@ class Block extends SwapBase {
         $view_attr = explode("-", $attrs['blockid']);
         $view = \Drupal\views\Views::getView($view_attr[0]);
 
-        $bol = $view->access($view_attr[1], \Drupal::currentUser());
-
-        $block_content = $view->render($view_attr[1]);
-        break;
+        // Validate if user can access to the view
+        if ($view->access($view_attr[1], \Drupal::currentUser())){
+          $block_content = $view->render($view_attr[1]);
+          break;
+        }
+        else {
+          return "<h2>You dont have permission to see this view</h2>";
+        }
     }
 
     return render($block_content);
