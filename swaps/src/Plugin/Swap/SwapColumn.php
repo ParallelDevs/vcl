@@ -13,16 +13,17 @@ use Drupal\swaps\SwapBase;
  * Provides a 'Column' swap.
  *
  * @Swap(
- *   id = "column",
+ *   id = "swap_column",
  *   name = "Column",
  *   description = @Translation("Add div with the class column."),
  *   container = true,
+ *   children = "swap_block, swap_button",
  *   tip = "[column size='xs | sm | md | lg' number='[1-12]'
  *          class='extra class'] Content [/column]"
  * )
  */
 
-class Column extends SwapBase {
+class SwapColumn extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.
@@ -31,7 +32,6 @@ class Column extends SwapBase {
     $attrs = $this->setAttrs(array(
       'size' => 'md',
       'number' => '4',
-      'extraclass' => '',
     ),
       $attrs
     );
@@ -39,6 +39,7 @@ class Column extends SwapBase {
     $default_class = "col-" . $this->validateSize($attrs['size']) . "-"
                              . $this->validateNumber($attrs['number']);
     $attrs['class'] = $this->addClass($attrs['class'], $default_class);
+    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
     $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs, $text);
@@ -82,8 +83,12 @@ class Column extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    return '<div class="' . $attrs['extraclass'] . '" ' . $attrs['style'] . ' >'
-    . $text . '</div>';
+
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    return '<div '. $id . 'class="' . $attrs['class'] . '" ' . $attrs['style']
+    . ' >' . $text . '</div>';
   }
 
 }

@@ -24,7 +24,7 @@ use Drupal\swaps\SwapBase;
  * )
  */
 
-class Youtube extends SwapBase {
+class SwapYoutube extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.

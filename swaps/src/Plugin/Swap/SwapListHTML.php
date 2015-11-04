@@ -25,7 +25,7 @@ use Drupal\swaps\SwapBase;
  * )
  */
 
-class ListHTML extends SwapBase {
+class SwapListHTML extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.

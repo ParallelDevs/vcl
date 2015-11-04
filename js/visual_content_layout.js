@@ -5,6 +5,9 @@
 
 (function ($, Drupal) {
 
+  // Global variable base_path.
+  var drupalBasePath = "";
+
   // Hide the visual help for document ready
   $('.visual-content-layout-visual-help').hide();
   $('.visual-content-layout-btn').text('Enable Visual Content Layout');
@@ -18,6 +21,9 @@
    */
   Drupal.behaviors.visualContentLayoutDisplay = {
     attach: function (context, settings) {
+
+      // Set the base path global.
+      settings.visualContentLayout.base_path ? drupalBasePath = settings.visualContentLayout.base_path : "";
 
       // Validate all the filter select for enable the button on it textArea.
       var filter = $('.filter-list');
@@ -49,6 +55,7 @@
         else {
           $(selectParent).children('.visual-content-layout-button-wrap').hide();
           $(selectParent).children('.visual-content-layout-visual-help').hide();
+          $('.visual-content-layout-element').remove();
           $(selectParent).children('.visual-content-layout-button-wrap')
             .find('.visual-content-layout-btn').data('state', 'disable');
           $(selectParent).children('.visual-content-layout-button-wrap')
@@ -103,11 +110,26 @@
       //--------------------------------------------------------------------------------
       $('.visual-content-layout-form-button', context).click(function () {
         var textArea = $(this).data('textarea'),
-          element = document.createElement('input');
-        $(element).attr("id", "visual-content-layout-actual-textarea")
+          element = document.createElement('input'),
+          id = $(this).parent().attr('id');
+
+        $('<input>').attr("id", "visual-content-layout-actual-textarea")
           .attr("type", "hidden")
           .val(textArea)
           .appendTo($(".visual-content-layout-visual-help"));
+
+        var position = $('<input>').attr("id", "visual-content-layout-element-position").attr("type", "hidden");
+
+        if (id === 'vcl-top-link'){
+          position.val('top');
+        }
+        else{
+          position.val('bottom');
+        }
+        position.appendTo($(".visual-content-layout-visual-help"));
+
+        // Delete the target class.
+        $('.visual-content-layout-target').removeClass('visual-content-layout-target');
       });
 
     }
@@ -130,13 +152,18 @@
         var textArea = $('#visual-content-layout-actual-textarea').val(),
           textAreaElement = $('#' + textArea),
           textAreaParent = textAreaElement.parents()[2],
-          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help');
+          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help')
+            .find('.visual-content-layout-elements-area'),
+          position = $('#visual-content-layout-element-position').val();
 
         // Create the html element for the new swap.
         var element = document.createElement('div');
 
-        $(element).addClass('visual-content-layout-element panel panel-default')
-          .html(attributes.swapName);
+        $(element).addClass('visual-content-layout-element panel panel-default');
+
+        // Create the icon for handle the drag.
+        var dragIcon = $('<span/>').attr({class: 'fa fa-arrows dragIcon'});
+        dragIcon.html(attributes.swapName);
 
         // Create the delete button for this element.
         var deleteButton = $('<i/>').attr({class: 'fa fa-trash-o fa-3 iconButton'})
@@ -147,11 +174,37 @@
           .on('click', editVisualElement)
           .data('swapName', attributes.swapName);
 
+        // Create the button for copy the element.
+        var copyButton = $('<span/>').attr({class: 'fa fa-clone iconButton'})
+          .on('click', copyVisualElement);
+
+        dragIcon.appendTo(element);
         deleteButton.appendTo(element);
         editButton.appendTo(element);
+        copyButton.appendTo(element);
 
         // Validate the swap can contain others swaps.
         if (attributes.container) {
+
+          // Create the button for add swaps if have container.
+          var addButton = $('<a>', {
+            href: drupalBasePath + 'visual_content_layout/swap_select_form/' + attributes.swapId ,
+            class: 'fa fa-plus-square iconButton addButton'});
+          // Add event to button.
+          addButton.on('click', addContainerVisualElement);
+
+          // Settings for create drupal ajax link.
+          var element_settings = {};
+          element_settings.url = addButton.attr('href');
+          element_settings.event = 'click';
+          element_settings.progress = {
+            type: 'throbber',
+            message: ''
+          };
+          var base = 'addButton';
+          Drupal.ajax[base] = new Drupal.Ajax(base, addButton, element_settings);
+
+          addButton.appendTo(element);
           $('<div>').addClass('container').appendTo($(element));
         }
         delete (attributes.container);
@@ -159,37 +212,36 @@
         var attrKeys = Object.keys(attributes);
 
         for (var i = 0; i < attrKeys.length; i++) {
+          if (attrKeys[i] === 'swapId') {
+            $(element).data(attrKeys[i], attributes[attrKeys[i]].replace('swap_', ''));
+            continue;
+          }
           if (attrKeys[i] !== '' && attrKeys[i] !== 'swapName') {
             $(element).data(attrKeys[i], attributes[attrKeys[i]]);
           }
         }
 
-        $(element).appendTo(visualHelpArea);
+        var target = $('.visual-content-layout-target');
 
-        createTextSwap($(element), textArea);
-        makeDragAndDrop();
+        if (position === 'top'){
+          $(element).prependTo(visualHelpArea);
+        }
+        else{
 
-      }
-
-      //--------------------------------------------------------------------------------
-      //          Convert the visual help element into text for the textArea
-      //--------------------------------------------------------------------------------
-      function createTextSwap(visualElement, actualTextArea) {
-        var data = $(visualElement).data(),
-          text = (data.text) ? "" + data.text : "",
-          attributesText = ' ',
-          swapText = '[' + data.swapId;
-
-        for (var attr in data) {
-          // Validate the attribute is not the name, text o id.
-          if (attr !== 'swapId' && attr !== 'text') {
-            attributesText += attr.trim() + '="' + data[attr].trim() + '" ';
+          if (target[0]){
+            $(element).prependTo(target);
+          }
+          else {
+            $(element).appendTo(visualHelpArea);
           }
         }
-        swapText += attributesText + ']' + text + '[/' + data.swapId + ']';
 
-        $('#' + actualTextArea).val($('#' + actualTextArea).val() + swapText);
+        $('#'+textArea).val(getTextFromVisual(visualHelpArea));
+        makeDragAndDrop();
+
         $('#visual-content-layout-actual-textarea').remove();
+        $('#visual-content-layout-element-position').remove();
+        $('.visual-content-layout-target').removeClass('visual-content-layout-target');
       }
     }
   };
@@ -231,7 +283,8 @@
 
         var text = $('#' + textArea).val(),
           textAreaParent = $('#' + textArea).parents()[2],
-          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help'),
+          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help')
+            .find('.visual-content-layout-elements-area'),
           chunks = text.split(/(\[{1,2}.*?\]{1,2})/),
           elements = [],
           father = [],
@@ -304,6 +357,9 @@
 
               // Validate if the swap can contain others swaps.
               if (enableSwaps[c.split(" ")[0]]) {
+                // Insert addButton.
+                var addButton = createAjaxLink(div.data('swapId'));
+                addButton.appendTo($(div));
                 $('<div>').addClass('container').appendTo($(div));
               }
 
@@ -342,6 +398,9 @@
 
                   // Create the father and add the child.
                   div = createHTMLDiv(originalText, fatherSwap, swapNames);
+                  // Insert addButton.
+                  var addButton = createAjaxLink(div.data('swapId'));
+                  addButton.appendTo($(div));
                   var ele = $('<div>').addClass('container').appendTo($(div));
                   while (elements[lastFather + 1]) {
                     $(elements[lastFather + 1]).appendTo(ele);
@@ -375,6 +434,9 @@
 
                 // Validate if the swap can contain others swaps.
                 if (enableSwaps[c.split(" ")[0]]) {
+                  // Insert addButton.
+                  var addButton = createAjaxLink(div.data('swapId'));
+                  addButton.appendTo($(div));
                   $('<div>').addClass('container').appendTo($(div));
                 }
                 swap = null;
@@ -427,14 +489,16 @@
 
             // Get cssStyle.
             startIndex = c.indexOf("cssStyles");
-            lastIndex = c.indexOf('"', startIndex);
-            lastIndex = c.indexOf('"', lastIndex + 1);
-            cssStyle = c.substring(startIndex, lastIndex);
+            if( startIndex !== -1 ){
+              lastIndex = c.indexOf('"', startIndex);
+              lastIndex = c.indexOf('"', lastIndex + 1);
+              cssStyle = c.substring(startIndex, lastIndex);
+              c = c.replace(" " + cssStyle, "");
+            }
 
             // Save the attributes of the swaps.
-            c = c.replace(" " + cssStyle, "");
             swap = c.trim().split(" ");
-            swap.push(cssStyle);
+            if (cssStyle) {swap.push(cssStyle);}
             swapText = true;
             count++;
             continue;
@@ -513,6 +577,11 @@
             element.data(attr[0], attr[1]);
           }
           dragIcon.html(swapName);
+
+          // Create the button for copy the element.
+          var copyButton = $('<span/>').attr({class: 'fa fa-clone iconButton'})
+            .on('click', copyVisualElement);
+
         } else {
           dragIcon.html("Text: " + originalText);
           element.data('swapId', "string");
@@ -521,12 +590,36 @@
 
         dragIcon.appendTo(element);
         deleteButton.appendTo(element);
-
-        if (editButton){
-          editButton.appendTo(element);
-        }
+        if (editButton) {editButton.appendTo(element);}
+        copyButton.appendTo(element);
 
         return element;
+      }
+
+
+      //--------------------------------------------------------------------------------
+      //                  Create ajax link to display swap select form
+      //--------------------------------------------------------------------------------
+      function createAjaxLink(swapId) {
+        // Create the button for add swaps if have container.
+        var addButton = $('<a>', {
+          href: drupalBasePath + 'visual_content_layout/swap_select_form/' + swapId,
+          class: 'fa fa-plus-square iconButton addButton'});
+        // Add event to button.
+        addButton.on('click', addContainerVisualElement);
+
+        // Settings for create drupal ajax link.
+        var element_settings = {};
+        element_settings.url = addButton.attr('href');
+        element_settings.event = 'click';
+        element_settings.progress = {
+          type: 'throbber',
+          message: ''
+        };
+        var base = 'addButton';
+        Drupal.ajax[base] = new Drupal.Ajax(base, addButton, element_settings);
+
+        return addButton;
       }
     }
   };
@@ -543,7 +636,6 @@
     for (var i = 0; i < children.length; i++) {
       text += createText($(children[i]));
     }
-
     return text;
   }
 
@@ -589,7 +681,6 @@
         }
       }
     }
-
     text += "[/" + swapId + "]";
     return text;
   }
@@ -606,12 +697,13 @@
       axis: "y",
       opacity: 0.5,
       cursor: "move",
-      handle: "span",
+      handle: "span.dragIcon",
       stop: function (event, ui) {
-        var visualHelpArea = $(ui.item[0]).parents('.visual-content-layout-visual-help'),
-          addButton = $(visualHelpArea[0]).find('a'),
+        var elementsContainer = $(ui.item[0]).parents('.visual-content-layout-elements-area'),
+          visualHelpArea = elementsContainer.parent(),
+          addButton = $(visualHelpArea).find('a'),
           textArea = $(addButton[0]).data('textarea'),
-          text = getTextFromVisual($(visualHelpArea[0]));
+          text = getTextFromVisual(elementsContainer);
         $("#" + textArea).val(text);
       }
     });
@@ -624,14 +716,18 @@
   function editVisualElement() {
     // Get the swap name of the swap to fin the respective form.
     var swapName = $(this).data().swapName,
-      url = '/VisualContentD8/visual_content_layout/swap_attributes_update_form/' + swapName,
-      swapAttributes = $(this).parent().data();
+      url =  drupalBasePath + 'visual_content_layout/swap_attributes_update_form/' + swapName,
+      swapAttributes = $(this).parent().data(),
+      dWidth = $(window).width() * 0.7;
 
     // Set a class in the div to identify which div actualize.
     $(this).parent().addClass("swap-actualize-div");
 
     // Place the progress icon.
-    $('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>').insertAfter($(this));
+    $('<i class="fa fa-clock-o dragIcon"></i>').insertAfter($(this));
+
+    // Create a div for display the modal.
+    $('<div id="visual-content-layout-update-modal"></div>').appendTo("body");
 
     // Execute ajax call.
     $.ajax({
@@ -655,12 +751,12 @@
           modal: true,
           draggable: false,
           resizable: false,
-          minWidth: 1200
+          minWidth: dWidth,
         });
         Drupal.behaviors.visualContentLayoutElementsInit.attach($('#visual-content-layout-update-modal'));
       },
       complete: function () {
-        $('.ajax-progress').remove();
+        $('.fa-clock-o').remove();
       }
     });
   }
@@ -688,9 +784,19 @@
 
     // Define the function of accept button, negate submit form.
     $("#edit-swaps-accept").on("click", updateVisualElement);
+    $("#edit-swaps-cancel").on("click", cancelVisualElement);
     $("#visual-content-layout-update-modal form").submit(function () {
       return false;
     });
+  }
+
+  //--------------------------------------------------------------------------------
+  //                      Close update visual element modal
+  //--------------------------------------------------------------------------------
+  function cancelVisualElement() {
+    // Close modal dialog
+    $(".ui-dialog-content").dialog("close");
+    $("#visual-content-layout-update-modal").remove();
   }
 
   //--------------------------------------------------------------------------------
@@ -702,6 +808,10 @@
       elements = $(".ui-dialog-content :input"),
       swap = div.data("swapId");
 
+    // Clean all data from the swap
+    div.removeData()
+    div.data("swapId", swap);
+
     // Iterate all inputs.
     for (var i = 0; i < elements.length; i++) {
 
@@ -710,7 +820,7 @@
         data = $(elements[i]).attr('id');
 
       // Validate the input have id and is not the submit button.
-      if (!data || data === "edit-swaps-accept") {
+      if (!data || data === "edit-swaps-accept" || data === "edit-swaps-cancel") {
         continue;
       }
 
@@ -723,12 +833,13 @@
     }
 
     // Get the parents to find the textarea.
-    var visualHelpArea = div.parents('.visual-content-layout-visual-help'),
-      addButton = $(visualHelpArea[0]).find('a'),
+    var elementsContainer = div.parents('.visual-content-layout-elements-area'),
+      visualHelpArea = elementsContainer.parent(),
+      addButton = $(visualHelpArea).find('a'),
       textArea = $(addButton[0]).data('textarea');
 
     // Recreate the text in textarea.
-    var text = getTextFromVisual($(visualHelpArea[0]));
+    var text = getTextFromVisual(elementsContainer);
     $("#" + textArea).val(text);
 
     // Remove the class that identify which div actualize.
@@ -736,6 +847,7 @@
 
     // Close modal dialog
     $(".ui-dialog-content").dialog("close");
+    $("#visual-content-layout-update-modal").remove();
   }
 
   //--------------------------------------------------------------------------------
@@ -743,16 +855,48 @@
   //--------------------------------------------------------------------------------
   function deleteVisualElement() {
     var parent = $(this).parent('.visual-content-layout-element'),
-      visualHelpArea = $(parent).parents('.visual-content-layout-visual-help'),
-      addButton = $(visualHelpArea[0]).find('a'),
+      elementsContainer = parent.parents('.visual-content-layout-elements-area'),
+      visualHelpArea = elementsContainer.parent(),
+      addButton = $(visualHelpArea).find('a'),
       textArea = $(addButton[0]).data('textarea');
 
     // Delete the element
     $(parent).remove();
 
     // Recreate the text in textarea
-    var text = getTextFromVisual($(visualHelpArea[0]));
+    var text = getTextFromVisual(elementsContainer);
     $("#" + textArea).val(text);
+  }
+
+  //--------------------------------------------------------------------------------
+  //                 Event click copy visual element
+  //--------------------------------------------------------------------------------
+  function copyVisualElement() {
+    var parent = $(this).parent('.visual-content-layout-element'),
+      elementsContainer = parent.parents('.visual-content-layout-elements-area'),
+      visualHelpArea = elementsContainer.parent(),
+      addButton = $(visualHelpArea).find('a'),
+      textArea = $(addButton[0]).data('textarea');
+
+    // Clone the element.
+    parent.clone(true).insertAfter(parent);
+
+    // Recreate the text in textarea.
+    var text = getTextFromVisual(elementsContainer);
+    $("#" + textArea).val(text);
+
+  }
+
+  //--------------------------------------------------------------------------------
+  //                 Event click add visual element in container
+  //--------------------------------------------------------------------------------
+  function addContainerVisualElement() {
+    // Delete the target class.
+    $('.visual-content-layout-target').removeClass('visual-content-layout-target');
+
+    var parent = $(this).parents('.visual-content-layout-element'),
+      element = parent.children('.container:first');
+    element.addClass('visual-content-layout-target');
   }
 
 }(jQuery, Drupal));

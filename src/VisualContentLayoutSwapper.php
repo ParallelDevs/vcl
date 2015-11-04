@@ -150,7 +150,7 @@ class VisualContentLayoutSwapper {
    * Validate the tag.
    */
   public static function swapIsTag($tag, $swaps) {
-    if (isset($swaps[$tag])) {
+    if (isset($swaps["swap_" . $tag])) {
       return TRUE;
     }
 
@@ -164,7 +164,7 @@ class VisualContentLayoutSwapper {
 
     $tag = $m[2];
 
-    if (!empty($swaps[$tag])) {
+    if (!empty($swaps["swap_" . $tag])) {
       // Process if tag exists (enabled).
       $attr = self::parseAttrs($m[3]);
       /*
@@ -175,7 +175,7 @@ class VisualContentLayoutSwapper {
       * 4 - The content of a Swap when it wraps some content.
       * */
 
-      $swap = \Drupal::service('plugin.manager.swaps')->createInstance($tag);
+      $swap = \Drupal::service('plugin.manager.swaps')->createInstance("swap_" . $tag);
 
       if (!is_null($m[4])) {
         // This is an enclosing tag, means extra parameter is present.

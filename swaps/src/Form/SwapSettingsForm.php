@@ -44,12 +44,6 @@ class SwapSettingsForm extends ConfigFormBase {
       '#description' => $this->t(''),
       '#default_value' => $config->get('enable_bootstrap'),
     );
-    $form['enable_fontawesome'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable FontAwesome'),
-      '#description' => $this->t(''),
-      '#default_value' => $config->get('enable_fontawesome'),
-    );
 
     return parent::buildForm($form, $form_state);
   }
@@ -69,7 +63,6 @@ class SwapSettingsForm extends ConfigFormBase {
 
     $this->config('swaps.swapsettings_config')
       ->set('enable_bootstrap', $form_state->getValue('enable_bootstrap'))
-      ->set('enable_fontawesome', $form_state->getValue('enable_fontawesome'))
       ->save();
   }
 
