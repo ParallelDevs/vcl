@@ -20,7 +20,7 @@ use Drupal\swaps\SwapBase;
  * )
  */
 
-class ListElement extends SwapBase {
+class SwapListElement extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.

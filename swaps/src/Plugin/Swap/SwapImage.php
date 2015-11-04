@@ -23,7 +23,7 @@ use Drupal\swaps\SwapBase;
  * )
  */
 
-class Image extends SwapBase {
+class SwapImage extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.

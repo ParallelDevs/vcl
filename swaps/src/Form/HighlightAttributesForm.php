@@ -13,15 +13,13 @@ use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-/**
- * Contribute form.
- */
-class ButtonAttributesForm extends FormBase {
+
+class HighlightAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_button_attributes_form';
+    return 'swap_hgl_attributes_form';
   }
   /**
    * {@inheritdoc}
@@ -37,20 +35,21 @@ class ButtonAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Highligth',
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_attributes']['swaps_button_text'] = array(
+    $form['swaps_attributes']['swaps_hgl_text'] = array(
       '#type' => 'textfield',
-      '#title' => 'Title',
+      '#title' => 'Text',
       '#size' => 30,
     );
 
-    $form['swaps_attributes']['swaps_button_url'] = array(
+    $form['swaps_attributes']['swaps_hgl_fontcolor'] = array(
       '#type' => 'textfield',
-      '#title' => 'URL',
+      '#title' => 'Font Color',
       '#size' => 30,
+      '#attributes' => array('class' => array('colorpicker_input')),
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
@@ -121,13 +120,13 @@ class ButtonAttributesForm extends FormBase {
     // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
-    $swap = $swaps['swap_button'];
+    $swap = $swaps['swap_hgl'];
 
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['text'] = $input['swaps_button_text'];
-    $settings['url'] = $input['swaps_button_url'];
+    $settings['text'] = $input['swaps_hgl_text'];
+    $settings['fontcolor'] = $input['swaps_hgl_fontcolor'];
 
     // ---------------------------------------------------------------
     // Get the default attributes values of the swap (required for visual help).

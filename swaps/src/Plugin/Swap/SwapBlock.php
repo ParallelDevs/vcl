@@ -20,7 +20,7 @@ use Drupal\block\Entity\Block as EntityBlock;
  *   container = false
  * )
  */
-class Block extends SwapBase {
+class SwapBlock extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.

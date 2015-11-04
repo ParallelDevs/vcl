@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\swaps\SwapDefaultAttributes;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
-use Drupal\Core\Ajax\CssCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 
@@ -38,7 +38,7 @@ class DivAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Div',
       '#group' => 'swaps_formTabs',
     );
 
@@ -52,18 +52,13 @@ class DivAttributesForm extends FormBase {
       '#title' => 'Div Type',
       '#options' => $options,
       '#default_value' => 'row',
-      '#ajax' => array(
-        'callback' => '::selectChange',
-        'effect' => 'fade',
-      ),
     );
 
     $form['swaps_attributes']['swaps_div_class'] = array(
       '#type' => 'textfield',
       '#title' => 'Div Class',
       '#size' => 30,
-      '#prefix' => '<div id="swaps_div_class" class="hidden">',
-      '#suffix' => '</div>',
+      '#description' => 'Only works if you select the type normal, otherwise It will be discarded',
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
@@ -75,6 +70,16 @@ class DivAttributesForm extends FormBase {
       '#group' => 'swaps_attributes',
       '#ajax' => array(
         'callback' => '::ajaxSubmit',
+      ),
+    );
+
+    // Cancel button ------------------------------------.
+    $form['swaps_cancel'] = array(
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#group' => 'swaps_attributes',
+      '#ajax' => array(
+        'callback' => '::ajaxCancelSubmit',
       ),
     );
 
@@ -95,23 +100,19 @@ class DivAttributesForm extends FormBase {
   }
 
   /**
-   * Ajax method to show div_class element.
+   * Custom ajax submit for cancel button.
    */
-  public function selectChange(array &$form, FormStateInterface $form_state) {
+  public function ajaxCancelSubmit(array &$form, FormStateInterface $form_state) {
 
-    $input = $form_state->getUserInput();
-    $div_type = $input['swaps_div_type'];
     $response = new AjaxResponse();
+    $title = $this->t('Choose one swap');
 
-    if ($div_type == 'normal') {
-      $response->addCommand(new CssCommand('#swaps_div_class',
-        array('display' => 'block')));
-    }
-    else {
-      $response->addCommand(new CssCommand('#swaps_div_class',
-        array('display' => 'none')));
-    }
+    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
+    $modal_options = array('width' => '1200', 'height' => 'auto');
+    $response->addCommand(new CloseModalDialogCommand());
+    $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
     return $response;
 
   }
@@ -128,13 +129,17 @@ class DivAttributesForm extends FormBase {
     // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
-    $swap = $swaps['column'];
+    $swap = $swaps['swap_div'];
 
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['class'] = $input['swaps_div_class'];
     $settings['type'] = $input['swaps_div_type'];
+
+    // Get div_class input only in normal div type.
+    if ($settings['type'] == 'normal') {
+      $settings['class'] = $input['swaps_div_class'];
+    }
 
     // ---------------------------------------------------------------.
     // Get the default attributes values of the swap (required for visual help).

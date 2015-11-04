@@ -45,6 +45,13 @@ class Swap extends Plugin {
    */
   public $container;
   /**
+   *
+   * Indicates other "swaps" that this "swap" accepts.
+   *
+   * @var string
+   */
+  public $children;
+  /**
    * The plugin Tip.
    *
    * @var string

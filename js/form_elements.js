@@ -29,6 +29,8 @@
                     $(id).after($('.' + colorpickerclass));
                 }
             }
+
         }
     };
+
 }(jQuery, Drupal));

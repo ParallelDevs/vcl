@@ -65,7 +65,7 @@ function visual_content_layout_load_field($field, $format) {
   }
 
   // Display the link that enable the visual element.
-  $prefix = '<div class="visual-content-layout-button-wrap">
+  $prefix = '<div class="visual-content-layout-button-wrap" style="display: none;">
              <a class="visual-content-layout-btn" data-state="disable" data-id="'
              . $textarea_id . '" data-format = "' . $format . '">';
   $prefix .= t('Loading...') . '</a></div>';
@@ -79,13 +79,20 @@ function visual_content_layout_load_field($field, $format) {
   );
 
   // Create the link that display the select swap form.
-  $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_select_form', [], $attributes);
-  $internal_link = '<div class="visual-content-layout-visual-select-form">'
-    . \Drupal::l(t('<i class="fa fa-plus-square"></i>'), $url) . '</div>';
+  $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_select_form_all', [], $attributes);
+  $link = \Drupal::l(t('<i class="fa fa-plus-square"></i>'), $url);
+  // Create top and down link wrapper.
+  $internal_link_top = '<div id="vcl-top-link" class="visual-content-layout-select-link">'
+    . $link . '</div>';
+  $internal_link_bottom = '<div id="vcl-bottom-link" class="visual-content-layout-select-link">'
+    . $link . '</div>';
+  // Create the area for the visual elements
+  $visual_elements_area = '<div class="visual-content-layout-elements-area container"></div>';
 
   // Create the div that contain the visual help elements.
-  $suffix = '<div class="visual-content-layout-visual-help container">'
-    . $internal_link . '</div>';
+  $suffix = '<div class="visual-content-layout-visual-help">'
+    . $internal_link_top . $visual_elements_area . $internal_link_bottom
+    . '</div>';
 
   // Set all div and libraries.
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
@@ -123,6 +130,7 @@ function visual_content_layout_load_field($field, $format) {
     'enable_formats' => $enable_formats,
     'enable_swaps' => $enable_swaps,
     'swap_names' => $swaps_names,
+    'base_path' => $GLOBALS['base_path'],
   );
   return $field;
 }

@@ -9,9 +9,9 @@ namespace Drupal\swaps\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\block\Entity\Block as EntityBlock;
 /**
  * Contribute form.
  */
@@ -66,6 +66,7 @@ class BlockAttributesForm extends FormBase {
       '#title' => 'Block ID',
       '#options' => $options,
       '#default_value' => $plugin_id,
+      '#size' => 15,
     );
 
     // Accept button ------------------------------------.
@@ -75,6 +76,16 @@ class BlockAttributesForm extends FormBase {
       '#group' => 'swaps_attributes',
       '#ajax' => array(
         'callback' => '::ajaxSubmit',
+      ),
+    );
+
+    // Cancel button ------------------------------------.
+    $form['swaps_cancel'] = array(
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#group' => 'swaps_attributes',
+      '#ajax' => array(
+        'callback' => '::ajaxCancelSubmit',
       ),
     );
 
@@ -91,6 +102,24 @@ class BlockAttributesForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
+  }
+
+  /**
+   * Custom ajax submit for cancel button.
+   */
+  public function ajaxCancelSubmit(array &$form, FormStateInterface $form_state) {
+
+    $response = new AjaxResponse();
+    $title = $this->t('Choose one swap');
+
+    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+
+    $modal_options = array('width' => '1200', 'height' => 'auto');
+    $response->addCommand(new CloseModalDialogCommand());
+    $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
+    return $response;
 
   }
 

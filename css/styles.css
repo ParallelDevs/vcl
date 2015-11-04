@@ -359,9 +359,13 @@
     border-radius: 0.333em;
 }
 
-.visual-content-layout-visual-select-form{
+.visual-content-layout-select-link{
     font-size: 25px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+}
+
+.visual-content-layout-elements-area{
+    margin-top: 0px !important;
 }
 
 .visual-content-layout-element{
@@ -371,7 +375,7 @@
 .ui-state-highlight {
     height: 25px;
     line-height: 25px;
-    border: 3px solid #CCC;
+    border: 5px solid #FFFFFF;
     border-radius: 4px;
     margin: 0px 0px 20px;
 }
@@ -380,7 +384,7 @@
     margin: 10px;
     margin-top: 50px;
     padding: 30px;
-    background-color: #b6ffb6;
+    background-color: #BFC2CA;
 }
 
 .use-ajax{
@@ -399,28 +403,20 @@
 
 .iconButton{
     cursor: pointer;
-    border: 1px solid #A6A6A6;
-    border-radius: 0.5em;
-    background-color: #F2F1EB;
-    background-image: linear-gradient(to bottom, #F6F6F3, #E7E7DF);
     color: #333;
-    text-decoration: none;
     font-size: 20px !important;
     padding: 7px;
     float: right;
 }
 
 .iconButton:hover {
-    border: 1px solid #A6A6A6;
-    background-color: #DFDFD9;
-    background-image: linear-gradient(to bottom, #F6F6F3, #E7E7DF);
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2) inset;
-    transition: none 0s ease 0s;
+    color: rgba(0,0,0,0.15);
+    text-shadow: -4px -4px #333;
 }
 
 .dragIcon{
     float: left;
-    margin-top: 13px;
+    margin-top: 10px;
     margin-left: 10px;
 }
 
@@ -431,4 +427,18 @@
 
 .dragIcon:hover {
     cursor: move;
+}
+
+.infoIcon:hover{
+    cursor: default;
+}
+
+.tooltip{
+    color: #FFFFFF;
+    background: #000000;
+    position: absolute;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 6px;
+    min-width: 300px;
 }

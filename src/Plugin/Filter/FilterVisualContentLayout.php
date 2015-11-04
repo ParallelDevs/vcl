@@ -35,23 +35,6 @@ class FilterVisualContentLayout extends FilterBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $form['bootstrap'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable bootstrap'),
-      '#default_value' => $this->settings['bootstrap'],
-    );
-    $form['fontAwesome'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable fontAwesome'),
-      '#default_value' => $this->settings['fontAwesome'],
-    );
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function process($text, $langcode) {
     drupal_set_message("true", "enable_bootstrap");
     $result = new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));

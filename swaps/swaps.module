@@ -1,0 +1,12 @@
+<?php
+/**
+* Implements hook_install().
+*/
+function swaps_install() {
+
+  \Drupal::configFactory()->getEditable('swaps.swapsettings_config')
+    ->set('enable_bootstrap',
+      \Drupal::configFactory()->getEditable('swaps.settings')->get('enable_bootstrap'))
+    ->save();
+
+}

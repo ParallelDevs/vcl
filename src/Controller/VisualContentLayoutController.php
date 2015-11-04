@@ -19,16 +19,29 @@ use Drupal\Core\Ajax\OpenModalDialogCommand;
 class VisualContentLayoutController extends ControllerBase {
 
   /**
-   * Displays modal form for select swap.
+   * Choose form for select all swaps.
    */
-  public function displayModalSelectForm() {
+  public function chooseAllSwapsSelectForm() {
+    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
+    return $this->displayModalSelectForm($form);
+  }
+
+  /**
+   * Choose form for select specific swap.
+   */
+  public function chooseSwapSelectForm($swap) {
+    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm', $swap);
+    return $this->displayModalSelectForm($form);
+  }
+
+  /**
+   * Return modal with select form.
+   */
+  public function displayModalSelectForm($form) {
     $response = new AjaxResponse();
     $title = $this->t('Choose one swap');
-
-    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-
-    $modal_options = array('width' => '1200', 'height' => 'auto');
+    $modal_options = array('width' => '70%', 'height' => 'auto');
     $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
     return $response;
   }
@@ -51,7 +64,7 @@ class VisualContentLayoutController extends ControllerBase {
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     // Create the ajax response.
     $response = new AjaxResponse();
-    $modal_options = array('width' => '1428', 'height' => 'auto');
+    $modal_options = array('width' => '70%', 'height' => 'auto');
     $response->addCommand(new OpenModalDialogCommand("Swap Settings", $form, $modal_options));
     return $response;
   }
