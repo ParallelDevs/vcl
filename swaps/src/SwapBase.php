@@ -99,7 +99,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @param mixed $class
    *   The class string or array.
    *
-   * @param string $default
+   * @param string $new_class
    *   The default class value.
    *
    * @return string

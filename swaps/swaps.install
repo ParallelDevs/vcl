@@ -1,7 +1,12 @@
 <?php
 /**
-* Implements hook_install().
-*/
+ * @file
+ * Prepare the default settings of swaps .
+ */
+
+/**
+ * Implements hook_install().
+ */
 function swaps_install() {
 
   \Drupal::configFactory()->getEditable('swaps.swapsettings_config')

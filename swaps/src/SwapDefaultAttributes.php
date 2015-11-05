@@ -194,7 +194,7 @@ class SwapDefaultAttributes {
     ($input['swaps_marginBottom'] != "") ?
       $settings['marginBottom'] = $input['swaps_marginBottom'] : "";
 
-    ($input['swaps_textAlign'] != "default" && $input['swaps_textAlign'] != NULL ) ?
+    ($input['swaps_textAlign'] != "default" && $input['swaps_textAlign'] != NULL) ?
       $settings['textAlign'] = $input['swaps_textAlign'] : "";
 
     ($input['swaps_cssStyles'] != "") ?
@@ -209,7 +209,6 @@ class SwapDefaultAttributes {
     ($input['swaps_backgroundColor'] != "") ?
       $settings['backgroundColor'] = $input['swaps_backgroundColor'] : "";
 
-
     // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
@@ -218,7 +217,6 @@ class SwapDefaultAttributes {
     // ---------------------------------------------------------------
     // Get the default attributes values of the swap (required for visual help).
     // ---------------------------------------------------------------
-
     $settings['swapId'] = $swap['id'];
     $settings['swapName'] = $swap['name'];
     $settings['container'] = $swap['container'];
