@@ -107,7 +107,3 @@
   border-radius: 6px;
   min-width: 300px;
 }
-
-.swaps_youtube ~ label ~ div{
-  float: left;
-}

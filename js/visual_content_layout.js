@@ -23,7 +23,7 @@
     attach: function (context, settings) {
 
       // Set the base path global.
-      settings.visualContentLayout.base_path ? drupalBasePath = settings.visualContentLayout.base_path : "";
+      drupalBasePath = settings.visualContentLayout.base_path ? settings.visualContentLayout.base_path : "";
 
       // Validate all the filter select for enable the button on it textArea.
       var filter = $('.filter-list');
@@ -188,7 +188,7 @@
 
           // Create the button for add swaps if have container.
           var addButton = $('<a>', {
-            href: drupalBasePath + 'visual_content_layout/swap_select_form/' + attributes.swapId ,
+            href: drupalBasePath + 'visual_content_layout/swap_select_form/' + attributes.swapId,
             class: 'fa fa-plus-square iconButton addButton'});
           // Add event to button.
           addButton.on('click', addContainerVisualElement);
@@ -236,7 +236,7 @@
           }
         }
 
-        $('#'+textArea).val(getTextFromVisual(visualHelpArea));
+        $('#' + textArea).val(getTextFromVisual(visualHelpArea));
         makeDragAndDrop();
 
         $('#visual-content-layout-actual-textarea').remove();
@@ -399,7 +399,7 @@
                   // Create the father and add the child.
                   div = createHTMLDiv(originalText, fatherSwap, swapNames);
                   // Insert addButton.
-                  var addButton = createAjaxLink(div.data('swapId'));
+                  addButton = createAjaxLink(div.data('swapId'));
                   addButton.appendTo($(div));
                   var ele = $('<div>').addClass('visual-content-layout-container').appendTo($(div));
                   while (elements[lastFather + 1]) {
@@ -435,7 +435,7 @@
                 // Validate if the swap can contain others swaps.
                 if (enableSwaps[c.split(" ")[0]]) {
                   // Insert addButton.
-                  var addButton = createAjaxLink(div.data('swapId'));
+                  addButton = createAjaxLink(div.data('swapId'));
                   addButton.appendTo($(div));
                   $('<div>').addClass('visual-content-layout-container').appendTo($(div));
                 }
@@ -498,7 +498,7 @@
 
             // Save the attributes of the swaps.
             swap = c.trim().split(" ");
-            if (cssStyle) {swap.push(cssStyle);}
+            if (cssStyle) {swap.push(cssStyle); }
             swapText = true;
             count++;
             continue;
@@ -595,7 +595,7 @@
 
         dragIcon.appendTo(element);
         deleteButton.appendTo(element);
-        if (editButton) {editButton.appendTo(element);}
+        if (editButton) {editButton.appendTo(element); }
         copyButton.appendTo(element);
 
         return element;
@@ -712,7 +712,6 @@
         $("#" + textArea).val(text);
       }
     });
-
   }
 
   //--------------------------------------------------------------------------------
@@ -721,10 +720,9 @@
   function editVisualElement() {
     // Get the swap name of the swap to fin the respective form.
     var swapName = $(this).data().swapName,
-      url =  drupalBasePath + 'visual_content_layout/swap_attributes_update_form/' + swapName.replace(" ",""),
+      url = drupalBasePath + 'visual_content_layout/swap_attributes_update_form/' + swapName.replace(" ", ""),
       swapAttributes = $(this).parent().data(),
       dWidth = $(window).width() * 0.7;
-
     // Set a class in the div to identify which div actualize.
     $(this).parent().addClass("swap-actualize-div");
 
@@ -756,7 +754,7 @@
           modal: true,
           draggable: false,
           resizable: false,
-          minWidth: dWidth,
+          minWidth: dWidth
         });
         Drupal.behaviors.visualContentLayoutElementsInit.attach($('#visual-content-layout-update-modal'));
       },
@@ -814,7 +812,7 @@
       swap = div.data("swapId");
 
     // Clean all data from the swap
-    div.removeData()
+    div.removeData();
     div.data("swapId", swap);
 
     // Iterate all inputs.

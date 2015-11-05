@@ -47,7 +47,7 @@ class SwapYoutube extends SwapBase {
    * Create a valid url for display videos.
    */
   public function createVideoUrl($youtube_url) {
-    return "https://www.youtube.com/embed/" . explode("=",$youtube_url)[1];
+    return "https://www.youtube.com/embed/" . explode("=", $youtube_url)[1];
   }
 
   /**

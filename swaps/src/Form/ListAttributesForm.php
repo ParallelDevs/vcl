@@ -106,4 +106,3 @@ class ListAttributesForm extends FormBase {
 
   }
 }
-
