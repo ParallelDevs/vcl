@@ -8,6 +8,7 @@ bootstrap:
         css/font-awesome.css: {}
         css/component.css: {}
         css/bootstrap-colorpicker.css: {}
+        css/bootstrap.css: {}
 
 visual_content_layout:
   version: 1.x

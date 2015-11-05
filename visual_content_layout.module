@@ -87,7 +87,7 @@ function visual_content_layout_load_field($field, $format) {
   $internal_link_bottom = '<div id="vcl-bottom-link" class="visual-content-layout-select-link">'
     . $link . '</div>';
   // Create the area for the visual elements
-  $visual_elements_area = '<div class="visual-content-layout-elements-area container"></div>';
+  $visual_elements_area = '<div class="visual-content-layout-elements-area visual-content-layout-container"></div>';
 
   // Create the div that contain the visual help elements.
   $suffix = '<div class="visual-content-layout-visual-help">'

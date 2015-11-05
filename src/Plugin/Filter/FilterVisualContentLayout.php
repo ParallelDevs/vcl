@@ -11,7 +11,6 @@ namespace Drupal\visual_content_layout\Plugin\Filter;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
-use Drupal\Core\Form\FormStateInterface;
 
 
 /**
