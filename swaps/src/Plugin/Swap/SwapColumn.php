@@ -17,7 +17,6 @@ use Drupal\swaps\SwapBase;
  *   name = "Column",
  *   description = @Translation("Add div with the class column."),
  *   container = true,
- *   children = "swap_block, swap_button",
  *   tip = "[column size='xs | sm | md | lg' number='[1-12]'
  *          class='extra class'] Content [/column]"
  * )

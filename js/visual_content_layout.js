@@ -489,7 +489,7 @@
 
             // Get cssStyle.
             startIndex = c.indexOf("cssStyles");
-            if( startIndex !== -1 ){
+            if(startIndex !== -1){
               lastIndex = c.indexOf('"', startIndex);
               lastIndex = c.indexOf('"', lastIndex + 1);
               cssStyle = c.substring(startIndex, lastIndex);
@@ -574,7 +574,12 @@
           // Set all other attributes.
           for (var idx = 1; idx < swap.length; idx++) {
             var attr = swap[idx].trim().replace(/\"/gi, '').split('=');
-            element.data(attr[0], attr[1]);
+            if (attr.length < 3){
+              element.data(attr[0], attr[1]);
+            }
+            else{
+              element.data(attr[0], attr[1] + "=" + attr[2]);
+            }
           }
           dragIcon.html(swapName);
 
@@ -716,7 +721,7 @@
   function editVisualElement() {
     // Get the swap name of the swap to fin the respective form.
     var swapName = $(this).data().swapName,
-      url =  drupalBasePath + 'visual_content_layout/swap_attributes_update_form/' + swapName,
+      url =  drupalBasePath + 'visual_content_layout/swap_attributes_update_form/' + swapName.replace(" ",""),
       swapAttributes = $(this).parent().data(),
       dWidth = $(window).width() * 0.7;
 

@@ -63,8 +63,12 @@
 }
 
 .iconButton:hover {
-  color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.15) !important;
   text-shadow: -4px -4px #333;
+}
+
+.iconButton:focus {
+  color: #333;
 }
 
 .dragIcon {
@@ -92,7 +96,6 @@
 
 .addButton:focus {
   text-decoration: none;
-  color: black !important;
 }
 
 .tooltip {
@@ -103,4 +106,8 @@
   text-align: center;
   border-radius: 6px;
   min-width: 300px;
+}
+
+.swaps_youtube ~ label ~ div{
+  float: left;
 }

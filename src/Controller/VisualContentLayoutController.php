@@ -41,7 +41,7 @@ class VisualContentLayoutController extends ControllerBase {
     $response = new AjaxResponse();
     $title = $this->t('Choose one swap');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $modal_options = array('width' => '70%', 'height' => 'auto');
+    $modal_options = array('width' => '50%', 'height' => 'auto');
     $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
     return $response;
   }
@@ -50,6 +50,7 @@ class VisualContentLayoutController extends ControllerBase {
    * Displays modal form for input the attributes of the swap.
    */
   public function displayModalAttributesForm($swap) {
+    $swap = str_replace(" ", "", $swap);
     // Get the list of all modules.
     $modules = \Drupal::moduleHandler()->getModuleList();
     // Search the swap form in all modules.
@@ -64,7 +65,7 @@ class VisualContentLayoutController extends ControllerBase {
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     // Create the ajax response.
     $response = new AjaxResponse();
-    $modal_options = array('width' => '70%', 'height' => 'auto');
+    $modal_options = array('width' => '50%', 'height' => 'auto');
     $response->addCommand(new OpenModalDialogCommand("Swap Settings", $form, $modal_options));
     return $response;
   }

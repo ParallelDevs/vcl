@@ -30,6 +30,25 @@
                 }
             }
 
+            // Set image when load.
+            var youtubeUrl = $('.swaps_youtube').val(),
+              youtubeId = youtubeUrl.split("=")[1],
+              imageUrl = 'http://img.youtube.com/vi/' + youtubeId + '/0.jpg;';
+
+            $('.youtube_preview').attr('src', imageUrl);
+
+            //--------------------------------------------------------------------------------
+            //                        Event on blur in youtube input
+            //--------------------------------------------------------------------------------
+            $('.swaps_youtube', context).blur(function () {
+                // Get the parent of the filter select.
+                var youtubeUrl = $(this).val(),
+                  youtubeId = youtubeUrl.split("=")[1],
+                  imageUrl = 'http://img.youtube.com/vi/' + youtubeId + '/0.jpg;';
+
+                $('.youtube_preview').attr('src', imageUrl);
+            });
+
         }
     };
 

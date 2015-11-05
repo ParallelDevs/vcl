@@ -12,13 +12,15 @@ use Drupal\swaps\SwapDefaultAttributes;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-
-class HighlightAttributesForm extends FormBase {
+/**
+ * Contribute form.
+ */
+class ListElementAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_hgl_attributes_form';
+    return 'swap_element_list_element_attributes_form';
   }
   /**
    * {@inheritdoc}
@@ -34,21 +36,14 @@ class HighlightAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Highligth',
+      '#title' => 'List Element',
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_attributes']['swaps_hgl_text'] = array(
+    $form['swaps_attributes']['swaps_li_text'] = array(
       '#type' => 'textfield',
-      '#title' => 'Text',
+      '#title' => 'Title',
       '#size' => 30,
-    );
-
-    $form['swaps_attributes']['swaps_hgl_fontcolor'] = array(
-      '#type' => 'textfield',
-      '#title' => 'Font Color',
-      '#size' => 30,
-      '#attributes' => array('class' => array('colorpicker_input')),
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
@@ -85,17 +80,12 @@ class HighlightAttributesForm extends FormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
 
-    // ---------------------------------------------------------------.
-    // Get the own attributes values of the swap.
-    // ---------------------------------------------------------------.
-
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['text'] = $input['swaps_hgl_text'];
-    $settings['fontcolor'] = $input['swaps_hgl_fontcolor'];
+    $settings['text'] = $input['swaps_li_text'];
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_hgl');
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_li');
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

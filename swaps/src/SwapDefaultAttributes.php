@@ -233,7 +233,7 @@ class SwapDefaultAttributes {
       ->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
-    $modal_options = array('width' => '70%', 'height' => 'auto');
+    $modal_options = array('width' => '50%', 'height' => 'auto');
     $response->addCommand(new CloseModalDialogCommand());
     $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
     return $response;
