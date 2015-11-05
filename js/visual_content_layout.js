@@ -205,7 +205,7 @@
           Drupal.ajax[base] = new Drupal.Ajax(base, addButton, element_settings);
 
           addButton.appendTo(element);
-          $('<div>').addClass('container').appendTo($(element));
+          $('<div>').addClass('visual-content-layout-container').appendTo($(element));
         }
         delete (attributes.container);
 
@@ -360,7 +360,7 @@
                 // Insert addButton.
                 var addButton = createAjaxLink(div.data('swapId'));
                 addButton.appendTo($(div));
-                $('<div>').addClass('container').appendTo($(div));
+                $('<div>').addClass('visual-content-layout-container').appendTo($(div));
               }
 
               // Validate if that swap have a father.
@@ -401,7 +401,7 @@
                   // Insert addButton.
                   var addButton = createAjaxLink(div.data('swapId'));
                   addButton.appendTo($(div));
-                  var ele = $('<div>').addClass('container').appendTo($(div));
+                  var ele = $('<div>').addClass('visual-content-layout-container').appendTo($(div));
                   while (elements[lastFather + 1]) {
                     $(elements[lastFather + 1]).appendTo(ele);
                     elements.splice(lastFather + 1, 1);
@@ -437,7 +437,7 @@
                   // Insert addButton.
                   var addButton = createAjaxLink(div.data('swapId'));
                   addButton.appendTo($(div));
-                  $('<div>').addClass('container').appendTo($(div));
+                  $('<div>').addClass('visual-content-layout-container').appendTo($(div));
                 }
                 swap = null;
                 swapText = false;
@@ -649,7 +649,7 @@
       swapId = data.swapId,
       swapText = data.text,
       text = "[" + swapId,
-      container = element.children('.container');
+      container = element.children('.visual-content-layout-container');
 
     if (swapId === "string") {
       return swapText;
@@ -690,9 +690,9 @@
   //                 Make the visual element able to drag and drop
   //--------------------------------------------------------------------------------
   function makeDragAndDrop() {
-    $(".container").sortable({
+    $(".visual-content-layout-container").sortable({
       placeholder: "ui-state-highlight",
-      connectWith: ".container",
+      connectWith: ".visual-content-layout-container",
       items: "div.visual-content-layout-element",
       axis: "y",
       opacity: 0.5,
@@ -895,7 +895,7 @@
     $('.visual-content-layout-target').removeClass('visual-content-layout-target');
 
     var parent = $(this).parents('.visual-content-layout-element'),
-      element = parent.children('.container:first');
+      element = parent.children('.visual-content-layout-container:first');
     element.addClass('visual-content-layout-target');
   }
 

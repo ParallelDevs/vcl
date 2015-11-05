@@ -9,7 +9,7 @@ namespace Drupal\swaps\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\swaps\SwapDefaultAttributes;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 /**
@@ -69,25 +69,7 @@ class BlockAttributesForm extends FormBase {
       '#size' => 15,
     );
 
-    // Accept button ------------------------------------.
-    $form['swaps_accept'] = array(
-      '#type' => 'submit',
-      '#value' => t('Accept'),
-      '#group' => 'swaps_attributes',
-      '#ajax' => array(
-        'callback' => '::ajaxSubmit',
-      ),
-    );
-
-    // Cancel button ------------------------------------.
-    $form['swaps_cancel'] = array(
-      '#type' => 'submit',
-      '#value' => t('Cancel'),
-      '#group' => 'swaps_attributes',
-      '#ajax' => array(
-        'callback' => '::ajaxCancelSubmit',
-      ),
-    );
+    SwapDefaultAttributes::getButtonsElements($form);
 
     return $form;
   }
@@ -110,15 +92,7 @@ class BlockAttributesForm extends FormBase {
    */
   public function ajaxCancelSubmit(array &$form, FormStateInterface $form_state) {
 
-    $response = new AjaxResponse();
-    $title = $this->t('Choose one swap');
-
-    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
-    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-
-    $modal_options = array('width' => '1200', 'height' => 'auto');
-    $response->addCommand(new CloseModalDialogCommand());
-    $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
+    $response = SwapDefaultAttributes::cancelAjaxResponse();
     return $response;
 
   }
@@ -132,23 +106,12 @@ class BlockAttributesForm extends FormBase {
     // Get the own attributes values of the swap.
     // ---------------------------------------------------------------.
 
-    // Get all the swaps plugins.
-    $manager = \Drupal::service('plugin.manager.swaps');
-    $swaps = $manager->getDefinitions();
-    $swap = $swaps['swap_block'];
-
     $input = $form_state->getUserInput();
     $settings = array();
 
     $settings['blockid'] = $input['swaps_block_blockid'];
 
-    // ---------------------------------------------------------------
-    // Get the default attributes values of the swap (required for visual help).
-    // ---------------------------------------------------------------
-
-    $settings['swapId'] = $swap['id'];
-    $settings['swapName'] = $swap['name'];
-    $settings['container'] = $swap['container'];
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_block');
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

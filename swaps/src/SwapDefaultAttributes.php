@@ -8,6 +8,10 @@
 
 namespace Drupal\swaps;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
+
 class SwapDefaultAttributes {
 
   /**
@@ -132,9 +136,39 @@ class SwapDefaultAttributes {
   }
 
   /**
+   * Get buttons for accept and cancel.
+   */
+  public function getButtonsElements(&$form) {
+
+    // Accept button ------------------------------------.
+    $form['swaps_accept'] = array(
+      '#type' => 'submit',
+      '#value' => t('Accept'),
+      '#group' => 'swaps_attributes',
+      '#ajax' => array(
+        'callback' => '::ajaxSubmit',
+      ),
+    );
+
+    // Cancel button ------------------------------------.
+    $form['swaps_cancel'] = array(
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#group' => 'swaps_attributes',
+      '#ajax' => array(
+        'callback' => '::ajaxCancelSubmit',
+      ),
+    );
+  }
+
+  /**
    * Get all values set by the user in the default elements.
    */
-  public function getDefaultFormElementsValues(&$settings, &$input) {
+  public function getDefaultFormElementsValues(&$settings, &$input, $swap_id) {
+
+    // ---------------------------------------------------------------
+    // Get the default attributes of the style.
+    // ---------------------------------------------------------------
 
     ($input['swaps_paddingLeft'] != "") ?
       $settings['paddingLeft'] = $input['swaps_paddingLeft'] : "";
@@ -160,7 +194,7 @@ class SwapDefaultAttributes {
     ($input['swaps_marginBottom'] != "") ?
       $settings['marginBottom'] = $input['swaps_marginBottom'] : "";
 
-    ($input['swaps_textAlign'] != "default") ?
+    ($input['swaps_textAlign'] != "default" && $input['swaps_textAlign'] != NULL ) ?
       $settings['textAlign'] = $input['swaps_textAlign'] : "";
 
     ($input['swaps_cssStyles'] != "") ?
@@ -175,5 +209,35 @@ class SwapDefaultAttributes {
     ($input['swaps_backgroundColor'] != "") ?
       $settings['backgroundColor'] = $input['swaps_backgroundColor'] : "";
 
+
+    // Get all the swaps plugins.
+    $manager = \Drupal::service('plugin.manager.swaps');
+    $swaps = $manager->getDefinitions();
+    $swap = $swaps[$swap_id];
+
+    // ---------------------------------------------------------------
+    // Get the default attributes values of the swap (required for visual help).
+    // ---------------------------------------------------------------
+
+    $settings['swapId'] = $swap['id'];
+    $settings['swapName'] = $swap['name'];
+    $settings['container'] = $swap['container'];
+  }
+
+  /**
+   * Get all values set by the user in the default elements.
+   */
+  public function cancelAjaxResponse() {
+    $response = new AjaxResponse();
+    $title = t('Choose one swap');
+
+    $form = \Drupal::formBuilder()
+      ->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+
+    $modal_options = array('width' => '70%', 'height' => 'auto');
+    $response->addCommand(new CloseModalDialogCommand());
+    $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
+    return $response;
   }
 }
