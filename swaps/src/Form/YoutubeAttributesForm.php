@@ -12,13 +12,15 @@ use Drupal\swaps\SwapDefaultAttributes;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-
-class HighlightAttributesForm extends FormBase {
+/**
+ * Contribute form.
+ */
+class YoutubeAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_hgl_attributes_form';
+    return 'swap_youtube_attributes_form';
   }
   /**
    * {@inheritdoc}
@@ -34,21 +36,29 @@ class HighlightAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Highligth',
+      '#title' => 'Youtube',
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_attributes']['swaps_hgl_text'] = array(
+    $form['swaps_attributes']['swaps_youtube_url'] = array(
       '#type' => 'textfield',
-      '#title' => 'Text',
+      '#title' => 'Youtube URL',
+      '#size' => 40,
+      '#attributes' => array('class' => array('swaps_youtube')),
+      '#suffix' => '<img class="youtube_preview" src="http://img.youtube.com/vi/0.jpg;" height="150"/>',
+
+    );
+
+    $form['swaps_attributes']['swaps_youtube_height'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Height',
       '#size' => 30,
     );
 
-    $form['swaps_attributes']['swaps_hgl_fontcolor'] = array(
+    $form['swaps_attributes']['swaps_youtube_width'] = array(
       '#type' => 'textfield',
-      '#title' => 'Font Color',
+      '#title' => 'Width',
       '#size' => 30,
-      '#attributes' => array('class' => array('colorpicker_input')),
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
@@ -85,17 +95,14 @@ class HighlightAttributesForm extends FormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
 
-    // ---------------------------------------------------------------.
-    // Get the own attributes values of the swap.
-    // ---------------------------------------------------------------.
-
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['text'] = $input['swaps_hgl_text'];
-    $settings['fontcolor'] = $input['swaps_hgl_fontcolor'];
+    $settings['url'] = $input['swaps_youtube_url'];
+    $settings['height'] = $input['swaps_youtube_height'];
+    $settings['width'] = $input['swaps_youtube_width'];
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_hgl');
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_youtube');
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

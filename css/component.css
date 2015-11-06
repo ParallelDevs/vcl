@@ -3,6 +3,10 @@ a.btn-style:focus{
 	color: #fff;
 }
 
+a.btn-style:focus:hover{
+	color: #226fbe;
+}
+
 .btn-style {
 	border: none;
 	font-family: inherit;

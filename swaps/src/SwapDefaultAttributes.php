@@ -194,7 +194,7 @@ class SwapDefaultAttributes {
     ($input['swaps_marginBottom'] != "") ?
       $settings['marginBottom'] = $input['swaps_marginBottom'] : "";
 
-    ($input['swaps_textAlign'] != "default" && $input['swaps_textAlign'] != NULL ) ?
+    ($input['swaps_textAlign'] != "default" && $input['swaps_textAlign'] != NULL) ?
       $settings['textAlign'] = $input['swaps_textAlign'] : "";
 
     ($input['swaps_cssStyles'] != "") ?
@@ -209,7 +209,6 @@ class SwapDefaultAttributes {
     ($input['swaps_backgroundColor'] != "") ?
       $settings['backgroundColor'] = $input['swaps_backgroundColor'] : "";
 
-
     // Get all the swaps plugins.
     $manager = \Drupal::service('plugin.manager.swaps');
     $swaps = $manager->getDefinitions();
@@ -218,7 +217,6 @@ class SwapDefaultAttributes {
     // ---------------------------------------------------------------
     // Get the default attributes values of the swap (required for visual help).
     // ---------------------------------------------------------------
-
     $settings['swapId'] = $swap['id'];
     $settings['swapName'] = $swap['name'];
     $settings['container'] = $swap['container'];
@@ -235,7 +233,7 @@ class SwapDefaultAttributes {
       ->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
-    $modal_options = array('width' => '70%', 'height' => 'auto');
+    $modal_options = array('width' => '50%', 'height' => 'auto');
     $response->addCommand(new CloseModalDialogCommand());
     $response->addCommand(new OpenModalDialogCommand($title, $form, $modal_options));
     return $response;

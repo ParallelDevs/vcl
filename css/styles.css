@@ -1,106 +1,109 @@
-
 /*--------------------------------------------------------------------------------
 //                          visual content layout styles
 --------------------------------------------------------------------------------*/
 
-.visual-content-layout-visual-help{
-    margin: 4px 0px 0px !important;
-    padding: 30px;
-    position: relative;
-    border: 1px dashed #DDD;
-    background: #F8F8F8 none repeat scroll 0% 0%;
-    border-radius: 0.333em;
+.visual-content-layout-visual-help {
+  margin: 4px 0px 0px !important;
+  padding: 30px;
+  position: relative;
+  border: 1px dashed #ddd;
+  background: #f8f8f8 none repeat scroll 0% 0%;
+  border-radius: 0.333em;
 }
 
-.visual-content-layout-select-link{
-    font-size: 25px;
-    margin-bottom: 10px;
+.visual-content-layout-select-link {
+  font-size: 25px;
+  margin-bottom: 10px;
 }
 
-.visual-content-layout-elements-area{
-    margin-top: 0px !important;
+.visual-content-layout-elements-area {
+  margin-top: 0px !important;
 }
 
-.visual-content-layout-element{
-    min-height: 60px;
+.visual-content-layout-element {
+  min-height: 60px;
 }
 
 .ui-state-highlight {
-    height: 25px;
-    line-height: 25px;
-    border: 5px solid #FFFFFF;
-    border-radius: 4px;
-    margin: 0px 0px 20px;
+  height: 25px;
+  line-height: 25px;
+  border: 5px solid #ffffff;
+  border-radius: 4px;
+  margin: 0px 0px 20px;
 }
 
-.visual-content-layout-container{
-    margin: 10px;
-    margin-top: 50px;
-    padding: 30px;
-    background-color: #BFC2CA;
+.visual-content-layout-container {
+  margin: 10px;
+  margin-top: 50px;
+  padding: 30px;
+  background-color: #bfc2ca;
 }
 
-.use-ajax{
-    min-width: 70px;
-    text-align: center;
-    text-decoration: none;
+.use-ajax {
+  min-width: 70px;
+  text-align: center;
+  text-decoration: none;
 }
 
-.use-ajax:hover, .use-ajax:focus{
-    text-decoration: none;
+.use-ajax:hover,
+.use-ajax:focus {
+  text-decoration: none;
 }
 
-.colorpicker-color{
-    width: 150px;
+.colorpicker-color {
+  width: 150px;
 }
 
-.iconButton{
-    cursor: pointer;
-    color: #333;
-    font-size: 20px !important;
-    padding: 7px;
-    float: right;
+.iconButton {
+  cursor: pointer;
+  color: #333;
+  font-size: 20px !important;
+  padding: 7px;
+  float: right;
 }
 
 .iconButton:hover {
-    color: rgba(0,0,0,0.15);
-    text-shadow: -4px -4px #333;
+  color: rgba(0, 0, 0, 0.15) !important;
+  text-shadow: -4px -4px #333;
 }
 
-.dragIcon{
-    float: left;
-    margin-top: 10px;
-    margin-left: 10px;
+.iconButton:focus {
+  color: #333;
+}
+
+.dragIcon {
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .dragIcon::before {
-    margin-right: 10px;
-    font-size: 20px;
+  margin-right: 10px;
+  font-size: 20px;
 }
 
 .dragIcon:hover {
-    cursor: move;
+  cursor: move;
 }
 
-.infoIcon:hover{
-    cursor: default;
+.infoIcon:hover {
+  cursor: default;
 }
 
-.addButton:hover{
-    text-decoration: none;
+.addButton:hover {
+  text-decoration: none;
 }
 
-.addButton:focus{
-    text-decoration: none;
-    color: black !important;
+.addButton:focus {
+  text-decoration: none;
 }
 
-.tooltip{
-    color: #FFFFFF;
-    background: #000000;
-    position: absolute;
-    line-height: 30px;
-    text-align: center;
-    border-radius: 6px;
-    min-width: 300px;
+.tooltip {
+  color: #ffffff;
+  background: #000000;
+  position: absolute;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 6px;
+  min-width: 300px;
 }

@@ -13,11 +13,11 @@ use Drupal\swaps\SwapBase;
  * Provides a 'HTML List' swap.
  *
  * @Swap(
- *   id = "list",
+ *   id = "swap_list",
  *   name = "List",
  *   description = @Translation("Add an ordered or disordered list."),
- *   attributes = "[ List Type | type | select | ol:ul ]",
  *   container = true,
+ *   children = "swap_li,",
  *   tip = "</br>[list type='ol | ul' class='class']
  *    </br>&emsp;[li class='class'] one [/li]
  *    </br>&emsp;[li] two [/li]
@@ -32,13 +32,13 @@ class SwapListHTML extends SwapBase {
    */
   public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
-      'extraclass' => '',
-      'type' => '',
+      'type' => 'ul',
     ),
       $attrs
     );
 
     $attrs['style'] = $this->getStyle($attrs);
+    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
     $attrs['type'] = $this->validateType($attrs['type']);
 
     return $this->theme($attrs, $text);
@@ -64,15 +64,8 @@ class SwapListHTML extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-
-    if ($attrs['extraclass'] == '') {
-      return '<' . $attrs['type'] . $attrs['style'] . '>' . $text . '</'
-      . $attrs['type'] . '>';
-    }
-    else {
-      return '<' . $attrs['type'] . $attrs['style'] . ' class="'
-      . $attrs['class'] . '">' . $text . '</' . $attrs['type'] . '>';
-    }
+    return '<' . $attrs['type'] . $attrs['style'] . ' class="'
+    . $attrs['class'] . '">' . $text . '</' . $attrs['type'] . '>';
   }
 
 }
