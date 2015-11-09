@@ -43,7 +43,7 @@
       //                       Create valid url for embed videos
       //--------------------------------------------------------------------------------
       function getYoutubeUrl(video_input) {
-        var youtubeUrl = element.val(),
+        var youtubeUrl = video_input.val(),
           youtubeId = youtubeUrl.split("=")[1],
           imageUrl = 'http://img.youtube.com/vi/' + youtubeId + '/0.jpg;';
         $('.youtube_preview').attr('src', imageUrl);

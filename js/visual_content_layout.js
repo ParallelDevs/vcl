@@ -603,7 +603,7 @@
 
 
       //--------------------------------------------------------------------------------
-      //                  Create ajax link to display swap select form
+      //                  Create link to display swap select form
       //--------------------------------------------------------------------------------
       function createAjaxLink(swapId) {
         // Create the button for add swaps if have container.
@@ -626,6 +626,9 @@
 
         return addButton;
       }
+
+
+
     }
   };
 
