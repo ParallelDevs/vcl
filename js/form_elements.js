@@ -51,4 +51,66 @@
     }
   };
 
+  /**
+   * Manage the information of image manager.
+   *
+   * @type {Drupal~behavior}
+   */
+  Drupal.behaviors.visualContentLayoutImageInfo = {
+    attach: function (context, settings) {
+
+      var imageManager = $('.visual-content-layout-image-manager');
+      if(imageManager.length >0){
+        makeAjax(imageManager, 'visual-content-layout-image-manager');
+      }
+
+      var attributes = settings.visualContentLayout.image_attributes,
+          imageControl = $('[name = swaps_img_url]');
+
+      if (attributes && imageControl.length > 0) {
+        var imagePreview = $('.image_preview'),
+            fid = $('[name = swaps_img_fid]');
+        // Set url in image preview.
+        imagePreview.attr('src', attributes.url);
+        // Set attributes in controls.
+        fid.val(attributes.fid);
+        imageControl.val(attributes.url);
+        // Change fid in call image manager
+        var url = '/VisualContentD8/visual_content_layout/swap_image_manager/' + attributes.fid;
+        imageManager = $('.visual-content-layout-image-manager').attr('href', url);
+        makeAjax(imageManager, 'visual-content-layout-image-manager');
+      }
+
+      function makeAjax(link, linkClass){
+        // Settings for create drupal ajax link.
+        var element_settings = {};
+        element_settings.url = link.attr('href');
+        element_settings.event = 'click';
+        element_settings.progress = {
+          type: 'throbber',
+          message: ''
+        };
+        var base = linkClass;
+
+        var ajaxLink = Drupal.ajax['visual-content-layout-image-manager'];
+
+        if(ajaxLink){
+          var newLink = $('<a>',
+            { href: link.attr('href'),
+              class: 'visual-content-layout-image-manager',
+              text: 'Open Image Manager'});
+          $('.visual-content-layout-image-manager').replaceWith(newLink);
+          Drupal.ajax[base] = new Drupal.Ajax(base, newLink, element_settings);
+        }
+        else{
+          Drupal.ajax[base] = new Drupal.Ajax(base, link, element_settings);
+        }
+
+        var otro = Drupal.ajax['visual-content-layout-image-manager'];
+
+      }
+
+    }
+  }
+
 }(jQuery, Drupal));

@@ -40,13 +40,32 @@ class ImageAttributesForm extends FormBase {
       '#group' => 'swaps_formTabs',
     );
 
-    $form['swaps_attributes']['swaps_img_file'] = array(
-      '#type' => 'managed_file',
-      '#title' => t('Upload Image'),
-      '#size' => 40,
-      '#default_value' => 'http://localhost/VisualContentD8/sites/default/files/vcl_images/footer-logo.png',
-      '#description' => t("Accept JPG, PNG format."),
-      '#upload_location' => 'public://vcl_images/'
+    // Attributes and parameters for the link.
+    $attributes = array(
+      'attributes' => array(
+        'class' => array('visual-content-layout-image-manager'),
+      ),
+    );
+
+    $parameters = array(
+      'fid' => 0
+    );
+
+    // Create link to image manager.
+    $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_image_manager', $parameters, $attributes);
+    $link = \Drupal::l(t('Open Image Manager'), $url);
+
+    $form['swaps_attributes']['swaps_img_url'] = array(
+      '#type' => 'textfield',
+      '#group' => 'swaps_attributes',
+      '#disabled' => TRUE,
+      '#prefix' => $link,
+      '#suffix' => '<img class="image_preview" src="" height="150">',
+    );
+
+    $form['swaps_attributes']['swaps_img_fid'] = array(
+      '#type' => 'hidden',
+      '#value' => 0
     );
 
     $form['swaps_attributes']['swaps_img_height'] = array(

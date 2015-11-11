@@ -10,6 +10,7 @@ namespace Drupal\visual_content_layout\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\OpenDialogCommand;
 
 /**
  * Class VisualContentLayoutController.
@@ -74,7 +75,6 @@ class VisualContentLayoutController extends ControllerBase {
    * Displays modal form for input the attributes of the swap.
    */
   public function getUpdateFormSwap($swap) {
-
     // Get the list of all modules.
     $modules = \Drupal::moduleHandler()->getModuleList();
     // Search the swap form in all modules.
@@ -88,5 +88,25 @@ class VisualContentLayoutController extends ControllerBase {
     }
     $response = new AjaxResponse(render($form));
     return $response;
+  }
+
+  /**
+   * Displays modal form for manage images.
+   */
+  public function displayImageManager($fid) {
+
+    $form = \Drupal::formBuilder()->getForm('Drupal\swaps\Form\ImageManagerForm', $fid);
+
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    // Create the ajax response.
+    $response = new AjaxResponse();
+    $modal_options = array(
+      'width' => '50%',
+      'height' => 'auto',
+      'modal' => 'true'
+    );
+    $response->addCommand(new OpenDialogCommand("#dialog", "Image Manager", $form, $modal_options));
+    return $response;
+
   }
 }
