@@ -52,8 +52,7 @@ class ImageAttributesForm extends FormBase {
     );
 
     // Create link to image manager.
-    $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_image_manager', $parameters, $attributes);
-    $link = \Drupal::l(t('Open Image Manager'), $url);
+    $link = '<a class="visual-content-layout-image-manager" href="/VisualContentD8/visual_content_layout/swap_image_manager/0">Open Image Manager</a>';
 
     $form['swaps_attributes']['swaps_img_url'] = array(
       '#type' => 'textfield',
@@ -65,7 +64,8 @@ class ImageAttributesForm extends FormBase {
 
     $form['swaps_attributes']['swaps_img_fid'] = array(
       '#type' => 'hidden',
-      '#value' => 0
+      '#value' => 0,
+      '#attributes' => array('id' => array('edit-swaps-img-fid')),
     );
 
     $form['swaps_attributes']['swaps_img_height'] = array(
@@ -123,16 +123,17 @@ class ImageAttributesForm extends FormBase {
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $fid = $form_state->getValue(array('swaps_img_file', 0));
+    $fid = $input['swaps_img_fid'];
     $file = \Drupal\file\Entity\File::load($fid);
     $file->setPermanent();
     $url = $file->url();
 
     $a = $file->getOriginalId();
 
-    $settings['file'] = $url;
+    $settings['url'] = $url;
     $settings['height'] = $input['swaps_img_height'];
     $settings['width'] = $input['swaps_img_width'];
+    $settings['fid'] = $fid;
 
     SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_img');
     // ---------------------------------------------------------------.

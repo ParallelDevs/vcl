@@ -32,23 +32,28 @@ class ImageManagerForm extends FormBase {
       '#size' => 40,
       '#description' => t("Accept JPG, PNG format."),
       '#upload_location' => 'public://vcl_images/',
-      '#access' => FALSE,
     );
 
     // Delete Image Button button ------------------------------------.
 
     if($fid != 0){
       $file = \Drupal\file\Entity\File::load($fid);
-      $url = $file->url();
+      if($file != NULL) {$url = $file->url();}
       $image = '<img class="image_preview" src="' . $url . '" height="150">';
+      $start = '<div class="visual-content-layout-deleteImage">';
+      $end = $image . '</div>';
+    }
+    else{
+      $start = '<div class="hidden">';
+      $end = '</div>';
     }
 
     $form['delete_image'] = array(
       '#type' => 'submit',
       '#value' => t('Delete Image'),
       '#group' => 'swaps_attributes',
-      '#prefix' => $fid == 0 ? '<div class="hidden">' : '',
-      '#suffix' => $fid == 0 ? '</div>' : $image,
+      '#prefix' => $start,
+      '#suffix' => $end,
       '#ajax' => array(
         'callback' => '::ajaxDeleteSubmit',
       ),
@@ -56,7 +61,8 @@ class ImageManagerForm extends FormBase {
 
     $form['fid'] = array(
       '#type' => 'hidden',
-      '#value' => $fid
+      '#value' => $fid,
+      '#attributes' => array('class' => array('imageId')),
     );
 
     // Accept button ------------------------------------.
@@ -102,17 +108,16 @@ class ImageManagerForm extends FormBase {
    */
   public function ajaxDeleteSubmit(array &$form, FormStateInterface $form_state) {
 
-    $form['upload_image']['#attributes'] = array('class' => array('block'));
     $fid = $form_state->getValue('fid');
     $file = \Drupal\file\Entity\File::load($fid);
-    $file->setPermanent();
-    $url = $file->url();
+    $file->delete();
 
-    $form_state->setRebuild(TRUE);
+    $visual_settings = array(
+      'visualContentLayout' => array('deleted' => TRUE));
+    $response = new AjaxResponse();
+    $response->addCommand(new SettingsCommand($visual_settings, FALSE));
 
-    $response = SwapDefaultAttributes::cancelAjaxResponse();
     return $response;
-
   }
 
   /**
@@ -120,7 +125,8 @@ class ImageManagerForm extends FormBase {
    */
   public function ajaxCancelSubmit(array &$form, FormStateInterface $form_state) {
 
-    $response = SwapDefaultAttributes::cancelAjaxResponse();
+    $response = new AjaxResponse();
+    $response->addCommand(new CloseDialogCommand("#dialog"));
     return $response;
 
   }
@@ -147,6 +153,5 @@ class ImageManagerForm extends FormBase {
     $response->addCommand(new SettingsCommand($visual_settings, FALSE));
 
     return $response;
-
   }
 }

@@ -358,7 +358,7 @@
               // Validate if the swap can contain others swaps.
               if (enableSwaps[c.split(" ")[0]]) {
                 // Insert addButton.
-                var addButton = createAjaxLink(div.data('swapId'));
+                var addButton = createAddButtoncreateAddButton(div.data('swapId'));
                 addButton.appendTo($(div));
                 $('<div>').addClass('visual-content-layout-container').appendTo($(div));
               }
@@ -399,7 +399,7 @@
                   // Create the father and add the child.
                   div = createHTMLDiv(originalText, fatherSwap, swapNames);
                   // Insert addButton.
-                  addButton = createAjaxLink(div.data('swapId'));
+                  addButton = createAddButton(div.data('swapId'));
                   addButton.appendTo($(div));
                   var ele = $('<div>').addClass('visual-content-layout-container').appendTo($(div));
                   while (elements[lastFather + 1]) {
@@ -435,7 +435,7 @@
                 // Validate if the swap can contain others swaps.
                 if (enableSwaps[c.split(" ")[0]]) {
                   // Insert addButton.
-                  addButton = createAjaxLink(div.data('swapId'));
+                  addButton = createAddButton(div.data('swapId'));
                   addButton.appendTo($(div));
                   $('<div>').addClass('visual-content-layout-container').appendTo($(div));
                 }
@@ -603,31 +603,19 @@
 
 
       //--------------------------------------------------------------------------------
-      //                  Create link to display swap select form
+      //          Create button to display swap select form inside visual element
       //--------------------------------------------------------------------------------
-      function createAjaxLink(swapId) {
+      function createAddButton(swapId) {
         // Create the button for add swaps if have container.
         var addButton = $('<a>', {
           href: drupalBasePath + 'visual_content_layout/swap_select_form/' + swapId,
           class: 'fa fa-plus-square iconButton addButton'});
         // Add event to button.
         addButton.on('click', addContainerVisualElement);
-
-        // Settings for create drupal ajax link.
-        var element_settings = {};
-        element_settings.url = addButton.attr('href');
-        element_settings.event = 'click';
-        element_settings.progress = {
-          type: 'throbber',
-          message: ''
-        };
-        var base = 'addButton';
-        Drupal.ajax[base] = new Drupal.Ajax(base, addButton, element_settings);
+        makeAjaxLink(addButton, 'addButton');
 
         return addButton;
       }
-
-
 
     }
   };
@@ -745,6 +733,8 @@
         // Place the for in the special div for update dialogs.
         $("#visual-content-layout-update-modal").html(data);
 
+        $('.fa-clock-o').remove();
+
         // Call set attributes.
         setAttributesInForm(swapAttributes);
 
@@ -759,11 +749,13 @@
           resizable: false,
           minWidth: dWidth
         });
+
+        $(".ui-dialog-titlebar-close").on("click", cancelVisualElement);
+
         Drupal.behaviors.visualContentLayoutElementsInit.attach($('#visual-content-layout-update-modal'));
+
+
       },
-      complete: function () {
-        $('.fa-clock-o').remove();
-      }
     });
   }
 
@@ -786,6 +778,17 @@
         input = $(input.toLowerCase());
         input.val(attributes[attr]);
       }
+    }
+
+    // Validate exist the image manager
+    var imageManager = $('.visual-content-layout-image-manager');
+
+    if(imageManager.length > 0){
+
+      $("[name = swaps_img_fid]").val(attributes.fid);
+      $('.image_preview').attr('src', attributes.url);
+      imageManager.attr('href', '/VisualContentD8/visual_content_layout/swap_image_manager/' + attributes.fid);
+      makeAjaxLink(imageManager, 'visual-content-layout-image-manager');
     }
 
     // Define the function of accept button, negate submit form.
@@ -903,6 +906,22 @@
     var parent = $(this).parents('.visual-content-layout-element'),
       element = parent.children('.visual-content-layout-container:first');
     element.addClass('visual-content-layout-target');
+  }
+
+  //--------------------------------------------------------------------------------
+  //          Create button to display swap select form inside visual element
+  //--------------------------------------------------------------------------------
+  function makeAjaxLink(link, LinkClass) {
+    // Settings for create drupal ajax link.
+    var element_settings = {};
+    element_settings.url = link.attr('href');
+    element_settings.event = 'click';
+    element_settings.progress = {
+      type: 'throbber',
+      message: ''
+    };
+    var base = LinkClass;
+    Drupal.ajax[base] = new Drupal.Ajax(base, link, element_settings);
   }
 
 }(jQuery, Drupal));

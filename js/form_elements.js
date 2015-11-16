@@ -4,6 +4,10 @@
  */
 
 (function ($, Drupal) {
+
+  // Global variable base_path.
+  var drupalBasePath = "";
+
   /**
    * Manage the display of the visual help.
    *
@@ -76,7 +80,7 @@
         fid.val(attributes.fid);
         imageControl.val(attributes.url);
         // Change fid in call image manager
-        var url = '/VisualContentD8/visual_content_layout/swap_image_manager/' + attributes.fid;
+        var url = drupalBasePath + 'visual_content_layout/swap_image_manager/' + attributes.fid;
         imageManager = $('.visual-content-layout-image-manager').attr('href', url);
         makeAjax(imageManager, 'visual-content-layout-image-manager');
       }
@@ -108,6 +112,27 @@
 
         var otro = Drupal.ajax['visual-content-layout-image-manager'];
 
+      }
+
+    }
+  }
+
+  /**
+   * Manage the display of image manager controls.
+   *
+   * @type {Drupal~behavior}
+   */
+  Drupal.behaviors.visualContentLayoutImageManager = {
+    attach: function (context, settings) {
+
+      var imageId = $('.imageId'),
+          deleted = settings.visualContentLayout.deleted;
+
+      if(imageId.val() != 0 && !deleted){
+        $('.js-form-file').prop('disabled', true);
+      }else{
+        $('.js-form-file').prop('disabled', false);
+        $('.visual-content-layout-deleteImage').addClass('hidden');
       }
 
     }
