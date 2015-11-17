@@ -40,7 +40,7 @@ class SwapImage extends SwapBase {
   public function theme($attrs, $text) {
 
     if ($attrs['width'] == '' || $attrs['height'] == '') {
-      $img =  '<img src="' . $attrs['url'] . '" style="' . $attrs['style'] . '" />';
+      $img = '<img src="' . $attrs['url'] . '" style="' . $attrs['style'] . '" />';
     }
     else {
       $img = '<img src="' . $attrs['url'] . '" height="' . $attrs['width']

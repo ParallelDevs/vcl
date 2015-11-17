@@ -43,7 +43,7 @@ class ImageAttributesForm extends FormBase {
     // Create link to image manager.
     $link = '<a class="visual-content-layout-image-manager" href="'
       . $GLOBALS['base_path']
-      .'visual_content_layout/swap_image_manager/0">Select Image</a>';
+      . 'visual_content_layout/swap_image_manager/0">Select Image</a>';
 
     $form['swaps_attributes']['swaps_img_url'] = array(
       '#type' => 'textfield',
@@ -99,8 +99,6 @@ class ImageAttributesForm extends FormBase {
     $fid = $form_state->getValue(array('swaps_img_file', 0));
     $file = \Drupal\file\Entity\File::load($fid);
     $file->delete();
-
-    $file->
 
     $response = SwapDefaultAttributes::cancelAjaxResponse();
     return $response;

@@ -63,7 +63,7 @@
     attach: function (context, settings) {
 
       var imageManager = $('.visual-content-layout-image-manager');
-      if(imageManager.length >0){
+      if(imageManager.length > 0){
         makeAjax(imageManager, 'visual-content-layout-image-manager');
       }
 
@@ -82,7 +82,7 @@
         var url = settings.visualContentLayout.base_path + 'visual_content_layout/swap_image_manager/' + attributes.fid;
         imageManager = $('.visual-content-layout-image-manager').attr('href', url);
         makeAjax(imageManager, 'visual-content-layout-image-manager');
-        delete(settings.visualContentLayout.image_attributes);
+        delete (settings.visualContentLayout.image_attributes);
       }
 
       function makeAjax(link, linkClass){
@@ -115,7 +115,7 @@
       }
 
     }
-  }
+  };
 
   /**
    * Manage the display of image manager controls.
@@ -128,7 +128,7 @@
       var imageId = $('.imageId'),
           deleted = settings.visualContentLayout.deleted;
 
-      if(imageId.val() != 0 && !deleted){
+      if(imageId.val() !== 0 && !deleted){
         $('.js-form-file').prop('disabled', true);
       }else{
         $('.js-form-file').prop('disabled', false);
@@ -136,6 +136,6 @@
       }
 
     }
-  }
+  };
 
 }(jQuery, Drupal));

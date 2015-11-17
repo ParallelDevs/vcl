@@ -103,7 +103,7 @@ class VisualContentLayoutController extends ControllerBase {
     $modal_options = array(
       'width' => '50%',
       'height' => 'auto',
-      'modal' => 'true'
+      'modal' => 'true',
     );
     $response->addCommand(new OpenDialogCommand("#dialog", "Image Manager", $form, $modal_options));
     return $response;
