@@ -10,34 +10,30 @@ namespace Drupal\swaps\Plugin\Swap;
 use Drupal\swaps\SwapBase;
 
 /**
- * Provides a 'Button' swap.
+ * Provides a 'Title' swap.
  *
  * @Swap(
- *   id = "swap_button",
- *   name = "Button",
- *   description = @Translation("Insert a link formatted as a button."),
+ *   id = "swap_title",
+ *   name = "Title",
+ *   description = @Translation("Insert a Title."),
  *   container = false,
- *   tip = "[button url='url'] Button [/button]"
+ *   tip = "[title type='h1,h2,h3,h4,h5,h6' ] Title [/title]"
  * )
  */
-class SwapButton extends SwapBase {
+class SwapTitle extends SwapBase {
 
   /**
    * Get all attributes of the swap and validate it.
    */
   public function processCallback($attrs, $text) {
     $attrs = $this->setAttrs(array(
-      'url' => '<front>',
+      'type' => 'h1',
     ),
       $attrs
     );
 
-    $attrs['class'] = $this->addClass($attrs['class'], 'button');
     $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
     $attrs['style'] = $this->getStyle($attrs);
-    if ($attrs['url']) {
-      $attrs['path'] = $attrs['url'];
-    }
     return $this->theme($attrs, $text);
   }
 
@@ -47,10 +43,8 @@ class SwapButton extends SwapBase {
   public function theme($attrs, $text) {
     // Validate exists id.
     $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
-    // Validate exists title.
-    ($text != '') ? '' : $text = 'title';
 
-    return '<a href="' . $attrs['url'] . '" ' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . '><span>' . $text . '</span></a>';
+    return '<' . $attrs['type'] . ' ' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . '>' . $text . '</' . $attrs['type'] . '>';
   }
 
 }

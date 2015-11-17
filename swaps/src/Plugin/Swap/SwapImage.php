@@ -59,11 +59,11 @@ class SwapImage extends SwapBase {
    */
   public function theme($attrs, $text) {
     if ($attrs['width'] == '' || $attrs['height'] == '') {
-      return '<img src="' . $attrs['file'] . '" />';
+      return '<img src="' . $attrs['file'] . '" style="' . $attrs['style'] . '" />';
     }
     else {
       return '<img src="' . $attrs['file'] . '" height="' . $attrs['width']
-      . '" width="' . $attrs['height'] . '"/>';
+      . '" width="' . $attrs['height'] . '" style="' . $attrs['style'] . '" />';
     }
   }
 

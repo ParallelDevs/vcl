@@ -789,7 +789,7 @@
 
       $("[name = swaps_img_fid]").val(attributes.fid);
       $('.image_preview').attr('src', attributes.url);
-      imageManager.attr('href', '/VisualContentD8/visual_content_layout/swap_image_manager/' + attributes.fid);
+      imageManager.attr('href', drupalBasePath + 'visual_content_layout/swap_image_manager/' + attributes.fid);
       makeAjaxLink(imageManager, 'visual-content-layout-image-manager');
     }
 
@@ -905,9 +905,16 @@
     // Delete the target class.
     $('.visual-content-layout-target').removeClass('visual-content-layout-target');
 
-    var parent = $(this).parents('.visual-content-layout-element'),
-      element = parent.children('.visual-content-layout-container:first');
-    element.addClass('visual-content-layout-target');
+    var parent = $(this).parents('.visual-content-layout-element');
+    if (parent.length > 1) {
+      var element = parent.children('.visual-content-layout-container:first');
+      element.addClass('visual-content-layout-target');
+    }
+    else{
+      var element = parent.children('.visual-content-layout-container');
+      element.addClass('visual-content-layout-target');
+    }
+
   }
 
   //--------------------------------------------------------------------------------
