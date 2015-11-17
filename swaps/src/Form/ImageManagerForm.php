@@ -115,7 +115,7 @@ class ImageManagerForm extends FormBase {
     $visual_settings = array(
       'visualContentLayout' => array('deleted' => TRUE));
     $response = new AjaxResponse();
-    $response->addCommand(new SettingsCommand($visual_settings, FALSE));
+    $response->addCommand(new SettingsCommand($visual_settings, TRUE));
 
     return $response;
   }
@@ -150,7 +150,7 @@ class ImageManagerForm extends FormBase {
       'visualContentLayout' => array('image_attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseDialogCommand("#dialog"));
-    $response->addCommand(new SettingsCommand($visual_settings, FALSE));
+    $response->addCommand(new SettingsCommand($visual_settings, TRUE));
 
     return $response;
   }

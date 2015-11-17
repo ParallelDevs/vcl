@@ -23,7 +23,7 @@
     attach: function (context, settings) {
 
       // Set the base path global.
-      drupalBasePath = settings.visualContentLayout.base_path ? settings.visualContentLayout.base_path : "";
+      settings.visualContentLayout.base_path ? drupalBasePath = settings.visualContentLayout.base_path : "";
 
       // Validate all the filter select for enable the button on it textArea.
       var filter = $('.filter-list');
@@ -31,13 +31,14 @@
 
         // Get the parent of the actual select, if is undefined it send and error and stop de cycle.
         var filterParent = $(filter[i]).parents()[2];
-
-        // Show the enable/disable button for the visual help according the textFormat.
-        if (settings.visualContentLayout.enable_formats[$(filter[i]).val()]) {
-          $(filterParent).children('.visual-content-layout-button-wrap').show();
-        }
-        else {
-          $(filterParent).children('.visual-content-layout-button-wrap').hide();
+        if(settings.visualContentLayout.enable_formats){
+          // Show the enable/disable button for the visual help according the textFormat.
+          if (settings.visualContentLayout.enable_formats[$(filter[i]).val()]) {
+            $(filterParent).children('.visual-content-layout-button-wrap').show();
+          }
+          else {
+            $(filterParent).children('.visual-content-layout-button-wrap').hide();
+          }
         }
       }
 
@@ -242,6 +243,7 @@
         $('#visual-content-layout-actual-textarea').remove();
         $('#visual-content-layout-element-position').remove();
         $('.visual-content-layout-target').removeClass('visual-content-layout-target');
+        delete(settings.visualContentLayout.attributes);
       }
     }
   };

@@ -83,6 +83,7 @@
         var url = drupalBasePath + 'visual_content_layout/swap_image_manager/' + attributes.fid;
         imageManager = $('.visual-content-layout-image-manager').attr('href', url);
         makeAjax(imageManager, 'visual-content-layout-image-manager');
+        delete(settings.visualContentLayout.image_attributes);
       }
 
       function makeAjax(link, linkClass){

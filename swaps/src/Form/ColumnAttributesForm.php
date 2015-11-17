@@ -121,7 +121,7 @@ class ColumnAttributesForm extends FormBase {
       'visualContentLayout' => array('attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
-    $response->addCommand(new SettingsCommand($visual_settings, FALSE));
+    $response->addCommand(new SettingsCommand($visual_settings, TRUE));
 
     return $response;
 
