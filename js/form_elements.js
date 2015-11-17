@@ -5,9 +5,6 @@
 
 (function ($, Drupal) {
 
-  // Global variable base_path.
-  var drupalBasePath = "";
-
   /**
    * Manage the display of the visual help.
    *
@@ -47,10 +44,12 @@
       //                       Create valid url for embed videos
       //--------------------------------------------------------------------------------
       function getYoutubeUrl(video_input) {
-        var youtubeUrl = video_input.val(),
-          youtubeId = youtubeUrl.split("=")[1],
-          imageUrl = 'http://img.youtube.com/vi/' + youtubeId + '/0.jpg;';
-        $('.youtube_preview').attr('src', imageUrl);
+        var youtubeUrl = video_input.val();
+        if (youtubeUrl) {
+          var youtubeId = youtubeUrl.split("=")[1],
+            imageUrl = 'http://img.youtube.com/vi/' + youtubeId + '/0.jpg;';
+          $('.youtube_preview').attr('src', imageUrl);
+        }
       }
     }
   };
@@ -80,7 +79,7 @@
         fid.val(attributes.fid);
         imageControl.val(attributes.url);
         // Change fid in call image manager
-        var url = drupalBasePath + 'visual_content_layout/swap_image_manager/' + attributes.fid;
+        var url = settings.visualContentLayout.base_path + 'visual_content_layout/swap_image_manager/' + attributes.fid;
         imageManager = $('.visual-content-layout-image-manager').attr('href', url);
         makeAjax(imageManager, 'visual-content-layout-image-manager');
         delete(settings.visualContentLayout.image_attributes);
