@@ -68,7 +68,7 @@ class SwapAccordionElement extends SwapBase {
       . 'data-toggle="collapse" data-parent="' . $data . '" href="' . $href . '">'
       . $attrs['title'] . '</a></h4></div>'
       . '<div id="' . $attrs['id'] . '" class="panel-collapse collapse ' . $in . '">'
-      . '<div class="panel-body">' . $attrs['content'] . $text . '</div>'
+      . '<div class="panel-body"><p>' . $attrs['content'] . '</p> ' . $text . '</div>'
       . '</div></div>';
 
     return $accordion_element;

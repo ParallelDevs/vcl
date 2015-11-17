@@ -40,17 +40,6 @@ class ImageAttributesForm extends FormBase {
       '#group' => 'swaps_formTabs',
     );
 
-    // Attributes and parameters for the link.
-    $attributes = array(
-      'attributes' => array(
-        'class' => array('visual-content-layout-image-manager'),
-      ),
-    );
-
-    $parameters = array(
-      'fid' => 0
-    );
-
     // Create link to image manager.
     $link = '<a class="visual-content-layout-image-manager" href="'
       . $GLOBALS['base_path']
@@ -130,8 +119,6 @@ class ImageAttributesForm extends FormBase {
     $file = \Drupal\file\Entity\File::load($fid);
     $file->setPermanent();
     $url = $file->url();
-
-    $a = $file->getOriginalId();
 
     $settings['url'] = $url;
     $settings['height'] = $input['swaps_img_height'];
