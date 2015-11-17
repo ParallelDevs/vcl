@@ -775,10 +775,22 @@
         input = $(input.toLowerCase());
         input.val(attributes[attr]);
 
+        var inputType = $(input).attr('type');
+        // Set attribute for checkbox.
+        if(inputType == 'checkbox'){
+          attributes[attr] == 1 ? $(input).prop('checked', true) : $(input).prop('checked', false);
+        }
+
         // Set own attributes.
         input = '#edit-swaps-' + attributes.swapId + '-' + attr;
         input = $(input.toLowerCase());
         input.val(attributes[attr]);
+
+        inputType = $(input).attr('type');
+        // Set attribute for checkbox.
+        if(inputType == 'checkbox'){
+          attributes[attr] == 1 ? $(input).prop('checked', true) : $(input).prop('checked', false);
+        }
       }
     }
 
@@ -828,11 +840,17 @@
 
       // Get the value of the input and the id.
       var value = $(elements[i]).val(),
-        data = $(elements[i]).attr('id');
+        data = $(elements[i]).attr('id'),
+        inputType = $(elements[i]).attr('type');
 
       // Validate the input have id and is not the submit button.
       if (!data || data === "edit-swaps-accept" || data === "edit-swaps-cancel") {
         continue;
+      }
+
+      // Set value for checkbox.
+      if(inputType == 'checkbox'){
+        value = $(elements[i]).prop('checked')? '1' : '0';
       }
 
       // Create the data name based in the id.
@@ -914,6 +932,16 @@
       var element = parent.children('.visual-content-layout-container');
       element.addClass('visual-content-layout-target');
     }
+
+    // Set the actual textarea.
+    var visualHelpArea = $(this).parents('.visual-content-layout-visual-help'),
+      textArea = visualHelpArea.find('.visual-content-layout-form-button'),
+      textAreaId = textArea.data('textarea');
+
+    $('<input>').attr("id", "visual-content-layout-actual-textarea")
+      .attr("type", "hidden")
+      .val(textAreaId)
+      .appendTo($(".visual-content-layout-visual-help"));
 
   }
 

@@ -28,43 +28,27 @@ class SwapImage extends SwapBase {
    * Get all attributes of the swap and validate it.
    */
   public function processCallback($attrs, $text) {
-    $attrs = $this->setAttrs(array(
-      'file' => '',
-      'width' => '',
-      'height' => '',
-    ),
-      $attrs
-    );
 
     $attrs['style'] = $this->getStyle($attrs);
-    $attrs['width'] = $this->validateNumber($attrs['width']);
-    $attrs['height'] = $this->validateNumber($attrs['height']);
     return $this->theme($attrs, $text);
   }
 
-  /**
-   * Validate the width and height is number.
-   */
-  public function validateNumber($number) {
-    if (is_int($number)) {
-      return $number;
-    }
-    else {
-      return "";
-    }
-  }
 
   /**
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
+
     if ($attrs['width'] == '' || $attrs['height'] == '') {
-      return '<img src="' . $attrs['file'] . '" style="' . $attrs['style'] . '" />';
+      $img =  '<img src="' . $attrs['url'] . '" style="' . $attrs['style'] . '" />';
     }
     else {
-      return '<img src="' . $attrs['file'] . '" height="' . $attrs['width']
+      $img = '<img src="' . $attrs['url'] . '" height="' . $attrs['width']
       . '" width="' . $attrs['height'] . '" style="' . $attrs['style'] . '" />';
     }
+
+    return $img;
+
   }
 
 }

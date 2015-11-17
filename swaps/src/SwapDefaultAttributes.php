@@ -116,7 +116,7 @@ class SwapDefaultAttributes {
 
     $form['swaps_classID']['swaps_cssStyles'] = array(
       '#type' => 'textarea',
-      '#title' => 'Extra Class',
+      '#title' => 'Style',
       '#description' => t('Wrong code here might cause problems in the style'),
     );
 
