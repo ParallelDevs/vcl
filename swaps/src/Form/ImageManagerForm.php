@@ -36,14 +36,16 @@ class ImageManagerForm extends FormBase {
 
     // Delete Image Button button ------------------------------------.
 
-    if($fid != 0){
+    if ($fid != 0) {
       $file = \Drupal\file\Entity\File::load($fid);
-      if($file != NULL) {$url = $file->url();}
+      if ($file != NULL) {
+        $url = $file->url();
+      }
       $image = '<img class="image_preview" src="' . $url . '" height="150">';
       $start = '<div class="visual-content-layout-deleteImage">';
       $end = $image . '</div>';
     }
-    else{
+    else {
       $start = '<div class="hidden">';
       $end = '</div>';
     }

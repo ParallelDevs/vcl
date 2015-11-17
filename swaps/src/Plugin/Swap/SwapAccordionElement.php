@@ -47,28 +47,27 @@ class SwapAccordionElement extends SwapBase {
   public function theme($attrs, $text) {
 
     // Get parent id and own id for the accordion.
-    $href = '#'. $attrs['id'];
-    $data = '#'. $attrs['parentid'];
+    $href = '#' . $attrs['id'];
+    $data = '#' . $attrs['parentid'];
 
     // Validate is collapsed.
-    if($attrs['collapse'] == '1'){
+    if ($attrs['collapse'] == '1') {
       $collapsed_class = 'collapsed';
       $expanded = 'false';
       $in = '';
     }
-    else{
+    else {
       $collapsed_class = '';
       $expanded = 'false';
       $in = 'in';
     }
 
     $accordion_element = '<div class="panel panel-default">'
-      . '<div class="panel-heading"><h4 class="panel-title">'
-      . '<a class="' . $collapsed_class . '" aria-expanded="' . $expanded . '"'
+      . '<div class="panel-heading"><h4 class="panel-title"><a class="'
+      . $collapsed_class . '" aria-expanded="' . $expanded . '"'
       . 'data-toggle="collapse" data-parent="' . $data . '" href="' . $href . '">'
-      . $attrs['title'] . '</a></h4></div>'
-      . '<div id="' . $attrs['id'] . '" class="panel-collapse collapse ' . $in . '">'
-      . '<div class="panel-body">' . $attrs['content'] . $text . '</div>'
+      . $attrs['title'] . '</a></h4></div><div id="' . $attrs['id'] . '" class="panel-collapse collapse ' . $in . '">'
+      . '<div class="panel-body"><p>' . $attrs['content'] . '</p> ' . $text . '</div>'
       . '</div></div>';
 
     return $accordion_element;

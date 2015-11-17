@@ -111,7 +111,7 @@ class AccordionElementAttributesForm extends FormBase {
 
     $settings['title'] = $input['swaps_accritem_title'];
     $settings['content'] = $input['swaps_accritem_content'];
-    $settings['collapse'] = $input['swaps_accritem_collapse'] == NULL? 0 : 1;
+    $settings['collapse'] = $input['swaps_accritem_collapse'] == NULL ? 0 : 1;
     $settings['id'] = $input['swaps_accritem_id'];
     $settings['parentid'] = $input['swaps_accritem_parentid'];
 

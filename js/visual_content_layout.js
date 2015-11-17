@@ -23,7 +23,9 @@
     attach: function (context, settings) {
 
       // Set the base path global.
-      settings.visualContentLayout.base_path ? drupalBasePath = settings.visualContentLayout.base_path : "";
+      if (settings.visualContentLayout.base_path) {
+        drupalBasePath = settings.visualContentLayout.base_path;
+      }
 
       // Validate all the filter select for enable the button on it textArea.
       var filter = $('.filter-list');
@@ -243,7 +245,7 @@
         $('#visual-content-layout-actual-textarea').remove();
         $('#visual-content-layout-element-position').remove();
         $('.visual-content-layout-target').removeClass('visual-content-layout-target');
-        delete(settings.visualContentLayout.attributes);
+        delete (settings.visualContentLayout.attributes);
       }
     }
   };
@@ -360,7 +362,7 @@
               // Validate if the swap can contain others swaps.
               if (enableSwaps[c.split(" ")[0]]) {
                 // Insert addButton.
-                var addButton = createAddButtoncreateAddButton(div.data('swapId'));
+                var addButton = createAddButton(div.data('swapId'));
                 addButton.appendTo($(div));
                 $('<div>').addClass('visual-content-layout-container').appendTo($(div));
               }
@@ -756,8 +758,7 @@
 
         Drupal.behaviors.visualContentLayoutElementsInit.attach($('#visual-content-layout-update-modal'));
 
-
-      },
+      }
     });
   }
 
@@ -777,8 +778,9 @@
 
         var inputType = $(input).attr('type');
         // Set attribute for checkbox.
-        if(inputType == 'checkbox'){
-          attributes[attr] == 1 ? $(input).prop('checked', true) : $(input).prop('checked', false);
+        if(inputType === 'checkbox'){
+          var checked = (attributes[attr] === '1') ? true : false;
+          $(input).prop('checked', checked);
         }
 
         // Set own attributes.
@@ -788,8 +790,9 @@
 
         inputType = $(input).attr('type');
         // Set attribute for checkbox.
-        if(inputType == 'checkbox'){
-          attributes[attr] == 1 ? $(input).prop('checked', true) : $(input).prop('checked', false);
+        if(inputType === 'checkbox'){
+          checked = (attributes[attr] === '1') ? true : false;
+          $(input).prop('checked', checked);
         }
       }
     }
@@ -849,8 +852,8 @@
       }
 
       // Set value for checkbox.
-      if(inputType == 'checkbox'){
-        value = $(elements[i]).prop('checked')? '1' : '0';
+      if(inputType === 'checkbox'){
+        value = $(elements[i]).prop('checked') ? '1' : '0';
       }
 
       // Create the data name based in the id.
@@ -929,7 +932,7 @@
       element.addClass('visual-content-layout-target');
     }
     else{
-      var element = parent.children('.visual-content-layout-container');
+      element = parent.children('.visual-content-layout-container');
       element.addClass('visual-content-layout-target');
     }
 
