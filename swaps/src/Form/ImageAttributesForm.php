@@ -52,7 +52,9 @@ class ImageAttributesForm extends FormBase {
     );
 
     // Create link to image manager.
-    $link = '<a class="visual-content-layout-image-manager" href="/VisualContentD8/visual_content_layout/swap_image_manager/0">Open Image Manager</a>';
+    $link = '<a class="visual-content-layout-image-manager" href="'
+      . $GLOBALS['base_path']
+      .'visual_content_layout/swap_image_manager/0">Select Image</a>';
 
     $form['swaps_attributes']['swaps_img_url'] = array(
       '#type' => 'textfield',
