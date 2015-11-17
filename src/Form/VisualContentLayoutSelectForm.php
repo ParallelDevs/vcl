@@ -30,7 +30,7 @@ class VisualContentLayoutSelectForm extends FormBase {
     $swaps = $manager->getDefinitions();
     if ($swap != NULL) {
       // Get children of the swap.
-      $children = $swaps["swap_" . $swap]['children'];
+      $children = $swaps[$swap]['children'];
       $children = str_replace(" ", "", $children);
       $children != NULL ? $children = explode(",", $children) : $children;
     }

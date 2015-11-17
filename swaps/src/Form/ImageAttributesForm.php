@@ -15,15 +15,13 @@ use Drupal\Core\Ajax\AjaxResponse;
 /**
  * Contribute form.
  */
-class ColumnAttributesForm extends FormBase {
-
+class ImageAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_column_attributes_form';
+    return 'swap_button_attributes_form';
   }
-
   /**
    * {@inheritdoc}
    */
@@ -38,33 +36,50 @@ class ColumnAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Image',
       '#group' => 'swaps_formTabs',
     );
 
-    $options = array(
-      'xs' => 'xs',
-      'sm' => 'sm',
-      'md' => 'md',
-      'lg' => 'lg');
-
-    $form['swaps_attributes']['swaps_column_size'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Size',
-      '#options' => $options,
-      '#default_value' => 'xs',
+    // Attributes and parameters for the link.
+    $attributes = array(
+      'attributes' => array(
+        'class' => array('visual-content-layout-image-manager'),
+      ),
     );
 
-    $options = array();
-    for ($i = 1; $i <= 12; $i++) {
-      $options[$i] = $i;
-    }
+    $parameters = array(
+      'fid' => 0
+    );
 
-    $form['swaps_attributes']['swaps_column_number'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Number',
-      '#options' => $options,
-      '#default_value' => '1',
+    // Create link to image manager.
+    $link = '<a class="visual-content-layout-image-manager" href="'
+      . $GLOBALS['base_path']
+      .'visual_content_layout/swap_image_manager/0">Select Image</a>';
+
+    $form['swaps_attributes']['swaps_img_url'] = array(
+      '#type' => 'textfield',
+      '#group' => 'swaps_attributes',
+      '#disabled' => TRUE,
+      '#prefix' => $link,
+      '#suffix' => '<img class="image_preview" src="" height="150">',
+    );
+
+    $form['swaps_attributes']['swaps_img_fid'] = array(
+      '#type' => 'hidden',
+      '#value' => 0,
+      '#attributes' => array('id' => array('edit-swaps-img-fid')),
+    );
+
+    $form['swaps_attributes']['swaps_img_height'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Height',
+      '#size' => 30,
+    );
+
+    $form['swaps_attributes']['swaps_img_width'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Width',
+      '#size' => 30,
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
@@ -91,6 +106,13 @@ class ColumnAttributesForm extends FormBase {
    */
   public function ajaxCancelSubmit(array &$form, FormStateInterface $form_state) {
 
+    // Delete the upload image if cancel.
+    $fid = $form_state->getValue(array('swaps_img_file', 0));
+    $file = \Drupal\file\Entity\File::load($fid);
+    $file->delete();
+
+    $file->
+
     $response = SwapDefaultAttributes::cancelAjaxResponse();
     return $response;
 
@@ -101,18 +123,22 @@ class ColumnAttributesForm extends FormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
 
-    // ---------------------------------------------------------------.
-    // Get the own attributes values of the swap.
-    // ---------------------------------------------------------------.
-
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['size'] = $input['swaps_column_size'];
-    $settings['number'] = $input['swaps_column_number'];
+    $fid = $input['swaps_img_fid'];
+    $file = \Drupal\file\Entity\File::load($fid);
+    $file->setPermanent();
+    $url = $file->url();
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_column');
+    $a = $file->getOriginalId();
 
+    $settings['url'] = $url;
+    $settings['height'] = $input['swaps_img_height'];
+    $settings['width'] = $input['swaps_img_width'];
+    $settings['fid'] = $fid;
+
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_img');
     // ---------------------------------------------------------------.
     // Create the ajax response.
     // ---------------------------------------------------------------.

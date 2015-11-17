@@ -23,12 +23,18 @@ visual_content_layout.swap_attributes_form:
   requirements:
     _permission: 'access content'
 
-
-
 visual_content_layout.swap_attributes_update_form:
   path: '/visual_content_layout/swap_attributes_update_form/{swap}'
   defaults:
     _controller: '\Drupal\visual_content_layout\Controller\VisualContentLayoutController::getUpdateFormSwap'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'
+
+visual_content_layout.swap_image_manager:
+  path: '/visual_content_layout/swap_image_manager/{fid}'
+  defaults:
+    _controller: '\Drupal\visual_content_layout\Controller\VisualContentLayoutController::displayImageManager'
     _title: 'mymodule Title'
   requirements:
     _permission: 'access content'

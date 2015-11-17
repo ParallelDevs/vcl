@@ -15,15 +15,13 @@ use Drupal\Core\Ajax\AjaxResponse;
 /**
  * Contribute form.
  */
-class ColumnAttributesForm extends FormBase {
-
+class TitleAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_column_attributes_form';
+    return 'swap_title_attributes_form';
   }
-
   /**
    * {@inheritdoc}
    */
@@ -38,33 +36,29 @@ class ColumnAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Title',
       '#group' => 'swaps_formTabs',
     );
 
     $options = array(
-      'xs' => 'xs',
-      'sm' => 'sm',
-      'md' => 'md',
-      'lg' => 'lg');
+      'h1' => 'h1',
+      'h2' => 'h2',
+      'h3' => 'h3',
+      'h4' => 'h4',
+      'h5' => 'h5',
+      'h6' => 'h6',);
 
-    $form['swaps_attributes']['swaps_column_size'] = array(
+    $form['swaps_attributes']['swaps_title_type'] = array(
       '#type' => 'select',
-      '#title' => 'Column Size',
+      '#title' => 'Type',
       '#options' => $options,
-      '#default_value' => 'xs',
+      '#default_value' => 'h1',
     );
 
-    $options = array();
-    for ($i = 1; $i <= 12; $i++) {
-      $options[$i] = $i;
-    }
-
-    $form['swaps_attributes']['swaps_column_number'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Number',
-      '#options' => $options,
-      '#default_value' => '1',
+    $form['swaps_attributes']['swaps_title_text'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Text',
+      '#size' => 30,
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
@@ -101,17 +95,13 @@ class ColumnAttributesForm extends FormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
 
-    // ---------------------------------------------------------------.
-    // Get the own attributes values of the swap.
-    // ---------------------------------------------------------------.
-
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['size'] = $input['swaps_column_size'];
-    $settings['number'] = $input['swaps_column_number'];
+    $settings['type'] = $input['swaps_title_type'];
+    $settings['text'] = $input['swaps_title_text'];
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_column');
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_title');
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

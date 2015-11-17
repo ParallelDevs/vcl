@@ -15,15 +15,13 @@ use Drupal\Core\Ajax\AjaxResponse;
 /**
  * Contribute form.
  */
-class ColumnAttributesForm extends FormBase {
-
+class AccordionElementAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_column_attributes_form';
+    return 'swap_accordion_element_attributes_form';
   }
-
   /**
    * {@inheritdoc}
    */
@@ -38,37 +36,44 @@ class ColumnAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Accordion Element',
       '#group' => 'swaps_formTabs',
     );
 
-    $options = array(
-      'xs' => 'xs',
-      'sm' => 'sm',
-      'md' => 'md',
-      'lg' => 'lg');
-
-    $form['swaps_attributes']['swaps_column_size'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Size',
-      '#options' => $options,
-      '#default_value' => 'xs',
+    $form['swaps_attributes']['swaps_accritem_parentid'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Id of the Accordion Container',
+      '#size' => 30,
+      '#description' => t('Necessary for the proper functioning of the accordion.'),
     );
 
-    $options = array();
-    for ($i = 1; $i <= 12; $i++) {
-      $options[$i] = $i;
-    }
+    $form['swaps_attributes']['swaps_accritem_title'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Title',
+      '#size' => 30,
+    );
 
-    $form['swaps_attributes']['swaps_column_number'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Number',
-      '#options' => $options,
-      '#default_value' => '1',
+    $form['swaps_attributes']['swaps_accritem_id'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Accordion Element ID',
+      '#size' => 30,
+    );
+
+    $form['swaps_attributes']['swaps_accritem_collapse'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Collapse'),
+    );
+
+    $form['swaps_attributes']['swaps_accritem_content'] = array(
+      '#type' => 'textarea',
+      '#title' => 'Content',
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
     SwapDefaultAttributes::getButtonsElements($form);
+
+    // Delete the default id control.
+    unset($form['swaps_classID']['swaps_id']);
 
     return $form;
   }
@@ -101,17 +106,16 @@ class ColumnAttributesForm extends FormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
 
-    // ---------------------------------------------------------------.
-    // Get the own attributes values of the swap.
-    // ---------------------------------------------------------------.
-
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['size'] = $input['swaps_column_size'];
-    $settings['number'] = $input['swaps_column_number'];
+    $settings['title'] = $input['swaps_accritem_title'];
+    $settings['content'] = $input['swaps_accritem_content'];
+    $settings['collapse'] = $input['swaps_accritem_collapse'] == NULL? 0 : 1;
+    $settings['id'] = $input['swaps_accritem_id'];
+    $settings['parentid'] = $input['swaps_accritem_parentid'];
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_column');
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_accritem');
 
     // ---------------------------------------------------------------.
     // Create the ajax response.

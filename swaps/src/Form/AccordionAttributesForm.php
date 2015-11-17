@@ -12,18 +12,17 @@ use Drupal\swaps\SwapDefaultAttributes;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+
 /**
  * Contribute form.
  */
-class ColumnAttributesForm extends FormBase {
-
+class AccordionAttributesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'swap_column_attributes_form';
+    return 'swap_accordion_attributes_form';
   }
-
   /**
    * {@inheritdoc}
    */
@@ -38,37 +37,22 @@ class ColumnAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Accordion',
       '#group' => 'swaps_formTabs',
     );
 
-    $options = array(
-      'xs' => 'xs',
-      'sm' => 'sm',
-      'md' => 'md',
-      'lg' => 'lg');
-
-    $form['swaps_attributes']['swaps_column_size'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Size',
-      '#options' => $options,
-      '#default_value' => 'xs',
-    );
-
-    $options = array();
-    for ($i = 1; $i <= 12; $i++) {
-      $options[$i] = $i;
-    }
-
-    $form['swaps_attributes']['swaps_column_number'] = array(
-      '#type' => 'select',
-      '#title' => 'Column Number',
-      '#options' => $options,
-      '#default_value' => '1',
+    $form['swaps_attributes']['swaps_accordion_id'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Accordion ID',
+      '#size' => 30,
+      '#description' => t('Necessary for the accordion elements.'),
     );
 
     SwapDefaultAttributes::getDefaultFormElements($form);
     SwapDefaultAttributes::getButtonsElements($form);
+
+    // Delete the default id control.
+    unset($form['swaps_classID']['swaps_id']);
 
     return $form;
   }
@@ -108,10 +92,9 @@ class ColumnAttributesForm extends FormBase {
     $input = $form_state->getUserInput();
     $settings = array();
 
-    $settings['size'] = $input['swaps_column_size'];
-    $settings['number'] = $input['swaps_column_number'];
+    $settings['id'] = $input['swaps_accordion_id'];
 
-    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_column');
+    SwapDefaultAttributes::getDefaultFormElementsValues($settings, $input, 'swap_accordion');
 
     // ---------------------------------------------------------------.
     // Create the ajax response.
