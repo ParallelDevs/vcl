@@ -1,21 +1,21 @@
-bootstrap:
-  version: 1.x
+visual_content_layout.bootstrap:
   js:
     js/bootstrap.js: {}
   css:
     theme:
-        css/styles.css: {}
-        css/font-awesome.css: {}
-        css/component.css: {}
-        css/bootstrap-colorpicker.css: {}
         css/bootstrap.css: {}
 
-visual_content_layout:
-  version: 1.x
+visual_content_layout.style:
   js:
     js/visual_content_layout.js: {}
     js/form_elements.js: {}
     js/bootstrap-colorpicker.js: {}
+  css:
+      theme:
+          css/styles.css: {}
+          css/bootstrap-colorpicker.css: {}
+          css/component.css: {}
+          css/font-awesome.css: {}
 
   dependencies:
     - core/jquery

@@ -17,7 +17,7 @@ function visual_content_layout_page_attachments_alter(array &$page) {
   }
 
   if ($enable_bootstrap == '1') {
-    $page['#attached']['library'][] = 'visual_content_layout/bootstrap';
+    $page['#attached']['library'][] = 'visual_content_layout/visual_content_layout.bootstrap';
   }
 
 }
@@ -65,10 +65,9 @@ function visual_content_layout_load_field($field, $format) {
   }
 
   // Display the link that enable the visual element.
-  $prefix = '<div class="visual-content-layout-button-wrap" style="display: none;">
-             <a class="visual-content-layout-btn" data-state="disable" data-id="'
+  $prefix = '<a class="visual-content-layout-btn fa fa-square-o" data-state="disable" data-id="'
              . $textarea_id . '" data-format = "' . $format . '">';
-  $prefix .= t('Loading...') . '</a></div>';
+  $prefix .= t('Loading...') . '</a>';
 
   // Attributes for the link that display the select swap form.
   $attributes = array(
@@ -97,7 +96,7 @@ function visual_content_layout_load_field($field, $format) {
   // Set all div and libraries.
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
   $field['#suffix'] = $suffix . (isset($field['#suffix']) ? $field['#suffix'] : '');
-  $field['#attached']['library'][] = 'visual_content_layout/visual_content_layout';
+  $field['#attached']['library'][] = 'visual_content_layout/visual_content_layout.style';
   $field['#attached']['library'][] = 'core/drupal.vertical-tabs';
 
   // Create a list of all enables formats.

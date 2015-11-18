@@ -66,7 +66,7 @@ class VisualContentLayoutController extends ControllerBase {
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     // Create the ajax response.
     $response = new AjaxResponse();
-    $modal_options = array('width' => '50%', 'height' => 'auto');
+    $modal_options = array('width' => '60%', 'height' => 'auto');
     $response->addCommand(new OpenModalDialogCommand("Swap Settings", $form, $modal_options));
     return $response;
   }

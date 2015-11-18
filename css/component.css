@@ -1,13 +1,6 @@
+
 /* General button style (reset) */
-a.btn-style:focus{
-	color: #fff;
-}
-
-a.btn-style:focus:hover{
-	color: #226fbe;
-}
-
-.btn-style {
+.btn {
 	border: none;
 	font-family: inherit;
 	font-size: inherit;
@@ -27,7 +20,7 @@ a.btn-style:focus:hover{
 	transition: all 0.3s;
 }
 
-.btn-style:after {
+.btn:after {
 	content: '';
 	position: absolute;
 	z-index: -1;
@@ -37,7 +30,7 @@ a.btn-style:focus:hover{
 }
 
 /* Pseudo elements for icons */
-.btn-style:before,
+.btn:before,
 .icon-heart:after,
 .icon-star:after,
 .icon-plus:after,
