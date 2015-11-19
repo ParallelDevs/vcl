@@ -132,3 +132,9 @@
 /* line 131, ../sass/styles/_style.scss */
 .ajax-progress {
   position: absolute; }
+
+/* line 134, ../sass/styles/_style.scss */
+.form-item-upload-image {
+  margin-left: 50px !important;
+  margin-bottom: 50px !important;
+  margin-top: 50px !important; }

@@ -36,10 +36,10 @@
         if(settings.visualContentLayout.enable_formats){
           // Show the enable/disable button for the visual help according the textFormat.
           if (settings.visualContentLayout.enable_formats[$(filter[i]).val()]) {
-            $(filterParent).children('.visual-content-layout-button-wrap').show();
+            $(filterParent).children('.visual-content-layout-btn').show();
           }
           else {
-            $(filterParent).children('.visual-content-layout-button-wrap').hide();
+            $(filterParent).children('.visual-content-layout-btn').hide();
           }
         }
       }
