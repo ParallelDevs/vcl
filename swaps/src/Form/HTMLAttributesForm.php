@@ -44,7 +44,7 @@ class HTMLAttributesForm extends FormBase {
       '#type' => 'textarea',
       '#title' => t('Text'),
       '#rows' => 20,
-      '#attributes' => array('wrap' => array('off'))
+      '#attributes' => array('wrap' => array('off')),
     );
 
     SwapDefaultAttributes::getButtonsElements($form);
