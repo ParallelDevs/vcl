@@ -128,7 +128,7 @@
       var imageId = $('.imageId'),
           deleted = settings.visualContentLayout.deleted;
 
-      if(imageId.val() !== 0 && !deleted){
+      if(imageId.val() !== "0"   && !deleted){
         $('.js-form-file').prop('disabled', true);
       }else{
         $('.js-form-file').prop('disabled', false);

@@ -59,6 +59,12 @@ class ImageAttributesForm extends FormBase {
       '#attributes' => array('id' => array('edit-swaps-img-fid')),
     );
 
+    $form['swaps_attributes']['swaps_img_alt'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Alt',
+      '#size' => 30,
+    );
+
     $form['swaps_attributes']['swaps_img_height'] = array(
       '#type' => 'textfield',
       '#title' => 'Height',
@@ -119,6 +125,7 @@ class ImageAttributesForm extends FormBase {
     $url = $file->url();
 
     $settings['url'] = $url;
+    $settings['alt'] = $input['swaps_img_alt'];
     $settings['height'] = $input['swaps_img_height'];
     $settings['width'] = $input['swaps_img_width'];
     $settings['fid'] = $fid;

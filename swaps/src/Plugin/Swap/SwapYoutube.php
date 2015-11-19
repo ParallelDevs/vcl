@@ -54,7 +54,7 @@ class SwapYoutube extends SwapBase {
    * Validate the width and height is number.
    */
   public function validateNumber($number) {
-    if (is_int($number)) {
+    if (is_numeric($number)) {
       return $number;
     }
     else {
@@ -66,7 +66,8 @@ class SwapYoutube extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    return '<iframe src="' . $attrs['url'] . '" width="' . $attrs['width'] . '" height="' . $attrs['height'] . '" frameborder="0" allowfullscreen ' . $attrs['style'] . ' ></iframe>';
+    $output = '<iframe src="' . $attrs['url'] . '" width="' . $attrs['width'] . '" height="' . $attrs['height'] . '" frameborder="0" allowfullscreen ' . $attrs['style'] . ' ></iframe>';
+    return $output;
   }
 
 }

@@ -43,7 +43,7 @@ class SwapImage extends SwapBase {
     // Validate exists id.
     $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
 
-    $img = '<img' . $id . ' class="' . ['class'] . '" src="' . $attrs['url'] . '" height="' . $attrs['height'] . '" width="' . $attrs['width'] . '" ' . $attrs['style'] . ' />';
+    $img = '<img' . $id . ' class="' . $attrs['class'] . '" alt="' . $attrs['alt'] . '" src="' . $attrs['url'] . '" height="' . $attrs['height'] . '" width="' . $attrs['width'] . '" ' . $attrs['style'] . ' />';
 
     return $img;
 
