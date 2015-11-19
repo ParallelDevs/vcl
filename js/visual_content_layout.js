@@ -116,14 +116,17 @@
       $('.visual-content-layout-form-button', context).click(function () {
         var textArea = $(this).data('textarea'),
           element = document.createElement('input'),
-          id = $(this).parent().attr('id');
+          id = $(this).parent().attr('id'),
+          position = $('.visual-content-layout-element-position');
 
         $('<input>').attr("id", "visual-content-layout-actual-textarea")
           .attr("type", "hidden")
           .val(textArea)
           .appendTo($(".visual-content-layout-visual-help"));
 
-        var position = $('<input>').attr("id", "visual-content-layout-element-position").attr("type", "hidden");
+        if(position.length === 0){
+          position = $('<input>').attr("id", "visual-content-layout-element-position").attr("type", "hidden");
+        }
 
         if (id === 'vcl-top-link'){
           position.val('top');
@@ -244,8 +247,8 @@
         $('#' + textArea).val(getTextFromVisual(visualHelpArea));
         makeDragAndDrop();
 
+        $('#visual-content-layout-element-position').val("");
         $('#visual-content-layout-actual-textarea').remove();
-        $('#visual-content-layout-element-position').remove();
         $('.visual-content-layout-target').removeClass('visual-content-layout-target');
         delete (settings.visualContentLayout.attributes);
       }
