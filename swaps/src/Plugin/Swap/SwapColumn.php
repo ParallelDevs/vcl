@@ -86,8 +86,7 @@ class SwapColumn extends SwapBase {
     // Validate exists id.
     $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
 
-    return '<div ' . $id . 'class="' . $attrs['class'] . '" ' . $attrs['style']
-    . ' >' . $text . '</div>';
+    return '<div' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</div>';
   }
 
 }

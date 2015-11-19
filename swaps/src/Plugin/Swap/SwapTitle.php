@@ -44,7 +44,7 @@ class SwapTitle extends SwapBase {
     // Validate exists id.
     $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
 
-    return '<' . $attrs['type'] . ' ' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . '>' . $text . '</' . $attrs['type'] . '>';
+    return '<' . $attrs['type'] . ' ' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</' . $attrs['type'] . '>';
   }
 
 }

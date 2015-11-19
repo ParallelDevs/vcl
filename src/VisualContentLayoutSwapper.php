@@ -143,7 +143,9 @@ class VisualContentLayoutSwapper {
       }
     }
 
-    return (implode('', array_reverse($heap)));
+    $text = '<div class="vcl_content">' . implode('', array_reverse($heap)) . '</div>';
+
+    return $text;
   }// End swap_process.
 
   /**

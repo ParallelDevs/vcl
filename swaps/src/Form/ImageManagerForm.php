@@ -112,7 +112,9 @@ class ImageManagerForm extends FormBase {
 
     $fid = $form_state->getValue('fid');
     $file = \Drupal\file\Entity\File::load($fid);
-    $file->delete();
+    if ($file != NULL) {
+      $file->setTemporary();
+    }
 
     $visual_settings = array(
       'visualContentLayout' => array('deleted' => TRUE));

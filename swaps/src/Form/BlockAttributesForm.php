@@ -69,6 +69,7 @@ class BlockAttributesForm extends FormBase {
       '#size' => 15,
     );
 
+    SwapDefaultAttributes::getDefaultFormElements($form);
     SwapDefaultAttributes::getButtonsElements($form);
 
     return $form;
