@@ -27,6 +27,14 @@ $black: #000000;
 .visual-content-layout-element {
   min-height: 40px;
 }
+.visual-content-layout-deleteImage{
+  position: absolute;
+  left: 60%;
+  top: 30%;
+  .button{
+    bottom: 80px;
+  }
+}
 .ui-state-highlight {
   height: 25px;
   line-height: 25px;

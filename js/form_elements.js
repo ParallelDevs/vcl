@@ -133,6 +133,7 @@
       }else{
         $('.js-form-file').prop('disabled', false);
         $('.visual-content-layout-deleteImage').addClass('hidden');
+        delete (settings.visualContentLayout.deleted);
       }
 
     }
