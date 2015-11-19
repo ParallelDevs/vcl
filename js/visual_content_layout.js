@@ -57,7 +57,7 @@
         }
         else {
           selectParent.find('.visual-content-layout-btn').hide();
-          selectParent.children('.visual-content-layout-visual-help').hide();
+          selectParent.find('.visual-content-layout-visual-help').hide();
           $('.visual-content-layout-element').remove();
           selectParent.find('.visual-content-layout-btn').data('state', 'disable');
           selectParent.find('.visual-content-layout-btn').text('Enable Visual Content Layout');

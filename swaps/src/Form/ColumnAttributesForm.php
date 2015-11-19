@@ -38,7 +38,7 @@ class ColumnAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Column',
       '#group' => 'swaps_formTabs',
     );
 
