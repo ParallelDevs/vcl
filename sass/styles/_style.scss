@@ -53,7 +53,7 @@ $black: #000000;
   padding: 10px;
   border: 1px dashed rgb(192, 192, 192);
   color: $black;
-  background: #E0E0D8;
+  background: #f0f0f0;
   font-size: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -66,6 +66,7 @@ $black: #000000;
   &:hover{
     text-decoration: none;
     cursor: pointer;
+    background: #e3e3e3;
   }
 }
 .use-ajax {

@@ -36,7 +36,7 @@ class ButtonAttributesForm extends FormBase {
     // Create the swapAttributes tab ------------------------------------.
     $form['swaps_attributes'] = array(
       '#type' => 'details',
-      '#title' => 'Swap',
+      '#title' => 'Button',
       '#group' => 'swaps_formTabs',
     );
 

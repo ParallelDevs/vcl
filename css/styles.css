@@ -50,7 +50,7 @@
   padding: 10px;
   border: 1px dashed silver;
   color: #000000;
-  background: #E0E0D8;
+  background: #f0f0f0;
   font-size: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -63,61 +63,62 @@
   /* line 66, ../sass/styles/_style.scss */
   .visual-content-layout-btn:hover {
     text-decoration: none;
-    cursor: pointer; }
+    cursor: pointer;
+    background: #e3e3e3; }
 
-/* line 71, ../sass/styles/_style.scss */
+/* line 72, ../sass/styles/_style.scss */
 .use-ajax {
   min-width: 70px;
   text-align: center;
   text-decoration: none; }
-  /* line 75, ../sass/styles/_style.scss */
+  /* line 76, ../sass/styles/_style.scss */
   .use-ajax:hover {
     text-decoration: none; }
-  /* line 78, ../sass/styles/_style.scss */
+  /* line 79, ../sass/styles/_style.scss */
   .use-ajax:focus {
     text-decoration: none; }
 
-/* line 82, ../sass/styles/_style.scss */
+/* line 83, ../sass/styles/_style.scss */
 .colorpicker-color {
   width: 150px; }
 
-/* line 85, ../sass/styles/_style.scss */
+/* line 86, ../sass/styles/_style.scss */
 .iconButton {
   cursor: pointer;
   color: #333;
   font-size: 20px !important;
   padding: 7px;
   float: right; }
-  /* line 91, ../sass/styles/_style.scss */
+  /* line 92, ../sass/styles/_style.scss */
   .iconButton:hover {
     color: rgba(0, 0, 0, 0.15) !important;
     text-shadow: -4px -4px #333; }
-  /* line 96, ../sass/styles/_style.scss */
+  /* line 97, ../sass/styles/_style.scss */
   .iconButton:focus {
     color: #333; }
 
-/* line 100, ../sass/styles/_style.scss */
+/* line 101, ../sass/styles/_style.scss */
 .dragIcon {
   float: left;
   margin-top: 10px;
   margin-left: 10px; }
-  /* line 104, ../sass/styles/_style.scss */
+  /* line 105, ../sass/styles/_style.scss */
   .dragIcon:hover {
     cursor: move; }
 
-/* line 108, ../sass/styles/_style.scss */
+/* line 109, ../sass/styles/_style.scss */
 .dragIcon::before {
   margin-right: 10px;
   font-size: 20px; }
 
-/* line 113, ../sass/styles/_style.scss */
+/* line 114, ../sass/styles/_style.scss */
 .addButton:hover {
   text-decoration: none; }
-/* line 116, ../sass/styles/_style.scss */
+/* line 117, ../sass/styles/_style.scss */
 .addButton:focus {
   text-decoration: none; }
 
-/* line 120, ../sass/styles/_style.scss */
+/* line 121, ../sass/styles/_style.scss */
 .tooltip {
   color: #ffffff;
   background: #000000;
@@ -127,22 +128,22 @@
   border-radius: 6px;
   min-width: 300px; }
 
-/* line 130, ../sass/styles/_style.scss */
+/* line 131, ../sass/styles/_style.scss */
 .infoIcon:hover {
   cursor: default; }
 
-/* line 133, ../sass/styles/_style.scss */
+/* line 134, ../sass/styles/_style.scss */
 .btn-style {
   padding: 15px;
   display: inline-block;
   min-width: 180px;
   margin: 5px; }
 
-/* line 139, ../sass/styles/_style.scss */
+/* line 140, ../sass/styles/_style.scss */
 .ajax-progress {
   position: absolute; }
 
-/* line 142, ../sass/styles/_style.scss */
+/* line 143, ../sass/styles/_style.scss */
 .form-item-upload-image {
   margin-left: 50px !important;
   margin-bottom: 50px !important;
