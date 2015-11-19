@@ -14,7 +14,21 @@ Drupal 8.x
 
 Installation
 ------------
-Coming soon…
+1- Install as any other Drupal 8 Module.
+2- Go to /admin/config/content/formats and add a new text format. 
+We recommend you name it VCL. Then check the "Visual Content Layout" checkbox
+to activate the plugin. 
+3- IMPORTANT: Make sure you select "None" on the Text editor select box.
+
+And as simple as that you have the module working on any
+text area field.
+
+How to use it
+-------------
+Now once you are creating content you should select the VCL text format from the Text Format selection field.
+Then you need to click on "Enable Visual Content Layout".
+From there just hit the + sign to start adding elements or SWAPS as we call it.
+You can then drag and drop to move the SWAPS around.
 
 
 Support
