@@ -16,8 +16,6 @@ use Drupal\swaps\SwapBase;
  *   id = "swap_hgl",
  *   name = "Highlight",
  *   description = @Translation("Add a span with the class Highlight"),
- *   attributes = "[Font Color | font_color | color ] ,
- *                 [Text | text | text ]",
  *   container = false,
  *   tip = "[hgl] content [/hgl] -> is the Highlight "
  * )
@@ -41,8 +39,10 @@ class SwapHighlight extends SwapBase {
    */
   public function theme($attrs, $text) {
 
-    return '<span class="' . $attrs['class'] . '"'
-    . $attrs['style'] . '">' . $text . ' </span>';
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    return '<span' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . '>' . $text . ' </span>';
   }
 
 }

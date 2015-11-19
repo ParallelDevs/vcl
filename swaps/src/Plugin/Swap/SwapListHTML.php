@@ -64,8 +64,11 @@ class SwapListHTML extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    return '<' . $attrs['type'] . $attrs['style'] . ' class="'
-    . $attrs['class'] . '">' . $text . '</' . $attrs['type'] . '>';
+
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    return '<' . $attrs['type'] . ' '. $id .' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</' . $attrs['type'] . '>';
   }
 
 }

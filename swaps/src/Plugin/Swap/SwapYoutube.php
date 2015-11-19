@@ -66,9 +66,7 @@ class SwapYoutube extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    return '<iframe src="' . $attrs['url'] . '" width="' . $attrs['width']
-    . '" height="' . $attrs['height'] . '" frameborder="0" allowfullscreen '
-    . $attrs['style'] . '></iframe>';
+    return '<iframe src="' . $attrs['url'] . '" width="' . $attrs['width'] . '" height="' . $attrs['height'] . '" frameborder="0" allowfullscreen ' . $attrs['style'] . ' ></iframe>';
   }
 
 }

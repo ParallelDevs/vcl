@@ -139,8 +139,7 @@
 
 .colorpicker-color {
   height: 10px;
-  margin-top: 5px;
-  clear: both;
+  margin-top: 105px;
   background-image: url("../img/bootstrap-colorpicker/alpha.png");
   background-position: 0 100%;
 }

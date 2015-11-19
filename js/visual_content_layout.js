@@ -96,6 +96,8 @@
           $(buttonParent).find('.filter-guidelines').hide();
           $(button).data('state', 'enable');
           $(button).text('Disable Visual Content Layout');
+          $(button).removeClass('fa-square-o');
+          $(button).addClass('fa-check-square-o');
         }
         else {
           $(buttonParent).children('.visual-content-layout-visual-help').hide();
@@ -103,6 +105,8 @@
           $(buttonParent).find('.filter-guidelines').show();
           $(button).data('state', 'disable');
           $(button).text('Enable Visual Content Layout');
+          $(button).removeClass('fa-check-square-o');
+          $(button).addClass('fa-square-o');
         }
       }
 
