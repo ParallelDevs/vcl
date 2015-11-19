@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Plugin\Swap\.
+ * Contains \Drupal\vcl\Plugin\Swap\.
  */
 
 namespace Drupal\swaps\Plugin\Swap;

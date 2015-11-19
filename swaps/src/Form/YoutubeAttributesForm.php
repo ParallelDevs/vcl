@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutForm.
+ * Contains \Drupal\vcl\Form\VCLForm.
  */
 
 namespace Drupal\swaps\Form;
@@ -109,7 +109,7 @@ class YoutubeAttributesForm extends FormBase {
     // ---------------------------------------------------------------.
 
     $visual_settings = array(
-      'visualContentLayout' => array('attributes' => $settings));
+      'vcl' => array('attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
     $response->addCommand(new SettingsCommand($visual_settings, TRUE));

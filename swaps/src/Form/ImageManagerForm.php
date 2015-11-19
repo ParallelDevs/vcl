@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutForm.
+ * Contains \Drupal\vcl\Form\VCLForm.
  */
 
 namespace Drupal\swaps\Form;
@@ -42,7 +42,7 @@ class ImageManagerForm extends FormBase {
         $url = $file->url();
       }
       $image = '<img class="image_preview" src="' . $url . '" height="150">';
-      $start = '<div class="visual-content-layout-deleteImage">';
+      $start = '<div class="vcl-deleteImage">';
       $end = $image . '</div>';
     }
     else {
@@ -117,7 +117,7 @@ class ImageManagerForm extends FormBase {
     }
 
     $visual_settings = array(
-      'visualContentLayout' => array('deleted' => TRUE));
+      'vcl' => array('deleted' => TRUE));
     $response = new AjaxResponse();
     $response->addCommand(new SettingsCommand($visual_settings, TRUE));
 
@@ -151,7 +151,7 @@ class ImageManagerForm extends FormBase {
     $settings['fid'] = $fid;
 
     $visual_settings = array(
-      'visualContentLayout' => array('image_attributes' => $settings));
+      'vcl' => array('image_attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseDialogCommand("#dialog"));
     $response->addCommand(new SettingsCommand($visual_settings, TRUE));

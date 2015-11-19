@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutForm.
+ * Contains \Drupal\vcl\Form\VCLForm.
  */
 
 namespace Drupal\swaps\Form;
@@ -41,9 +41,9 @@ class ImageAttributesForm extends FormBase {
     );
 
     // Create link to image manager.
-    $link = '<a class="visual-content-layout-image-manager" href="'
+    $link = '<a class="vcl-image-manager" href="'
       . $GLOBALS['base_path']
-      . 'visual_content_layout/swap_image_manager/0">Select Image</a>';
+      . 'vcl/swap_image_manager/0">Select Image</a>';
 
     $form['swaps_attributes']['swaps_img_url'] = array(
       '#type' => 'textfield',
@@ -137,7 +137,7 @@ class ImageAttributesForm extends FormBase {
     // ---------------------------------------------------------------.
 
     $visual_settings = array(
-      'visualContentLayout' => array('attributes' => $settings));
+      'vcl' => array('attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
     $response->addCommand(new SettingsCommand($visual_settings, TRUE));

@@ -2,8 +2,8 @@ name: Visual Content Layout
 type: module
 description: Create content visualy.
 core: 8.x
-package: visual_content_layout
+package: vcl
 libraries:
-  - visual_content_layout/visualcontentlayout.js
+  - vcl/vcl.js
 dependencies:
   - swaps

@@ -230,7 +230,7 @@ class SwapDefaultAttributes {
     $title = t('Choose one swap');
 
     $form = \Drupal::formBuilder()
-      ->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
+      ->getForm('Drupal\vcl\Form\VCLSelectForm');
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
     $modal_options = array('width' => '50%', 'height' => 'auto');

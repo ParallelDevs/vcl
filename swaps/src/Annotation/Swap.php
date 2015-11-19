@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Annotation\Swap.
+ * Contains \Drupal\vcl\Annotation\Swap.
  */
 
 namespace Drupal\swaps\Annotation;

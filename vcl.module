@@ -8,7 +8,7 @@
 /**
  * Implements hook_page_attachments_alter().
  */
-function visual_content_layout_page_attachments_alter(array &$page) {
+function vcl_page_attachments_alter(array &$page) {
 
   $enable_bootstrap = \Drupal::config('swaps.swapsettings_config')->get('enable_bootstrap');
 
@@ -17,7 +17,7 @@ function visual_content_layout_page_attachments_alter(array &$page) {
   }
 
   if ($enable_bootstrap == '1') {
-    $page['#attached']['library'][] = 'visual_content_layout/visual_content_layout.bootstrap';
+    $page['#attached']['library'][] = 'vcl/vcl.bootstrap';
   }
 
 }
@@ -25,16 +25,16 @@ function visual_content_layout_page_attachments_alter(array &$page) {
 /**
  * Implements hook_element_info_alter().
  */
-function visual_content_layout_element_info_alter(&$types) {
+function vcl_element_info_alter(&$types) {
 
-  $types['text_format']['#pre_render'][] = 'visual_content_layout_pre_render_text_format';
+  $types['text_format']['#pre_render'][] = 'vcl_pre_render_text_format';
 
 }
 
 /**
  * Set the necessary divs to work with visual help.
  */
-function visual_content_layout_pre_render_text_format($element) {
+function vcl_pre_render_text_format($element) {
   if (!isset($element['#format'])) {
     return $element;
   }
@@ -44,10 +44,10 @@ function visual_content_layout_pre_render_text_format($element) {
       return $element;
     }
     if (isset($element['summary']) && $element['summary']['#type'] == 'textarea') {
-      $element['summary'] = visual_content_layout_load_field($element['summary'], $element['format']['format']);
+      $element['summary'] = vcl_load_field($element['summary'], $element['format']['format']);
     }
     if (isset($element['value']) && $element['value']['#type'] == 'textarea') {
-      $element['value'] = visual_content_layout_load_field($element['value'], $element['format']['format']);
+      $element['value'] = vcl_load_field($element['value'], $element['format']['format']);
     }
   }
 
@@ -57,7 +57,7 @@ function visual_content_layout_pre_render_text_format($element) {
 /**
  * Make the divs and other elements required for the visual help.
  */
-function visual_content_layout_load_field($field, $format) {
+function vcl_load_field($field, $format) {
   $textarea_id = $field['#id'];
   if (is_array($format)) {
     $format_arr = $format;
@@ -65,48 +65,48 @@ function visual_content_layout_load_field($field, $format) {
   }
 
   // Display the link that enable the visual element.
-  $prefix = '<a class="visual-content-layout-btn fa fa-square-o" data-state="disable" data-id="'
+  $prefix = '<a class="vcl-btn fa fa-square-o" data-state="disable" data-id="'
              . $textarea_id . '" data-format = "' . $format . '">';
   $prefix .= t('Loading...') . '</a>';
 
   // Attributes for the link that display the select swap form.
   $attributes = array(
     'attributes' => array(
-      'class' => array('use-ajax', 'visual-content-layout-form-button'),
+      'class' => array('use-ajax', 'vcl-form-button'),
       'data-textarea' => array($textarea_id),
     ),
   );
 
   // Create the link that display the select swap form.
-  $url = \Drupal\Core\Url::fromRoute('visual_content_layout.swap_select_form_all', [], $attributes);
+  $url = \Drupal\Core\Url::fromRoute('vcl.swap_select_form_all', [], $attributes);
   $link = \Drupal::l(t('<i class="fa fa-plus-square"></i>'), $url);
   // Create top and down link wrapper.
-  $internal_link_top = '<div id="vcl-top-link" class="visual-content-layout-select-link">'
+  $internal_link_top = '<div id="vcl-top-link" class="vcl-select-link">'
     . $link . '</div>';
-  $internal_link_bottom = '<div id="vcl-bottom-link" class="visual-content-layout-select-link">'
+  $internal_link_bottom = '<div id="vcl-bottom-link" class="vcl-select-link">'
     . $link . '</div>';
   // Create the area for the visual elements.
-  $visual_elements_area = '<div class="visual-content-layout-elements-area visual-content-layout-container"></div>';
+  $visual_elements_area = '<div class="vcl-elements-area vcl-container"></div>';
 
   // Create the div that contain the visual help elements.
-  $suffix = '<div class="visual-content-layout-visual-help">'
+  $suffix = '<div class="vcl-visual-help">'
     . $internal_link_top . $visual_elements_area . $internal_link_bottom
     . '</div>';
 
   // Set all div and libraries.
   $field['#prefix'] = (isset($field['#prefix']) ? $field['#prefix'] : '') . $prefix;
   $field['#suffix'] = $suffix . (isset($field['#suffix']) ? $field['#suffix'] : '');
-  $field['#attached']['library'][] = 'visual_content_layout/visual_content_layout.style';
+  $field['#attached']['library'][] = 'vcl/vcl.style';
   $field['#attached']['library'][] = 'core/drupal.vertical-tabs';
 
   // Create a list of all enables formats.
   $formats = filter_formats();
   $enable_formats = array();
 
-  // Create a list of all formats that use filter_visualcontentlayout.
+  // Create a list of all formats that use filter_vcl.
   foreach ($formats as $format) {
     $format_array = $format->toArray();
-    if ($format_array['filters']['filter_visualcontentlayout']['status']) {
+    if ($format_array['filters']['filter_vcl']['status']) {
       $enable_formats[$format_array['format']] = TRUE;
     }
   }
@@ -125,7 +125,7 @@ function visual_content_layout_load_field($field, $format) {
   }
 
   // Set the settings for send to javascript.
-  $field['#attached']['drupalSettings']['visualContentLayout'] = array(
+  $field['#attached']['drupalSettings']['vcl'] = array(
     'enable_formats' => $enable_formats,
     'enable_swaps' => $enable_swaps,
     'swap_names' => $swaps_names,

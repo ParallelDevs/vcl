@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Provides Drupal\visual_content_layout\SwapBase.
+ * Provides Drupal\vcl\SwapBase.
  */
 
 namespace Drupal\swaps;

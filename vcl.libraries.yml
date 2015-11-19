@@ -1,13 +1,13 @@
-visual_content_layout.bootstrap:
+vcl.bootstrap:
   js:
     js/bootstrap.js: {}
   css:
     theme:
         css/bootstrap.css: {}
 
-visual_content_layout.style:
+vcl.style:
   js:
-    js/visual_content_layout.js: {}
+    js/vcl.js: {}
     js/form_elements.js: {}
     js/bootstrap-colorpicker.js: {}
   css:
