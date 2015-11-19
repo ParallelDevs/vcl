@@ -50,13 +50,19 @@ class ImageAttributesForm extends FormBase {
       '#group' => 'swaps_attributes',
       '#disabled' => TRUE,
       '#prefix' => $link,
-      '#suffix' => '<img class="image_preview" src="" height="150">',
+      '#suffix' => '<img class="image_preview" height="150">',
     );
 
     $form['swaps_attributes']['swaps_img_fid'] = array(
       '#type' => 'hidden',
       '#value' => 0,
       '#attributes' => array('id' => array('edit-swaps-img-fid')),
+    );
+
+    $form['swaps_attributes']['swaps_img_alt'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Alt',
+      '#size' => 30,
     );
 
     $form['swaps_attributes']['swaps_img_height'] = array(
@@ -98,8 +104,9 @@ class ImageAttributesForm extends FormBase {
     // Delete the upload image if cancel.
     $fid = $form_state->getValue(array('swaps_img_file', 0));
     $file = \Drupal\file\Entity\File::load($fid);
-    $file->delete();
-
+    if ($file != NULL) {
+      $file->setTemporary();
+    }
     $response = SwapDefaultAttributes::cancelAjaxResponse();
     return $response;
 
@@ -119,6 +126,7 @@ class ImageAttributesForm extends FormBase {
     $url = $file->url();
 
     $settings['url'] = $url;
+    $settings['alt'] = $input['swaps_img_alt'];
     $settings['height'] = $input['swaps_img_height'];
     $settings['width'] = $input['swaps_img_width'];
     $settings['fid'] = $fid;

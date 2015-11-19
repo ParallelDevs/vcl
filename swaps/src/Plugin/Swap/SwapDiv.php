@@ -16,7 +16,6 @@ use Drupal\swaps\SwapBase;
  *   id = "swap_div",
  *   name = "Div",
  *   description = @Translation("Add div which you can add a bootstrap class."),
- *   attributes = "[Div Type | type | select | row : container]",
  *   container = true,
  *   tip = "[div class='row | container'] Content [/div]"
  * )
@@ -61,8 +60,11 @@ class SwapDiv extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    return '<div class="' . $attrs['class'] . '" ' . $attrs['style'] . '>'
-    . $text . '</div>';
+
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    return '<div' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</div>';
   }
 
 }

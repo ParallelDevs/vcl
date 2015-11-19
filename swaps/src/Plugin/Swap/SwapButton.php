@@ -50,7 +50,7 @@ class SwapButton extends SwapBase {
     // Validate exists title.
     ($text != '') ? '' : $text = 'title';
 
-    return '<a href="' . $attrs['url'] . '" ' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . '><span>' . $text . '</span></a>';
+    return '<a href="' . $attrs['url'] . '"' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . ' ><span>' . $text . '</span></a>';
   }
 
 }

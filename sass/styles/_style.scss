@@ -1,0 +1,146 @@
+//colors
+$color_alto_approx: #ddd;
+$color_desert_storm_approx: #f8f8f8;
+$white: #ffffff;
+$color_gray_suit_approx: #bfc2ca;
+$color_mine_shaft_approx: #333;
+$black_15: rgba(0, 0, 0, 0.15);
+$black: #000000;
+
+.visual-content-layout-visual-help {
+  margin: 4px 0 0 !important;
+  padding: 30px;
+  position: relative;
+  border: 1px dashed $color_alto_approx;
+  background: $color_desert_storm_approx none repeat scroll 0 0;
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 0.333em;
+}
+.visual-content-layout-select-link {
+  font-size: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.visual-content-layout-elements-area {
+  margin-top: 0 !important;
+}
+.visual-content-layout-element {
+  min-height: 40px;
+}
+.visual-content-layout-deleteImage{
+  position: absolute;
+  left: 60%;
+  top: 30%;
+  .button{
+    bottom: 80px;
+  }
+}
+.ui-state-highlight {
+  height: 25px;
+  line-height: 25px;
+  border: 5px solid $white;
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 4px;
+  margin: 0 0 20px;
+}
+.visual-content-layout-container {
+  margin-top: 50px;
+  padding: 15px;
+  background-color: $color_gray_suit_approx;
+  min-height: 40px;
+}
+.visual-content-layout-btn {
+  padding: 10px;
+  border: 1px dashed rgb(192, 192, 192);
+  color: $black;
+  background: #E0E0D8;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 10px;
+  &:before{
+    margin-right: 5px;
+  }
+  &:hover{
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+.use-ajax {
+  min-width: 70px;
+  text-align: center;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+  &:focus {
+    text-decoration: none;
+  }
+}
+.colorpicker-color {
+  width: 150px;
+}
+.iconButton {
+  cursor: pointer;
+  color: $color_mine_shaft_approx;
+  font-size: 20px !important;
+  padding: 7px;
+  float: right;
+  &:hover {
+    color: $black_15 !important;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: -4px -4px $color_mine_shaft_approx;
+  }
+  &:focus {
+    color: $color_mine_shaft_approx;
+  }
+}
+.dragIcon {
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+  &:hover {
+    cursor: move;
+  }
+}
+.dragIcon::before {
+  margin-right: 10px;
+  font-size: 20px;
+}
+.addButton {
+  &:hover {
+    text-decoration: none;
+  }
+  &:focus {
+    text-decoration: none;
+  }
+}
+.tooltip {
+  color: $white;
+  background: $black;
+  position: absolute;
+  line-height: 30px;
+  text-align: center;
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 6px;
+  min-width: 300px;
+}
+.infoIcon:hover {
+  cursor: default;
+}
+.btn-style{
+  padding: 15px;
+  display: inline-block;
+  min-width: 180px;
+  margin: 5px;
+}
+.ajax-progress{
+  position: absolute;
+}
+.form-item-upload-image{
+  margin-left: 50px !important;
+  margin-bottom: 50px !important;
+  margin-top: 50px !important;
+}

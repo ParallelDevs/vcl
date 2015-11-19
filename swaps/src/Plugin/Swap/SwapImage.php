@@ -30,6 +30,7 @@ class SwapImage extends SwapBase {
   public function processCallback($attrs, $text) {
 
     $attrs['style'] = $this->getStyle($attrs);
+    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
     return $this->theme($attrs, $text);
   }
 
@@ -39,13 +40,10 @@ class SwapImage extends SwapBase {
    */
   public function theme($attrs, $text) {
 
-    if ($attrs['width'] == '' || $attrs['height'] == '') {
-      $img = '<img src="' . $attrs['url'] . '" style="' . $attrs['style'] . '" />';
-    }
-    else {
-      $img = '<img src="' . $attrs['url'] . '" height="' . $attrs['width']
-      . '" width="' . $attrs['height'] . '" style="' . $attrs['style'] . '" />';
-    }
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    $img = '<img' . $id . ' class="' . $attrs['class'] . '" alt="' . $attrs['alt'] . '" src="' . $attrs['url'] . '" height="' . $attrs['height'] . '" width="' . $attrs['width'] . '" ' . $attrs['style'] . ' />';
 
     return $img;
 

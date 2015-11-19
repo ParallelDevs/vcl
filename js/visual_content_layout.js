@@ -36,10 +36,10 @@
         if(settings.visualContentLayout.enable_formats){
           // Show the enable/disable button for the visual help according the textFormat.
           if (settings.visualContentLayout.enable_formats[$(filter[i]).val()]) {
-            $(filterParent).children('.visual-content-layout-button-wrap').show();
+            $(filterParent).children('.visual-content-layout-btn').show();
           }
           else {
-            $(filterParent).children('.visual-content-layout-button-wrap').hide();
+            $(filterParent).children('.visual-content-layout-btn').hide();
           }
         }
       }
@@ -49,22 +49,20 @@
       //--------------------------------------------------------------------------------
       $('.filter-list', context).change(function () {
         // Get the parent of the filter select.
-        var selectParent = $(this).parents()[2];
+        var selectParent = $(this).parents('.text-format-wrapper');
 
         // Validate if the textFormat use the visual help.
         if (settings.visualContentLayout.enable_formats[$(this).val()]) {
-          $(selectParent).children('.visual-content-layout-button-wrap').show();
+          selectParent.find('.visual-content-layout-btn').show();
         }
         else {
-          $(selectParent).children('.visual-content-layout-button-wrap').hide();
-          $(selectParent).children('.visual-content-layout-visual-help').hide();
+          selectParent.find('.visual-content-layout-btn').hide();
+          selectParent.children('.visual-content-layout-visual-help').hide();
           $('.visual-content-layout-element').remove();
-          $(selectParent).children('.visual-content-layout-button-wrap')
-            .find('.visual-content-layout-btn').data('state', 'disable');
-          $(selectParent).children('.visual-content-layout-button-wrap')
-            .find('.visual-content-layout-btn').text('Enable Visual Content Layout');
+          selectParent.find('.visual-content-layout-btn').data('state', 'disable');
+          selectParent.find('.visual-content-layout-btn').text('Enable Visual Content Layout');
           $(this).parents('.text-format-wrapper').find('.form-textarea').show();
-          $(selectParent).children('#edit-body-0-format-guidelines').show();
+          selectParent.children('#edit-body-0-format-guidelines').show();
         }
       });
 
@@ -90,7 +88,7 @@
       //--------------------------------------------------------------------------------
       function handleVisualHelp(button, textArea, enable) {
         // Show the visual help section of the respective textArea.
-        var buttonParent = $(button).parents()[1];
+        var buttonParent = $(button).parents()[0];
 
         if (enable) {
           $(buttonParent).children('.visual-content-layout-visual-help').show();
@@ -98,6 +96,8 @@
           $(buttonParent).find('.filter-guidelines').hide();
           $(button).data('state', 'enable');
           $(button).text('Disable Visual Content Layout');
+          $(button).removeClass('fa-square-o');
+          $(button).addClass('fa-check-square-o');
         }
         else {
           $(buttonParent).children('.visual-content-layout-visual-help').hide();
@@ -105,6 +105,8 @@
           $(buttonParent).find('.filter-guidelines').show();
           $(button).data('state', 'disable');
           $(button).text('Enable Visual Content Layout');
+          $(button).removeClass('fa-check-square-o');
+          $(button).addClass('fa-square-o');
         }
       }
 
@@ -114,14 +116,17 @@
       $('.visual-content-layout-form-button', context).click(function () {
         var textArea = $(this).data('textarea'),
           element = document.createElement('input'),
-          id = $(this).parent().attr('id');
+          id = $(this).parent().attr('id'),
+          position = $('.visual-content-layout-element-position');
 
         $('<input>').attr("id", "visual-content-layout-actual-textarea")
           .attr("type", "hidden")
           .val(textArea)
           .appendTo($(".visual-content-layout-visual-help"));
 
-        var position = $('<input>').attr("id", "visual-content-layout-element-position").attr("type", "hidden");
+        if(position.length === 0){
+          position = $('<input>').attr("id", "visual-content-layout-element-position").attr("type", "hidden");
+        }
 
         if (id === 'vcl-top-link'){
           position.val('top');
@@ -242,8 +247,8 @@
         $('#' + textArea).val(getTextFromVisual(visualHelpArea));
         makeDragAndDrop();
 
+        $('#visual-content-layout-element-position').val("");
         $('#visual-content-layout-actual-textarea').remove();
-        $('#visual-content-layout-element-position').remove();
         $('.visual-content-layout-target').removeClass('visual-content-layout-target');
         delete (settings.visualContentLayout.attributes);
       }
@@ -276,7 +281,12 @@
           makeDragAndDrop();
         }
         else {
-          $('.visual-content-layout-element').remove();
+          var buttonParent = $(this).parents()[0],
+            visualHelpArea = $(buttonParent).children('.visual-content-layout-visual-help'),
+            elementsContainer = visualHelpArea.children('.visual-content-layout-elements-area'),
+            elements = elementsContainer.children('.visual-content-layout-element');
+          // Delete elements.
+          elements.remove();
         }
       });
 

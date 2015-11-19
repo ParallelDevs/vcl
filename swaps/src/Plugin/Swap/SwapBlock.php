@@ -33,6 +33,9 @@ class SwapBlock extends SwapBase {
       $attrs
     );
 
+    $attrs['class'] = $this->addClass($attrs['class'], 'vcl_block');
+    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    $attrs['style'] = $this->getStyle($attrs);
     $this->getBlockType($attrs);
 
     return $this->theme($attrs, $text);
@@ -88,7 +91,13 @@ class SwapBlock extends SwapBase {
         }
     }
 
-    return render($block_content);
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    $output = '<div' . $id . ' class="' . $attrs['class'] . '" '
+      . $attrs['style'] . '>' . render($block_content) . '</div>';
+
+    return $output;
 
   }
 

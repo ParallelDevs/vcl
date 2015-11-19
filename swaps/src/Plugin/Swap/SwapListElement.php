@@ -37,7 +37,10 @@ class SwapListElement extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    return '<li class="' . $attrs['class'] . '"' . $attrs['style']
-    . '>' . $text . '</li>';
+
+    // Validate exists id.
+    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+
+    return '<li' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</li>';
   }
 }
