@@ -50,7 +50,8 @@ class ImageAttributesForm extends FormBase {
       '#group' => 'swaps_attributes',
       '#disabled' => TRUE,
       '#prefix' => $link,
-      '#suffix' => '<img class="image_preview" height="150">',
+      '#suffix' => '<img class="image_preview" src="'
+        . $GLOBALS['base_path'] . 'modules/vcl/img/noimg.jpg" height="150">',
     );
 
     $form['swaps_attributes']['swaps_img_fid'] = array(
@@ -122,9 +123,13 @@ class ImageAttributesForm extends FormBase {
 
     $fid = $input['swaps_img_fid'];
     $file = \Drupal\file\Entity\File::load($fid);
-    $file->setPermanent();
-    $url = $file->url();
-
+    if($file != NULL){
+      $file->setPermanent();
+      $url = $file->url();
+    }
+    else{
+      $url = "";
+    }
     $settings['url'] = $url;
     $settings['alt'] = $input['swaps_img_alt'];
     $settings['height'] = $input['swaps_img_height'];

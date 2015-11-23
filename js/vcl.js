@@ -804,6 +804,13 @@
           checked = (attributes[attr] === '1') ? true : false;
           $(input).prop('checked', checked);
         }
+
+        input = '#edit-swaps-' + attributes.swapId + '-' + attr + '-' + attributes[attr];
+        input = $(input.toLowerCase());
+        inputType = $(input).attr('type');
+        if(inputType === 'radios' || inputType === 'radio'){
+          $(input).prop('checked', true);
+        }
       }
     }
 
@@ -869,6 +876,17 @@
       // Create the data name based in the id.
       data = data.replace("edit-swaps-", "");
       data = data.replace(swap + '-', "");
+
+      // Set value for checkbox.
+      if(inputType === 'radio'){
+        if(!$(elements[i]).prop('checked')){
+          continue;
+        }else{
+          data =  $(elements[i]).attr('id');
+          data = data.replace("edit-swaps-", "");
+          data = data.split("-")[1];
+        }
+      }
 
       // Set the data.
       div.data(data, value);

@@ -20,8 +20,7 @@ use \Drupal\vcl\VCLSwapper;
  * @Filter(
  *   id = "filter_vcl",
  *   title = @Translation("Visual Content Layout"),
- *   description = @Translation("Provides a ShortCode filter
- *                                format to easily generate content layout."),
+ *   description = @Translation("Provides a Swaps filter format to easily generate content layout."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {
  *     "bootstrap" = TRUE,
