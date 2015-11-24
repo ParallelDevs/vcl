@@ -806,7 +806,7 @@
         }
 
         input = '#edit-swaps-' + attributes.swapId + '-' + attr + '-' + attributes[attr];
-        input = $(input.toLowerCase());
+        attr !== 'backgroundcolor' ? input = $(input.toLowerCase()) : input = "" ;
         inputType = $(input).attr('type');
         if(inputType === 'radios' || inputType === 'radio'){
           $(input).prop('checked', true);
