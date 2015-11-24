@@ -779,6 +779,7 @@
 
     // Iterate all attributes of the div.
     for(var attr in attributes) {
+      var expresion = /([^a-zA-Z0-9-_])+/g;
       // Validate is a key value position.
       if(typeof attributes[attr] !== 'object'){
         // Set default attributes.
@@ -805,11 +806,13 @@
           $(input).prop('checked', checked);
         }
 
-        input = '#edit-swaps-' + attributes.swapId + '-' + attr + '-' + attributes[attr];
-        attr !== 'backgroundcolor' ? input = $(input.toLowerCase()) : input = "" ;
-        inputType = $(input).attr('type');
-        if(inputType === 'radios' || inputType === 'radio'){
-          $(input).prop('checked', true);
+        if (!attributes[attr].match(expresion)){
+          input = '#edit-swaps-' + attributes.swapId + '-' + attr + '-' + attributes[attr];
+          input = $(input.toLowerCase());
+          inputType = $(input).attr('type');
+          if(inputType === 'radios' || inputType === 'radio'){
+            $(input).prop('checked', true);
+          }
         }
       }
     }
