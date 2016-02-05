@@ -843,6 +843,7 @@
     // Close modal dialog
     $(".ui-dialog-content").dialog("close");
     $("#vcl-update-modal").remove();
+    return false;
   }
 
   //--------------------------------------------------------------------------------
@@ -911,6 +912,7 @@
     // Close modal dialog
     $(".ui-dialog-content").dialog("close");
     $("#vcl-update-modal").remove();
+    return false;
   }
 
   //--------------------------------------------------------------------------------
