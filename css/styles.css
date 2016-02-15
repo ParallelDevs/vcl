@@ -1,5 +1,5 @@
 /* line 10, ../sass/styles/_style.scss */
-.visual-content-layout-visual-help {
+.vcl-visual-help {
   margin: 4px 0 0 !important;
   padding: 30px;
   position: relative;
@@ -8,26 +8,26 @@
   border-radius: 0.333em; }
 
 /* line 19, ../sass/styles/_style.scss */
-.visual-content-layout-select-link {
+.vcl-select-link {
   font-size: 25px;
   margin-bottom: 10px;
   margin-top: 10px; }
 
 /* line 24, ../sass/styles/_style.scss */
-.visual-content-layout-elements-area {
+.vcl-elements-area {
   margin-top: 0 !important; }
 
 /* line 27, ../sass/styles/_style.scss */
-.visual-content-layout-element {
+.vcl-element {
   min-height: 40px; }
 
 /* line 30, ../sass/styles/_style.scss */
-.visual-content-layout-deleteImage {
+.vcl-deleteImage {
   position: absolute;
   left: 60%;
   top: 30%; }
   /* line 34, ../sass/styles/_style.scss */
-  .visual-content-layout-deleteImage .button {
+  .vcl-deleteImage .button {
     bottom: 80px; }
 
 /* line 38, ../sass/styles/_style.scss */
@@ -39,14 +39,14 @@
   margin: 0 0 20px; }
 
 /* line 46, ../sass/styles/_style.scss */
-.visual-content-layout-container {
+.vcl-container {
   margin-top: 50px;
   padding: 15px;
   background-color: #bfc2ca;
   min-height: 40px; }
 
 /* line 52, ../sass/styles/_style.scss */
-.visual-content-layout-btn {
+.vcl-btn {
   padding: 10px;
   border: 1px dashed silver;
   color: #000000;
@@ -58,10 +58,10 @@
   -moz-border-radius: 50px;
   border-radius: 10px; }
   /* line 63, ../sass/styles/_style.scss */
-  .visual-content-layout-btn:before {
+  .vcl-btn:before {
     margin-right: 5px; }
   /* line 66, ../sass/styles/_style.scss */
-  .visual-content-layout-btn:hover {
+  .vcl-btn:hover {
     text-decoration: none;
     cursor: pointer;
     background: #e3e3e3; }
@@ -134,7 +134,7 @@
 
 /* line 134, ../sass/styles/_style.scss */
 .btn-style {
-  padding: 15px;
+  padding: 1.5%;
   display: inline-block;
   min-width: 180px;
   margin: 5px; }

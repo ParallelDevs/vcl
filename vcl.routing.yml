@@ -1,0 +1,40 @@
+
+vcl.swap_select_form_all:
+  path: '/vcl/swap_select_form'
+  defaults:
+    _controller: '\Drupal\vcl\Controller\VCLController::chooseAllSwapsSelectForm'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'
+
+vcl.swap_select_form:
+  path: '/vcl/swap_select_form/{swap}'
+  defaults:
+    _controller: '\Drupal\vcl\Controller\VCLController::chooseSwapSelectForm'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'
+
+vcl.swap_attributes_form:
+  path: '/vcl/swap_attributes_form/{swap}'
+  defaults:
+    _controller: '\Drupal\vcl\Controller\VCLController::displayModalAttributesForm'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'
+
+vcl.swap_attributes_update_form:
+  path: '/vcl/swap_attributes_update_form/{swap}'
+  defaults:
+    _controller: '\Drupal\vcl\Controller\VCLController::getUpdateFormSwap'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'
+
+vcl.swap_image_manager:
+  path: '/vcl/swap_image_manager/{fid}'
+  defaults:
+    _controller: '\Drupal\vcl\Controller\VCLController::displayImageManager'
+    _title: 'mymodule Title'
+  requirements:
+    _permission: 'access content'

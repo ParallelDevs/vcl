@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm.
+ * Contains \Drupal\vcl\Form\VCLSelectForm.
  */
 
-namespace Drupal\visual_content_layout\Form;
+namespace Drupal\vcl\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -13,12 +13,12 @@ use Drupal\Core\Url;
 /**
  *  Form for select one swap for the visual help of the module.
  */
-class VisualContentLayoutSelectForm extends FormBase {
+class VCLSelectForm extends FormBase {
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'visual_content_layout_form';
+    return 'vcl_form';
   }
 
   /**
@@ -45,7 +45,7 @@ class VisualContentLayoutSelectForm extends FormBase {
             'class' => array('use-ajax btn-style btn-6 btn-6b'),
           ),
         );
-        $url = Url::fromRoute('visual_content_layout.swap_attributes_form',
+        $url = Url::fromRoute('vcl.swap_attributes_form',
           array('swap' => $name), $attributes);
         $internal_link = \Drupal::l($name, $url);
         // Form element of the swap.

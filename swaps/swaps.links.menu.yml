@@ -1,0 +1,5 @@
+swaps.admin:
+  title: 'Visual Content Layout'
+  description: 'Enable or disable Bootstrap.'
+  parent: system.admin_config_content
+  route_name: swaps.swap_settings_form

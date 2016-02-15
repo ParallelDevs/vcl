@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\visual_content_layout\Form\VisualContentLayoutForm.
+ * Contains \Drupal\vcl\Form\VCLForm.
  */
 
 namespace Drupal\swaps\Form;
@@ -41,16 +41,17 @@ class ImageAttributesForm extends FormBase {
     );
 
     // Create link to image manager.
-    $link = '<a class="visual-content-layout-image-manager" href="'
+    $link = '<a class="vcl-image-manager" href="'
       . $GLOBALS['base_path']
-      . 'visual_content_layout/swap_image_manager/0">Select Image</a>';
+      . 'vcl/swap_image_manager/0">Select Image</a>';
 
     $form['swaps_attributes']['swaps_img_url'] = array(
       '#type' => 'textfield',
       '#group' => 'swaps_attributes',
       '#disabled' => TRUE,
       '#prefix' => $link,
-      '#suffix' => '<img class="image_preview" height="150">',
+      '#suffix' => '<img class="image_preview" src="'
+        . $GLOBALS['base_path'] . 'modules/vcl/img/noimg.jpg" height="150">',
     );
 
     $form['swaps_attributes']['swaps_img_fid'] = array(
@@ -122,9 +123,13 @@ class ImageAttributesForm extends FormBase {
 
     $fid = $input['swaps_img_fid'];
     $file = \Drupal\file\Entity\File::load($fid);
-    $file->setPermanent();
-    $url = $file->url();
-
+    if($file != NULL){
+      $file->setPermanent();
+      $url = $file->url();
+    }
+    else{
+      $url = "";
+    }
     $settings['url'] = $url;
     $settings['alt'] = $input['swaps_img_alt'];
     $settings['height'] = $input['swaps_img_height'];
@@ -137,7 +142,7 @@ class ImageAttributesForm extends FormBase {
     // ---------------------------------------------------------------.
 
     $visual_settings = array(
-      'visualContentLayout' => array('attributes' => $settings));
+      'vcl' => array('attributes' => $settings));
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
     $response->addCommand(new SettingsCommand($visual_settings, TRUE));

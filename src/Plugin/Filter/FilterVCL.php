@@ -3,14 +3,14 @@
 /**
  * @file
  * Filter that enable the use patterns to create visual content more easy.
- * Drupal\visual_content_layout\Plugin\Filter\FilterVisualContent.
+ * Drupal\vcl\Plugin\Filter\FilterVisualContent.
  */
 
-namespace Drupal\visual_content_layout\Plugin\Filter;
+namespace Drupal\vcl\Plugin\Filter;
 
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
-use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
+use \Drupal\vcl\VCLSwapper;
 
 
 /**
@@ -18,10 +18,9 @@ use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
  *.
  *
  * @Filter(
- *   id = "filter_visualcontentlayout",
+ *   id = "filter_vcl",
  *   title = @Translation("Visual Content Layout"),
- *   description = @Translation("Provides a ShortCode filter
- *                                format to easily generate content layout."),
+ *   description = @Translation("Provides a Swaps filter format to easily generate content layout."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {
  *     "bootstrap" = TRUE,
@@ -29,14 +28,14 @@ use \Drupal\visual_content_layout\VisualContentLayoutSwapper;
  *   }
  * )
  */
-class FilterVisualContentLayout extends FilterBase {
+class FilterVCL extends FilterBase {
 
   /**
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
     drupal_set_message("true", "enable_bootstrap");
-    $result = new FilterProcessResult(VisualContentLayoutSwapper::swapProcess($text));
+    $result = new FilterProcessResult(VCLSwapper::swapProcess($text));
     return $result;
   }
 

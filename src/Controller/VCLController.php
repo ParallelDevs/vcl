@@ -2,10 +2,10 @@
 /**
  * @file
  * Contains
- *      \Drupal\visual_content_layout\Controller\VisualContentLayoutController.
+ *      \Drupal\vcl\Controller\VCLController.
  */
 
-namespace Drupal\visual_content_layout\Controller;
+namespace Drupal\vcl\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -13,17 +13,17 @@ use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\OpenDialogCommand;
 
 /**
- * Class VisualContentLayoutController.
+ * Class VCLController.
  *
- * @package Drupal\visual_content_layout\Controller
+ * @package Drupal\vcl\Controller
  */
-class VisualContentLayoutController extends ControllerBase {
+class VCLController extends ControllerBase {
 
   /**
    * Choose form for select all swaps.
    */
   public function chooseAllSwapsSelectForm() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\vcl\Form\VCLSelectForm');
     return $this->displayModalSelectForm($form);
   }
 
@@ -31,7 +31,7 @@ class VisualContentLayoutController extends ControllerBase {
    * Choose form for select specific swap.
    */
   public function chooseSwapSelectForm($swap) {
-    $form = \Drupal::formBuilder()->getForm('Drupal\visual_content_layout\Form\VisualContentLayoutSelectForm', $swap);
+    $form = \Drupal::formBuilder()->getForm('Drupal\vcl\Form\VCLSelectForm', $swap);
     return $this->displayModalSelectForm($form);
   }
 

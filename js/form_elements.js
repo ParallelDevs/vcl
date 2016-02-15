@@ -12,7 +12,7 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.visualContentLayoutElementsInit = {
+  Drupal.behaviors.vclElementsInit = {
     attach: function (context, settings) {
 
       // Get all colorpicker input elements.
@@ -59,15 +59,15 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.visualContentLayoutImageInfo = {
+  Drupal.behaviors.vclImageInfo = {
     attach: function (context, settings) {
 
-      var imageManager = $('.visual-content-layout-image-manager');
+      var imageManager = $('.vcl-image-manager');
       if(imageManager.length > 0){
-        makeAjax(imageManager, 'visual-content-layout-image-manager');
+        makeAjax(imageManager, 'vcl-image-manager');
       }
 
-      var attributes = settings.visualContentLayout.image_attributes,
+      var attributes = settings.vcl.image_attributes,
           imageControl = $('[name = swaps_img_url]');
 
       if (attributes && imageControl.length > 0) {
@@ -79,10 +79,10 @@
         fid.val(attributes.fid);
         imageControl.val(attributes.url);
         // Change fid in call image manager
-        var url = settings.visualContentLayout.base_path + 'visual_content_layout/swap_image_manager/' + attributes.fid;
-        imageManager = $('.visual-content-layout-image-manager').attr('href', url);
-        makeAjax(imageManager, 'visual-content-layout-image-manager');
-        delete (settings.visualContentLayout.image_attributes);
+        var url = settings.vcl.base_path + 'vcl/swap_image_manager/' + attributes.fid;
+        imageManager = $('.vcl-image-manager').attr('href', url);
+        makeAjax(imageManager, 'vcl-image-manager');
+        delete (settings.vcl.image_attributes);
       }
 
       function makeAjax(link, linkClass){
@@ -96,21 +96,21 @@
         };
         var base = linkClass;
 
-        var ajaxLink = Drupal.ajax['visual-content-layout-image-manager'];
+        var ajaxLink = Drupal.ajax['vcl-image-manager'];
 
         if(ajaxLink){
           var newLink = $('<a>',
             { href: link.attr('href'),
-              class: 'visual-content-layout-image-manager',
+              class: 'vcl-image-manager',
               text: 'Open Image Manager'});
-          $('.visual-content-layout-image-manager').replaceWith(newLink);
+          $('.vcl-image-manager').replaceWith(newLink);
           Drupal.ajax[base] = new Drupal.Ajax(base, newLink, element_settings);
         }
         else{
           Drupal.ajax[base] = new Drupal.Ajax(base, link, element_settings);
         }
 
-        var otro = Drupal.ajax['visual-content-layout-image-manager'];
+        var otro = Drupal.ajax['vcl-image-manager'];
 
       }
 
@@ -122,18 +122,18 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.visualContentLayoutImageManager = {
+  Drupal.behaviors.vclImageManager = {
     attach: function (context, settings) {
 
       var imageId = $('.imageId'),
-          deleted = settings.visualContentLayout.deleted;
+          deleted = settings.vcl.deleted;
 
       if(imageId.val() !== "0" && !deleted){
         $('.js-form-file').prop('disabled', true);
       }else{
         $('.js-form-file').prop('disabled', false);
-        $('.visual-content-layout-deleteImage').addClass('hidden');
-        delete (settings.visualContentLayout.deleted);
+        $('.vcl-deleteImage').addClass('hidden');
+        delete (settings.vcl.deleted);
       }
 
     }

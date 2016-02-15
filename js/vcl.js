@@ -9,8 +9,8 @@
   var drupalBasePath = "";
 
   // Hide the visual help for document ready
-  $('.visual-content-layout-visual-help').hide();
-  $('.visual-content-layout-btn').text('Enable Visual Content Layout');
+  $('.vcl-visual-help').hide();
+  $('.vcl-btn').text('Enable Visual Content Layout');
 
   /**
    * Manage the display of the visual help.
@@ -19,12 +19,12 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.visualContentLayoutDisplay = {
+  Drupal.behaviors.vclDisplay = {
     attach: function (context, settings) {
 
       // Set the base path global.
-      if (settings.visualContentLayout.base_path) {
-        drupalBasePath = settings.visualContentLayout.base_path;
+      if (settings.vcl.base_path) {
+        drupalBasePath = settings.vcl.base_path;
       }
 
       // Validate all the filter select for enable the button on it textArea.
@@ -33,13 +33,13 @@
 
         // Get the parent of the actual select, if is undefined it send and error and stop de cycle.
         var filterParent = $(filter[i]).parents()[2];
-        if(settings.visualContentLayout.enable_formats){
+        if(settings.vcl.enable_formats){
           // Show the enable/disable button for the visual help according the textFormat.
-          if (settings.visualContentLayout.enable_formats[$(filter[i]).val()]) {
-            $(filterParent).children('.visual-content-layout-btn').show();
+          if (settings.vcl.enable_formats[$(filter[i]).val()]) {
+            $(filterParent).children('.vcl-btn').show();
           }
           else {
-            $(filterParent).children('.visual-content-layout-btn').hide();
+            $(filterParent).children('.vcl-btn').hide();
           }
         }
       }
@@ -52,15 +52,15 @@
         var selectParent = $(this).parents('.text-format-wrapper');
 
         // Validate if the textFormat use the visual help.
-        if (settings.visualContentLayout.enable_formats[$(this).val()]) {
-          selectParent.find('.visual-content-layout-btn').show();
+        if (settings.vcl.enable_formats[$(this).val()]) {
+          selectParent.find('.vcl-btn').show();
         }
         else {
-          selectParent.find('.visual-content-layout-btn').hide();
-          selectParent.find('.visual-content-layout-visual-help').hide();
-          $('.visual-content-layout-element').remove();
-          selectParent.find('.visual-content-layout-btn').data('state', 'disable');
-          selectParent.find('.visual-content-layout-btn').text('Enable Visual Content Layout');
+          selectParent.find('.vcl-btn').hide();
+          selectParent.find('.vcl-visual-help').hide();
+          $('.vcl-element').remove();
+          selectParent.find('.vcl-btn').data('state', 'disable');
+          selectParent.find('.vcl-btn').text('Enable Visual Content Layout');
           $(this).parents('.text-format-wrapper').find('.form-textarea').show();
           selectParent.children('#edit-body-0-format-guidelines').show();
         }
@@ -69,7 +69,7 @@
       //--------------------------------------------------------------------------------
       //                  Event click enable/disable visual help button
       //--------------------------------------------------------------------------------
-      $('.visual-content-layout-btn', context).click(function () {
+      $('.vcl-btn', context).click(function () {
         // Get id of the respective textArea.
         var textArea = $(this).data('id');
 
@@ -91,7 +91,7 @@
         var buttonParent = $(button).parents()[0];
 
         if (enable) {
-          $(buttonParent).children('.visual-content-layout-visual-help').show();
+          $(buttonParent).children('.vcl-visual-help').show();
           $('#' + textArea).hide();
           $(buttonParent).find('.filter-guidelines').hide();
           $(button).data('state', 'enable');
@@ -100,7 +100,7 @@
           $(button).addClass('fa-check-square-o');
         }
         else {
-          $(buttonParent).children('.visual-content-layout-visual-help').hide();
+          $(buttonParent).children('.vcl-visual-help').hide();
           $('#' + textArea).show();
           $(buttonParent).find('.filter-guidelines').show();
           $(button).data('state', 'disable');
@@ -113,19 +113,19 @@
       //--------------------------------------------------------------------------------
       //                  Event click display swap select form
       //--------------------------------------------------------------------------------
-      $('.visual-content-layout-form-button', context).click(function () {
+      $('.vcl-form-button', context).click(function () {
         var textArea = $(this).data('textarea'),
           element = document.createElement('input'),
           id = $(this).parent().attr('id'),
-          position = $('.visual-content-layout-element-position');
+          position = $('.vcl-element-position');
 
-        $('<input>').attr("id", "visual-content-layout-actual-textarea")
+        $('<input>').attr("id", "vcl-actual-textarea")
           .attr("type", "hidden")
           .val(textArea)
-          .appendTo($(".visual-content-layout-visual-help"));
+          .appendTo($(".vcl-visual-help"));
 
         if(position.length === 0){
-          position = $('<input>').attr("id", "visual-content-layout-element-position").attr("type", "hidden");
+          position = $('<input>').attr("id", "vcl-element-position").attr("type", "hidden");
         }
 
         if (id === 'vcl-top-link'){
@@ -134,10 +134,10 @@
         else{
           position.val('bottom');
         }
-        position.appendTo($(".visual-content-layout-visual-help"));
+        position.appendTo($(".vcl-visual-help"));
 
         // Delete the target class.
-        $('.visual-content-layout-target').removeClass('visual-content-layout-target');
+        $('.vcl-target').removeClass('vcl-target');
       });
 
     }
@@ -150,24 +150,24 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.visualContentLayoutForm = {
+  Drupal.behaviors.vclForm = {
     attach: function (context, settings) {
 
-      var attributes = settings.visualContentLayout.attributes;
+      var attributes = settings.vcl.attributes;
 
       if (attributes) {
 
-        var textArea = $('#visual-content-layout-actual-textarea').val(),
+        var textArea = $('#vcl-actual-textarea').val(),
           textAreaElement = $('#' + textArea),
           textAreaParent = textAreaElement.parents()[2],
-          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help')
-            .find('.visual-content-layout-elements-area'),
-          position = $('#visual-content-layout-element-position').val();
+          visualHelpArea = $(textAreaParent).children('.vcl-visual-help')
+            .find('.vcl-elements-area'),
+          position = $('#vcl-element-position').val();
 
         // Create the html element for the new swap.
         var element = document.createElement('div');
 
-        $(element).addClass('visual-content-layout-element panel panel-default');
+        $(element).addClass('vcl-element panel panel-default');
 
         // Create the icon for handle the drag.
         var dragIcon = $('<span/>').attr({class: 'fa fa-arrows dragIcon'});
@@ -196,7 +196,7 @@
 
           // Create the button for add swaps if have container.
           var addButton = $('<a>', {
-            href: drupalBasePath + 'visual_content_layout/swap_select_form/' + attributes.swapId,
+            href: drupalBasePath + 'vcl/swap_select_form/' + attributes.swapId,
             class: 'fa fa-plus-square iconButton addButton'});
           // Add event to button.
           addButton.on('click', addContainerVisualElement);
@@ -213,7 +213,7 @@
           Drupal.ajax[base] = new Drupal.Ajax(base, addButton, element_settings);
 
           addButton.appendTo(element);
-          $('<div>').addClass('visual-content-layout-container').appendTo($(element));
+          $('<div>').addClass('vcl-container').appendTo($(element));
         }
         delete (attributes.container);
 
@@ -229,7 +229,7 @@
           }
         }
 
-        var target = $('.visual-content-layout-target');
+        var target = $('.vcl-target');
 
         if (position === 'top'){
           $(element).prependTo(visualHelpArea);
@@ -247,10 +247,10 @@
         $('#' + textArea).val(getTextFromVisual(visualHelpArea));
         makeDragAndDrop();
 
-        $('#visual-content-layout-element-position').val("");
-        $('#visual-content-layout-actual-textarea').remove();
-        $('.visual-content-layout-target').removeClass('visual-content-layout-target');
-        delete (settings.visualContentLayout.attributes);
+        $('#vcl-element-position').val("");
+        $('#vcl-actual-textarea').remove();
+        $('.vcl-target').removeClass('vcl-target');
+        delete (settings.vcl.attributes);
       }
     }
   };
@@ -262,29 +262,29 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.visualContentLayoutElements = {
+  Drupal.behaviors.vclElements = {
     attach: function (context, settings) {
 
       //--------------------------------------------------------------------------------
       //                  Event click enable/disable visual help button
       //--------------------------------------------------------------------------------
-      $('.visual-content-layout-btn', context).click(function () {
+      $('.vcl-btn', context).click(function () {
         // Get id of the respective textArea.
         var textArea = $(this).data('id');
 
         // Validate if the visual help is enable.
         if ($(this).data('state') === 'enable') {
-          var swaps = settings.visualContentLayout.enable_swaps,
-            swapNames = settings.visualContentLayout.swap_names;
+          var swaps = settings.vcl.enable_swaps,
+            swapNames = settings.vcl.swap_names;
           // Make the visual element with the text.
           getVisualElements(textArea, swaps, swapNames);
           makeDragAndDrop();
         }
         else {
           var buttonParent = $(this).parents()[0],
-            visualHelpArea = $(buttonParent).children('.visual-content-layout-visual-help'),
-            elementsContainer = visualHelpArea.children('.visual-content-layout-elements-area'),
-            elements = elementsContainer.children('.visual-content-layout-element');
+            visualHelpArea = $(buttonParent).children('.vcl-visual-help'),
+            elementsContainer = visualHelpArea.children('.vcl-elements-area'),
+            elements = elementsContainer.children('.vcl-element');
           // Delete elements.
           elements.remove();
         }
@@ -297,8 +297,8 @@
 
         var text = $('#' + textArea).val(),
           textAreaParent = $('#' + textArea).parents()[2],
-          visualHelpArea = $(textAreaParent).children('.visual-content-layout-visual-help')
-            .find('.visual-content-layout-elements-area'),
+          visualHelpArea = $(textAreaParent).children('.vcl-visual-help')
+            .find('.vcl-elements-area'),
           chunks = text.split(/(\[{1,2}.*?\]{1,2})/),
           elements = [],
           father = [],
@@ -374,7 +374,7 @@
                 // Insert addButton.
                 var addButton = createAddButton(div.data('swapId'));
                 addButton.appendTo($(div));
-                $('<div>').addClass('visual-content-layout-container').appendTo($(div));
+                $('<div>').addClass('vcl-container').appendTo($(div));
               }
 
               // Validate if that swap have a father.
@@ -415,7 +415,7 @@
                   // Insert addButton.
                   addButton = createAddButton(div.data('swapId'));
                   addButton.appendTo($(div));
-                  var ele = $('<div>').addClass('visual-content-layout-container').appendTo($(div));
+                  var ele = $('<div>').addClass('vcl-container').appendTo($(div));
                   while (elements[lastFather + 1]) {
                     $(elements[lastFather + 1]).appendTo(ele);
                     elements.splice(lastFather + 1, 1);
@@ -451,7 +451,7 @@
                   // Insert addButton.
                   addButton = createAddButton(div.data('swapId'));
                   addButton.appendTo($(div));
-                  $('<div>').addClass('visual-content-layout-container').appendTo($(div));
+                  $('<div>').addClass('vcl-container').appendTo($(div));
                 }
                 swap = null;
                 swapText = false;
@@ -562,7 +562,7 @@
       //--------------------------------------------------------------------------------
       function createHTMLDiv(originalText, swap, swapNames) {
         // Create the element and set the class.
-        var element = $('<div>').addClass('visual-content-layout-element panel panel-default');
+        var element = $('<div>').addClass('vcl-element panel panel-default');
 
         // Create the delete button for this element.
         var deleteButton = $('<i/>').attr({class: 'fa fa-trash-o iconButton'})
@@ -622,7 +622,7 @@
       function createAddButton(swapId) {
         // Create the button for add swaps if have container.
         var addButton = $('<a>', {
-          href: drupalBasePath + 'visual_content_layout/swap_select_form/' + swapId,
+          href: drupalBasePath + 'vcl/swap_select_form/' + swapId,
           class: 'fa fa-plus-square iconButton addButton'});
         // Add event to button.
         addButton.on('click', addContainerVisualElement);
@@ -639,7 +639,7 @@
   //--------------------------------------------------------------------------------
   function getTextFromVisual(visualHelpArea) {
 
-    var children = $(visualHelpArea).children('.visual-content-layout-element'),
+    var children = $(visualHelpArea).children('.vcl-element'),
       text = '';
 
     // Process all children.
@@ -659,7 +659,7 @@
       swapId = data.swapId,
       swapText = data.text,
       text = "[" + swapId,
-      container = element.children('.visual-content-layout-container');
+      container = element.children('.vcl-container');
 
     if (swapId === "string") {
       return swapText;
@@ -680,7 +680,7 @@
     if (container.length > 0) {
 
       // Get the children of the swap.
-      var containerChildren = $(container[0]).children('.visual-content-layout-element');
+      var containerChildren = $(container[0]).children('.vcl-element');
 
       // Validate the swap have children.
       if (containerChildren.length > 0) {
@@ -700,16 +700,16 @@
   //                 Make the visual element able to drag and drop
   //--------------------------------------------------------------------------------
   function makeDragAndDrop() {
-    $(".visual-content-layout-container").sortable({
+    $(".vcl-container").sortable({
       placeholder: "ui-state-highlight",
-      connectWith: ".visual-content-layout-container",
-      items: "div.visual-content-layout-element",
+      connectWith: ".vcl-container",
+      items: "div.vcl-element",
       axis: "y",
       opacity: 0.5,
       cursor: "move",
       handle: "span.dragIcon",
       stop: function (event, ui) {
-        var elementsContainer = $(ui.item[0]).parents('.visual-content-layout-elements-area'),
+        var elementsContainer = $(ui.item[0]).parents('.vcl-elements-area'),
           visualHelpArea = elementsContainer.parent(),
           addButton = $(visualHelpArea).find('a'),
           textArea = $(addButton[0]).data('textarea'),
@@ -725,7 +725,7 @@
   function editVisualElement() {
     // Get the swap name of the swap to fin the respective form.
     var swapName = $(this).data().swapName,
-      url = drupalBasePath + 'visual_content_layout/swap_attributes_update_form/' + swapName.replace(" ", ""),
+      url = drupalBasePath + 'vcl/swap_attributes_update_form/' + swapName.replace(" ", ""),
       swapAttributes = $(this).parent().data(),
       dWidth = $(window).width() * 0.7;
     // Set a class in the div to identify which div actualize.
@@ -735,7 +735,7 @@
     $('<i class="fa fa-clock-o dragIcon"></i>').insertAfter($(this));
 
     // Create a div for display the modal.
-    $('<div id="visual-content-layout-update-modal"></div>').appendTo("body");
+    $('<div id="vcl-update-modal"></div>').appendTo("body");
 
     // Execute ajax call.
     $.ajax({
@@ -745,7 +745,7 @@
       success: function (data) {
 
         // Place the for in the special div for update dialogs.
-        $("#visual-content-layout-update-modal").html(data);
+        $("#vcl-update-modal").html(data);
 
         $('.fa-clock-o').remove();
 
@@ -753,10 +753,10 @@
         setAttributesInForm(swapAttributes);
 
         // Execute verticalTab behaviors to theme the vertical tabs.
-        Drupal.behaviors.verticalTabs.attach($('#visual-content-layout-update-modal'));
+        Drupal.behaviors.verticalTabs.attach($('#vcl-update-modal'));
 
         // Display modal dialog.
-        $("#visual-content-layout-update-modal").dialog({
+        $("#vcl-update-modal").dialog({
           title: "Swap Atributes",
           modal: true,
           draggable: false,
@@ -766,7 +766,7 @@
 
         $(".ui-dialog-titlebar-close").on("click", cancelVisualElement);
 
-        Drupal.behaviors.visualContentLayoutElementsInit.attach($('#visual-content-layout-update-modal'));
+        Drupal.behaviors.vclElementsInit.attach($('#vcl-update-modal'));
 
       }
     });
@@ -779,6 +779,7 @@
 
     // Iterate all attributes of the div.
     for(var attr in attributes) {
+      var expresion = /([^a-zA-Z0-9-_])+/g;
       // Validate is a key value position.
       if(typeof attributes[attr] !== 'object'){
         // Set default attributes.
@@ -804,24 +805,33 @@
           checked = (attributes[attr] === '1') ? true : false;
           $(input).prop('checked', checked);
         }
+
+        if (!attributes[attr].match(expresion)){
+          input = '#edit-swaps-' + attributes.swapId + '-' + attr + '-' + attributes[attr];
+          input = $(input.toLowerCase());
+          inputType = $(input).attr('type');
+          if(inputType === 'radios' || inputType === 'radio'){
+            $(input).prop('checked', true);
+          }
+        }
       }
     }
 
     // Validate exist the image manager
-    var imageManager = $('.visual-content-layout-image-manager');
+    var imageManager = $('.vcl-image-manager');
 
     if(imageManager.length > 0){
 
       $("[name = swaps_img_fid]").val(attributes.fid);
       $('.image_preview').attr('src', attributes.url);
-      imageManager.attr('href', drupalBasePath + 'visual_content_layout/swap_image_manager/' + attributes.fid);
-      makeAjaxLink(imageManager, 'visual-content-layout-image-manager');
+      imageManager.attr('href', drupalBasePath + 'vcl/swap_image_manager/' + attributes.fid);
+      makeAjaxLink(imageManager, 'vcl-image-manager');
     }
 
     // Define the function of accept button, negate submit form.
     $("#edit-swaps-accept").on("click", updateVisualElement);
     $("#edit-swaps-cancel").on("click", cancelVisualElement);
-    $("#visual-content-layout-update-modal form").submit(function () {
+    $("#vcl-update-modal form").submit(function () {
       return false;
     });
   }
@@ -832,7 +842,7 @@
   function cancelVisualElement() {
     // Close modal dialog
     $(".ui-dialog-content").dialog("close");
-    $("#visual-content-layout-update-modal").remove();
+    $("#vcl-update-modal").remove();
   }
 
   //--------------------------------------------------------------------------------
@@ -870,12 +880,23 @@
       data = data.replace("edit-swaps-", "");
       data = data.replace(swap + '-', "");
 
+      // Set value for checkbox.
+      if(inputType === 'radio'){
+        if(!$(elements[i]).prop('checked')){
+          continue;
+        }else{
+          data =  $(elements[i]).attr('id');
+          data = data.replace("edit-swaps-", "");
+          data = data.split("-")[1];
+        }
+      }
+
       // Set the data.
       div.data(data, value);
     }
 
     // Get the parents to find the textarea.
-    var elementsContainer = div.parents('.visual-content-layout-elements-area'),
+    var elementsContainer = div.parents('.vcl-elements-area'),
       visualHelpArea = elementsContainer.parent(),
       addButton = $(visualHelpArea).find('a'),
       textArea = $(addButton[0]).data('textarea');
@@ -889,15 +910,15 @@
 
     // Close modal dialog
     $(".ui-dialog-content").dialog("close");
-    $("#visual-content-layout-update-modal").remove();
+    $("#vcl-update-modal").remove();
   }
 
   //--------------------------------------------------------------------------------
   //                 Event click delete visual element
   //--------------------------------------------------------------------------------
   function deleteVisualElement() {
-    var parent = $(this).parent('.visual-content-layout-element'),
-      elementsContainer = parent.parents('.visual-content-layout-elements-area'),
+    var parent = $(this).parent('.vcl-element'),
+      elementsContainer = parent.parents('.vcl-elements-area'),
       visualHelpArea = elementsContainer.parent(),
       addButton = $(visualHelpArea).find('a'),
       textArea = $(addButton[0]).data('textarea');
@@ -914,8 +935,8 @@
   //                 Event click copy visual element
   //--------------------------------------------------------------------------------
   function copyVisualElement() {
-    var parent = $(this).parent('.visual-content-layout-element'),
-      elementsContainer = parent.parents('.visual-content-layout-elements-area'),
+    var parent = $(this).parent('.vcl-element'),
+      elementsContainer = parent.parents('.vcl-elements-area'),
       visualHelpArea = elementsContainer.parent(),
       addButton = $(visualHelpArea).find('a'),
       textArea = $(addButton[0]).data('textarea');
@@ -934,27 +955,27 @@
   //--------------------------------------------------------------------------------
   function addContainerVisualElement() {
     // Delete the target class.
-    $('.visual-content-layout-target').removeClass('visual-content-layout-target');
+    $('.vcl-target').removeClass('vcl-target');
 
-    var parent = $(this).parents('.visual-content-layout-element');
+    var parent = $(this).parents('.vcl-element');
     if (parent.length > 1) {
-      var element = parent.children('.visual-content-layout-container:first');
-      element.addClass('visual-content-layout-target');
+      var element = parent.children('.vcl-container:first');
+      element.addClass('vcl-target');
     }
     else{
-      element = parent.children('.visual-content-layout-container');
-      element.addClass('visual-content-layout-target');
+      element = parent.children('.vcl-container');
+      element.addClass('vcl-target');
     }
 
     // Set the actual textarea.
-    var visualHelpArea = $(this).parents('.visual-content-layout-visual-help'),
-      textArea = visualHelpArea.find('.visual-content-layout-form-button'),
+    var visualHelpArea = $(this).parents('.vcl-visual-help'),
+      textArea = visualHelpArea.find('.vcl-form-button'),
       textAreaId = textArea.data('textarea');
 
-    $('<input>').attr("id", "visual-content-layout-actual-textarea")
+    $('<input>').attr("id", "vcl-actual-textarea")
       .attr("type", "hidden")
       .val(textAreaId)
-      .appendTo($(".visual-content-layout-visual-help"));
+      .appendTo($(".vcl-visual-help"));
 
   }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Provides Drupal\visual_content_layout\SwapBase.
+ * Provides Drupal\vcl\SwapBase.
  */
 
 namespace Drupal\swaps;
@@ -39,7 +39,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return string
    *   string with all the code of the swap.
    */
-  public function processCallback($attrs, $text) {
+    public function processCallback($attrs, $text) {
     $text = "Create your own processCallback function.";
     return $text;
   }

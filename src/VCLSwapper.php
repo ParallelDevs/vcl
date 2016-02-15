@@ -1,12 +1,12 @@
 <?php
 /**
  * @file
- * Contains VisualContentLayoutSwapper.
+ * Contains VCLSwapper.
  */
 
-namespace Drupal\visual_content_layout;
+namespace Drupal\vcl;
 
-class VisualContentLayoutSwapper {
+class VCLSwapper {
 
   /**
    * Logic for replace the swap pattern with the html code corresponding.
