@@ -37,7 +37,15 @@ class SwapAccordion extends SwapBase {
       $attrs
     );
 
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      if (array_key_exists('class', $attrs)) {
+        $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+      }else{
+        $attrs['class'] = $attrs['extraclass'];
+      }
+    }
+
     $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs, $text);
@@ -47,8 +55,11 @@ class SwapAccordion extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
+    // Define variables with HTML code of the attributes
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? $attrs['class'] : "";
 
-    return '<div class="panel-group ' . $attrs['class'] . '" id="' . $attrs['id'] . '">' . $text . '</div>';
+    return '<div class="panel-group ' . $class . ' "' . $id . '">' . $text . '</div>';
   }
 
 }

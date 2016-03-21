@@ -40,7 +40,7 @@ class SwapYoutube extends SwapBase {
     $attrs['width'] = $this->validateNumber($attrs['width']);
     $attrs['height'] = $this->validateNumber($attrs['height']);
 
-    return $this->theme($attrs);
+    return $this->theme($attrs, $text);
   }
 
   /**

@@ -34,7 +34,6 @@ class FilterVCL extends FilterBase {
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-    drupal_set_message("true", "enable_bootstrap");
     $result = new FilterProcessResult(VCLSwapper::swapProcess($text));
     return $result;
   }
@@ -48,8 +47,10 @@ class FilterVCL extends FilterBase {
     $tips = "Swaps examples:";
     // Iterate all swaps to make the tips.
     foreach ($swaps as $swap) {
-      if (!$swap['tip'] == "") {
-        $tips = $tips . "<li><b><u>" . $swap['id'] . "</u> = </b> " . $swap['tip'] . "</li>";
+      if (array_key_exists('tip', $swap)) {
+        if (!$swap['tip'] == "") {
+          $tips = $tips . "<li><b><u>" . $swap['id'] . "</u> = </b> " . $swap['tip'] . "</li>";
+        }
       }
     }
     $tips = $tips . "</ol>";

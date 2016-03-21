@@ -30,7 +30,14 @@ class SwapImage extends SwapBase {
   public function processCallback($attrs, $text) {
 
     $attrs['style'] = $this->getStyle($attrs);
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      if (array_key_exists('class', $attrs)) {
+        $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+      }else{
+        $attrs['class'] = $attrs['extraclass'];
+      }
+    }
     return $this->theme($attrs, $text);
   }
 
@@ -40,10 +47,12 @@ class SwapImage extends SwapBase {
    */
   public function theme($attrs, $text) {
 
-    // Validate exists id.
-    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+    // Define variables with HTML code of the attributes
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? ' class="' . $attrs['class'] . '" ' : "";
+    $alt = (array_key_exists('alt', $attrs)) ? ' alt="' . $attrs['alt'] . '" ' : "";
 
-    $img = '<img' . $id . ' class="' . $attrs['class'] . '" alt="' . $attrs['alt'] . '" src="' . $attrs['url'] . '" height="' . $attrs['height'] . '" width="' . $attrs['width'] . '" ' . $attrs['style'] . ' />';
+    $img = '<img ' . $id . $class . $alt . '" src="' . $attrs['url'] . '" height="' . $attrs['height'] . '" width="' . $attrs['width'] . '" ' . $attrs['style'] . ' />';
 
     return $img;
 

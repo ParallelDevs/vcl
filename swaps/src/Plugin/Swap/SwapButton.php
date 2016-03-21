@@ -32,8 +32,18 @@ class SwapButton extends SwapBase {
       $attrs
     );
 
-    $attrs['class'] = $this->addClass($attrs['class'], 'button');
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    // Concatenate the classes
+    if (array_key_exists('class', $attrs)) {
+      $attrs['class'] = $this->addClass($attrs['class'], 'button');
+    }else{
+      $attrs['class'] = 'button';
+    }
+
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    }
+
     $attrs['style'] = $this->getStyle($attrs);
     if ($attrs['url']) {
       $attrs['path'] = $attrs['url'];
@@ -45,12 +55,13 @@ class SwapButton extends SwapBase {
    * Create the string of the swap.
    */
   public function theme($attrs, $text) {
-    // Validate exists id.
-    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+    // Define variables with HTML code of the attributes
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? ' class="' . $attrs['class'] . '" ' : "";
     // Validate exists title.
     ($text != '') ? '' : $text = 'title';
 
-    return '<a href="' . $attrs['url'] . '"' . $id . ' class="' .  $attrs['class'] . '" ' . $attrs['style'] . ' ><span>' . $text . '</span></a>';
+    return '<a href="' . $attrs['url'] . '" ' . $id . $class . $attrs['style'] . ' ><span>' . $text . '</span></a>';
   }
 
 }

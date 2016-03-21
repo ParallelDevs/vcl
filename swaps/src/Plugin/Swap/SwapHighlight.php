@@ -29,7 +29,15 @@ class SwapHighlight extends SwapBase {
   public function processCallback($attrs, $text) {
     $extra = array('color' => $attrs['fontcolor']);
     $attrs['style'] = $this->getStyle($attrs, $extra);
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      if (array_key_exists('class', $attrs)) {
+        $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+      }else{
+        $attrs['class'] = $attrs['extraclass'];
+      }
+    }
 
     return $this->theme($attrs, $text);
   }
@@ -40,9 +48,10 @@ class SwapHighlight extends SwapBase {
   public function theme($attrs, $text) {
 
     // Validate exists id.
-    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? ' class="' . $attrs['class'] . '" ' : "";
 
-    return '<span' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . '>' . $text . ' </span>';
+    return '<span ' . $id . $class . $attrs['style'] . '>' . $text . ' </span>';
   }
 
 }
