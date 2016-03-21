@@ -33,8 +33,24 @@ class SwapDiv extends SwapBase {
       $attrs
     );
 
-    $attrs['class'] = $this->validateClass($attrs['type'], $attrs['class']);
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    $class_exist = array_key_exists('class', $attrs);
+
+    // Validate the type of the div
+    if ($class_exist) {
+      $attrs['class'] = $this->validateClass($attrs['type'], $attrs['class']);
+    }else{
+      $attrs['class'] = $this->validateClass($attrs['type'], "");
+    }
+
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      if ($class_exist) {
+        $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+      }else{
+        $attrs['class'] = $attrs['extraclass'];
+      }
+    }
+
     $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs, $text);
@@ -43,7 +59,7 @@ class SwapDiv extends SwapBase {
   /**
    * Validate the class.
    */
-  public function validateClass($type, $class) {
+  public function validateClass($type, $class ) {
     switch ($type) {
       case "row":
         return $type;
@@ -62,9 +78,10 @@ class SwapDiv extends SwapBase {
   public function theme($attrs, $text) {
 
     // Validate exists id.
-    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? ' class="' . $attrs['class'] . '" ' : "";
 
-    return '<div' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</div>';
+    return '<div ' . $id . $class . $attrs['style'] . ' >' . $text . '</div>';
   }
 
 }

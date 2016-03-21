@@ -27,7 +27,14 @@ class SwapListElement extends SwapBase {
    */
   public function processCallback($attrs, $text) {
 
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      if (array_key_exists('class', $attrs)) {
+        $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+      }else{
+        $attrs['class'] = $attrs['extraclass'];
+      }
+    }
     $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs, $text);
@@ -38,9 +45,10 @@ class SwapListElement extends SwapBase {
    */
   public function theme($attrs, $text) {
 
-    // Validate exists id.
-    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+    // Define variables with HTML code of the attributes
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? ' class="' . $attrs['class'] . '" ' : "";
 
-    return '<li' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</li>';
+    return '<li ' . $id . $class . $attrs['style'] . ' >' . $text . '</li>';
   }
 }

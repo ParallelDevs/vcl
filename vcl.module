@@ -106,8 +106,11 @@ function vcl_load_field($field, $format) {
   // Create a list of all formats that use filter_vcl.
   foreach ($formats as $format) {
     $format_array = $format->toArray();
-    if ($format_array['filters']['filter_vcl']['status']) {
-      $enable_formats[$format_array['format']] = TRUE;
+
+    if (array_key_exists('filter_vcl', $format_array['filters'])) {
+      if ($format_array['filters']['filter_vcl']['status']) {
+        $enable_formats[$format_array['format']] = TRUE;
+      }
     }
   }
 

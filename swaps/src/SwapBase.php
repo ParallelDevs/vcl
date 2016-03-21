@@ -105,8 +105,7 @@ class SwapBase extends PluginBase implements SwapInterface {
    * @return string
    *   The proper classes string.
    */
-  public function addClass($class = '', $new_class = '') {
-    if ($class) {
+  public function addClass($class = '', $new_class = '') {if ($class) {
       if (!is_array($class)) {
         $class = explode(' ', $class);
       }

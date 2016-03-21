@@ -37,10 +37,20 @@ class SwapColumn extends SwapBase {
 
     $default_class = "col-" . $this->validateSize($attrs['size']) . "-"
                              . $this->validateNumber($attrs['number']);
-    $attrs['class'] = $this->addClass($attrs['class'], $default_class);
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
-    $attrs['style'] = $this->getStyle($attrs);
 
+    // Concatenate the classes
+    if (array_key_exists('class', $attrs)) {
+        $attrs['class'] = $this->addClass($attrs['class'], $default_class);
+    }else{
+      $attrs['class'] = $default_class;
+    }
+
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    }
+
+    $attrs['style'] = $this->getStyle($attrs);
     return $this->theme($attrs, $text);
   }
 
@@ -84,9 +94,10 @@ class SwapColumn extends SwapBase {
   public function theme($attrs, $text) {
 
     // Validate exists id.
-    $id = ($attrs['id'] != '') ? ' id="' . $attrs['id'] . '"' : "";
+    $id = (array_key_exists('id', $attrs)) ? ' id="' . $attrs['id'] . '" ' : "";
+    $class = (array_key_exists('class', $attrs)) ? ' class="' . $attrs['class'] . '" ' : "";
 
-    return '<div' . $id . ' class="' . $attrs['class'] . '" ' . $attrs['style'] . ' >' . $text . '</div>';
+    return '<div ' . $id . $class . $attrs['style'] . ' >' . $text . '</div>';
   }
 
 }

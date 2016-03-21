@@ -35,7 +35,14 @@ class SwapAccordionElement extends SwapBase {
       $attrs
     );
 
-    $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+    // Concatenate the classes
+    if (array_key_exists('extraclass', $attrs)) {
+      if (array_key_exists('class', $attrs)) {
+        $attrs['class'] = $this->addClass($attrs['class'], $attrs['extraclass']);
+      }else{
+        $attrs['class'] = $attrs['extraclass'];
+      }
+    }
     $attrs['style'] = $this->getStyle($attrs);
 
     return $this->theme($attrs, $text);
